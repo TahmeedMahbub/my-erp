@@ -13,6 +13,14 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
+Route::get('/sidebar', function () {
+    return view('imports.sidebar');
 });
+
+Route::get('/', function () {
+    return view('index');
+});
+
+// Route::get('/try', function () {
+//     return view('try');
+// });
