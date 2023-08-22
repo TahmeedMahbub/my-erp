@@ -36,7 +36,8 @@
             <div class="collapse navbar-collapse tab-content" id="sidebarCollapse">
                 <!-- Navigation -->
                 <ul class="navbar-nav tab-pane active" id="Main" role="tabpanel">
-                    <li class="menu-label mt-0 text-primary font-12 fw-semibold">M<span>ain</span><br><span class="font-10 text-secondary fw-normal">Unique Dashboard</span></li>
+                    @include('imports.main.ams-sidebar')
+                    <li class="menu-label mt-0 text-primary font-12 fw-semibold">Main<br><span class="font-10 text-secondary fw-normal">Unique Dashboard</span></li>
                     <li class="nav-item">
                         <a class="nav-link" href="#sidebarAnalytics" data-bs-toggle="collapse" role="button"
                             aria-expanded="false" aria-controls="sidebarAnalytics">
