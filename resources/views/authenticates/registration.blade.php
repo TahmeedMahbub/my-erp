@@ -2,7 +2,7 @@
 <!DOCTYPE html>
 <html lang="en">
     <head>
-        <title>ERP - Login</title>
+        <title>ERP - Registration</title>
         @include('imports.cdn.style')
     </head>
 

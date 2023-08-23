@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\AuthController;
 
 /*
 |--------------------------------------------------------------------------
@@ -21,11 +22,17 @@ Route::get('/', function () {
     return view('index');
 });
 
-Route::get('/login', function () {
-    return view('authenticates.login');
-});
+// Route::get('/login', function () {
+//     return view('authenticates.login');
+// });
 
-// Route::get('/login', 'LoginController@login')->name('login');
+Route::get('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/signin', [AuthController::class, 'signin'])->name('signin');
+
+Route::get('/forget-password', [AuthController::class, 'forgetPassword'])->name('forget_password');
+
+Route::get('/registration', [AuthController::class, 'registration'])->name('registration');
+Route::post('/signup', [AuthController::class, 'signup'])->name('signup');
 
 // Route::get('/try', function () {
 //     return view('try');
