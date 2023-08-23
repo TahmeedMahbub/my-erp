@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -33,6 +34,9 @@ Route::get('/forget-password', [AuthController::class, 'forgetPassword'])->name(
 
 Route::get('/registration', [AuthController::class, 'registration'])->name('registration');
 Route::post('/signup', [AuthController::class, 'signup'])->name('signup');
+
+// ADD MIDDLEWARES
+Route::get('/roles', [RoleController::class, 'roles'])->name('roles');
 
 // Route::get('/try', function () {
 //     return view('try');

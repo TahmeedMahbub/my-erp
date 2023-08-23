@@ -1,30 +1,4 @@
-<!DOCTYPE html>
-<html lang="en">
-    <head>
-        <!-- <meta charset="utf-8" />
-        <title> | Hyper - Responsive Bootstrap 5 Admin Dashboard</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <meta content="A fully featured admin theme which can be used to build CRM, CMS, etc." name="description" />
-        <meta content="Coderthemes" name="author" />
-        App favicon
-        <link rel="shortcut icon" href="assets/images/favicon.ico"> -->
 
-        <meta charset="utf-8" />
-        <title>Unikit - Admin & Dashboard Template</title>
-        <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-        <meta content="Premium Multipurpose Admin & Dashboard Template" name="description" />
-        <meta content="" name="author" />
-        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-
-        <!-- App favicon -->
-        <link rel="shortcut icon" href="assets/images/favicon.ico">
-        <!-- App css -->
-        <link href="assets/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/icons.min.css" rel="stylesheet" type="text/css" />
-        <link href="assets/css/app.min.css" rel="stylesheet" type="text/css" />
-    </head>
-
-    <body id="body" class="dark-sidebar">
         <div class="topbar">
             <!-- Navbar -->
             <nav class="navbar-custom" id="navbar-custom">
@@ -266,25 +240,3 @@
             </nav>
             <!-- end navbar-->
         </div>
-
-
-        <!-- Javascript  -->
-
-        <script>
-            setInterval(function() {
-                var currentDate = new Date();
-                var formattedWeek = currentDate.toLocaleString('en-US', { weekday: 'long' });
-                var formattedDate = currentDate.toLocaleString('en-US', { day: 'numeric', month: 'long', year: 'numeric' });
-                var formattedTime = currentDate.toLocaleString('en-US', { hour: '2-digit', minute: '2-digit', second: '2-digit' });
-
-                document.getElementById('time').innerText = formattedWeek+' | '+formattedDate+' | '+formattedTime;
-            }, 1000);
-
-        </script>
-        <script src="assets/plugins/apexcharts/apexcharts.min.js"></script>
-        <script src="assets/pages/analytics-index.init.js"></script>
-        <script src="assets/js/app.js"></script>
-
-    </body>
-    <!--end body-->
-</html>

@@ -12,7 +12,7 @@
     <div class="collapse " id="sidebarContacts">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Roles</a>
+                <a class="nav-link" href="{{ route('roles') }}">Roles</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">All Contacts</a>
@@ -90,7 +90,7 @@
 <li class="nav-item">
     <a class="nav-link" href="#sidebarMoneyIn" data-bs-toggle="collapse" role="button"
         aria-expanded="false" aria-controls="sidebarMoneyIn">
-        <i class="mdi mdi-briefcase-plus menu-icon"></i>
+        <i class="mdi mdi-currency-usd menu-icon"></i>
         <span>Money In</span>
     </a>
     <div class="collapse " id="sidebarMoneyIn">
@@ -126,7 +126,7 @@
 <li class="nav-item">
     <a class="nav-link" href="#sidebarMoneyOut" data-bs-toggle="collapse" role="button"
         aria-expanded="false" aria-controls="sidebarMoneyOut">
-        <i class="mdi mdi-briefcase-minus menu-icon"></i>
+        <i class="mdi mdi-currency-usd-off menu-icon"></i>
         <span>Money Out</span>
     </a>
     <div class="collapse " id="sidebarMoneyOut">
@@ -139,6 +139,9 @@
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">Expense</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">Refund</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">Sale Return</a>
