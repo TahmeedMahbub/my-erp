@@ -21,6 +21,12 @@ Route::get('/', function () {
     return view('index');
 });
 
+Route::get('/login', function () {
+    return view('authenticates.login');
+});
+
+// Route::get('/login', 'LoginController@login')->name('login');
+
 // Route::get('/try', function () {
 //     return view('try');
 // });

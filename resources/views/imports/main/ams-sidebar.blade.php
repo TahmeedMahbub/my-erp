@@ -12,6 +12,9 @@
     <div class="collapse " id="sidebarContacts">
         <ul class="nav flex-column">
             <li class="nav-item">
+                <a class="nav-link" href="index.html">Roles</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="index.html">All Contacts</a>
             </li>
             <li class="nav-item">
