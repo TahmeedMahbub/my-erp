@@ -6,6 +6,8 @@ INSERT INTO `roles` (`id`, `role_name`, `details`, `created_by`, `created_at`, `
 --------------Office Updated--------------
 ------------------------------------------
 
+ALTER TABLE `roles` ADD `deletable` BOOLEAN NOT NULL DEFAULT TRUE AFTER `details`;
+
 ------------------------------------------
 ---------------Home Updated---------------
 ------------------------------------------
