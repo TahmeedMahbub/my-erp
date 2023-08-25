@@ -1,15 +1,15 @@
 @extends('imports.main.layout')
 
-@section('title', 'Roles')
+@section('title', 'Branch')
 
 @section('content')
     <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('roles_create')}}" class="btn btn-success btn-sm"><i class="mdi mdi-plus"></i> Create Roles</a>
+                    <a href="{{route('branch_create')}}" class="btn btn-success btn-sm"><i class="mdi mdi-plus"></i> Create Branch</a>
                 </div>
-                <h4 class="page-title">User Roles</h4>
+                <h4 class="page-title">Branches</h4>
             </div><!--end page-title-box-->
         </div><!--end col-->
     </div>
@@ -24,29 +24,29 @@
                             <thead class="table-secondary">
                             <tr>
                                 <th>Sl</th>
-                                <th>Role Name</th>
+                                <th>Branch Name</th>
+                                <th>Location</th>
                                 <th>Details</th>
                                 <th class="text-end">Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach ($roles as $role)
+                                @foreach ($branches as $branch)
                                     <tr>
                                         <td>{{ $loop->iteration }}</td>
-                                        <td>
-                                            {{ $role->role_name }}
-                                        </td>
-                                        <td>{{ $role->details }}</td>
+                                        <td> {{ $branch->name }} </td>
+                                        <td> {{ $branch->location }} </td>
+                                        <td>{{ $branch->details }}</td>
                                         <td class="text-end">
                                             <div class="d-flex justify-content-end">
-                                                <a href="{{ route('roles_view', $role->id) }}" title="View" class="text-secondary-custom">
+                                                <a href="{{ route('branch_view', $branch->id) }}" title="View" class="text-secondary-custom">
                                                     <i class="mdi mdi-eye pe-2 fs-4"></i>
                                                 </a>
-                                                <a href="{{ route('roles_edit', $role->id) }}" title="Edit" class="text-secondary-custom">
+                                                <a href="{{ route('branch_edit', $branch->id) }}" title="Edit" class="text-secondary-custom">
                                                     <i class="mdi mdi-lead-pencil pe-2 fs-4"></i>
                                                 </a>
-                                                @if($role->deletable)
-                                                    <a href="{{ route('roles_delete', $role->id) }}" title="Delete" class="text-secondary-custom">
+                                                @if($branch->deletable)
+                                                    <a href="{{ route('branch_delete', $branch->id) }}" title="Delete" class="text-secondary-custom">
                                                         <i class="mdi mdi-delete-empty pe-2 fs-4"></i>
                                                     </a>
                                                 @else

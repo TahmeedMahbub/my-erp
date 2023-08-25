@@ -10,7 +10,7 @@
                 <div class="float-end">
                     <a href="{{route('roles')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All User Roles</a>
                 </div>
-                <h4 class="page-title">Edit User Role</h4>
+                <h4 class="page-title">Create User Role</h4>
             </div><!--end page-title-box-->
         </div><!--end col-->
     </div>

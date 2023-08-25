@@ -4,6 +4,28 @@
 
 
 <li class="nav-item">
+    <a class="nav-link" href="#sidebarOrganization" data-bs-toggle="collapse" role="button"
+        aria-expanded="false" aria-controls="sidebarOrganization">
+        <i class="mdi mdi-store menu-icon"></i>
+        <span>Organization</span>
+    </a>
+    <div class="collapse" id="sidebarOrganization">
+        <ul class="nav flex-column">
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('roles') }}">Role</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('branch') }}">Branch</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="index.html">History</a>
+            </li>
+        </ul>
+    </div>
+</li>
+
+
+<li class="nav-item">
     <a class="nav-link" href="#sidebarContacts" data-bs-toggle="collapse" role="button"
         aria-expanded="false" aria-controls="sidebarContacts">
         <i class="mdi mdi-account-multiple-outline menu-icon"></i>
@@ -12,19 +34,13 @@
     <div class="collapse " id="sidebarContacts">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('roles') }}">Roles</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="index.html">All Contacts</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Officials</a>
+                <a class="nav-link" href="index.html">Users</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Sellers</a>
-            </li>
-            <li class="nav-item">
-                <a class="nav-link" href="index.html">Customers</a>
+                <a class="nav-link" href="index.html">Contacts</a>
             </li>
         </ul>
     </div>

@@ -189,10 +189,10 @@
                         <a class="nav-link dropdown-toggle nav-user" data-bs-toggle="dropdown" href="#" role="button"
                             aria-haspopup="false" aria-expanded="false">
                             <div class="d-flex align-items-center">
-                                <img src="{{ asset('assets/images/users/user-4.jpg') }}" alt="profile-user" class="rounded-circle me-2 thumb-sm" />
+                                <img src="{{ asset('assets/images/'.Auth::user()->image) }}" alt="profile-user" class="rounded-circle me-2 thumb-sm" />
                                 <div>
-                                    <small class="d-none d-md-block font-11">Admin</small>
-                                    <span class="d-none d-md-block fw-semibold font-12">Maria Gibson <i
+                                    <small class="d-none d-md-block font-11">{{ Auth::user()->role->role_name }}</small>
+                                    <span class="d-none d-md-block fw-semibold font-14">{{ Auth::user()->name }} <i
                                             class="mdi mdi-chevron-down"></i></span>
                                 </div>
                             </div>
@@ -200,8 +200,9 @@
                         <div class="dropdown-menu dropdown-menu-end">
                             <a class="dropdown-item" href="#"><i class="ti ti-user font-16 me-1 align-text-bottom"></i> Profile</a>
                             <a class="dropdown-item" href="#"><i class="ti ti-settings font-16 me-1 align-text-bottom"></i> Settings</a>
+                            <a class="dropdown-item" href="#"><i class="ti ti-clock font-16 me-1 align-text-bottom"></i> History</a>
                             <div class="dropdown-divider mb-0"></div>
-                            <a class="dropdown-item" href="#"><i class="ti ti-power font-16 me-1 align-text-bottom"></i> Logout</a>
+                            <a class="dropdown-item" href="{{ route("logout") }}"><i class="ti ti-power font-16 me-1 align-text-bottom"></i> Logout</a>
                         </div>
                     </li><!--end topbar-profile-->
                     <li class="notification-list">
@@ -213,19 +214,7 @@
 
                 <ul class="list-unstyled topbar-nav mb-0">
                     <li>
-                        <h3 class="font-14 m-0 fw-bold">&nbsp; User Name</h3>
-                    </li>
-                    <li>
-                        <h3 class="font-14 m-0 fw-bold">&nbsp; |</h3>
-                    </li>
-                    <li>
-                        <h3 class="font-14 m-0 fw-bold">&nbsp; Super Admin Role</h3>
-                    </li>
-                    <li>
-                        <h3 class="font-14 m-0 fw-bold">&nbsp; |</h3>
-                    </li>
-                    <li>
-                        <h3 class="font-14 m-0 fw-bold">&nbsp; Head Office Gulshan Branch</h3>
+                        <h3 class="font-14 m-0 fw-bold">&nbsp; {{ Auth::user()->branch->name }} Branch</h3>
                     </li>
                     <li>
                         <h3 class="font-14 m-0 fw-bold">&nbsp; | &nbsp;</h3>

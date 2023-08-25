@@ -26,7 +26,23 @@ CREATE TABLE `my_erp`.`branches` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARC
 
 INSERT INTO `branches` (`id`, `name`, `details`, `location`, `created_by`, `updated_by`, `created_at`, `updated_at`) VALUES (NULL, 'Head Office', 'This is main branch', 'Dhaka, Bangladesh', '1', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+ALTER TABLE `branches` ADD `deletable` BOOLEAN NOT NULL DEFAULT TRUE AFTER `location`;
 
+ALTER TABLE `modules` ADD `deletable` BOOLEAN NOT NULL DEFAULT TRUE AFTER `module_prefix`;
+
+ALTER TABLE `permissions` ADD `deletable` BOOLEAN NOT NULL DEFAULT TRUE AFTER `role_id`;
+
+ALTER TABLE `users` ADD `deletable` BOOLEAN NOT NULL DEFAULT TRUE AFTER `address`;
+
+CREATE TABLE `my_erp`.`histories` (`id` INT NOT NULL AUTO_INCREMENT , `module` INT NOT NULL , `operation` VARCHAR(50) NOT NULL , `previous` TEXT NOT NULL , `after` TEXT NOT NULL , `user_id` INT NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `histories` ADD `module_id` INT NOT NULL AFTER `module`;
+
+ALTER TABLE `histories` CHANGE `module` `module` VARCHAR(100) NOT NULL;
+
+ALTER TABLE `histories` CHANGE `previous` `previous` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL, CHANGE `after` `after` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL;
+
+ALTER TABLE `histories` ADD `ip_address` VARCHAR(255) NULL DEFAULT NULL AFTER `user_id`;
 ------------------------------------------
 ---------------Home Updated---------------
 ------------------------------------------

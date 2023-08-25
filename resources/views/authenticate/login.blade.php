@@ -17,16 +17,23 @@
                                     <img src="assets/images/small/business.png" alt="" class="img-fluid mx-auto">
                                 </div>
                             </div>
+                            <div class="col-lg-12">
+                                @if(session('error'))
+                                    <span class="text-danger font-weight-bold"><b><center>{{ session('error') }}</center></b><br><br></span>
+                                @else
+                                    <br><br><br>
+                                @endif
+                            </div>
                             <form id="login-form" action="{{route('signin')}}" method="post">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="username" class="form-label">Username or Phone Number or Email <span class="text-danger font-weight-bold">*</span></label>
-                                    <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username or Phone Number or Email">
+                                    <label for="user_id" class="form-label">Username or Phone Number or Email <span class="text-danger font-weight-bold">*</span></label>
+                                    <input type="text" class="form-control" id="user_id" name="user_id" placeholder="Enter Username or Phone Number or Email" required>
                                 </div><br>
 
                                 <div class="form-group">
                                     <label for="passsword" class="form-label">Password <span class="text-danger font-weight-bold">*</span></label>
-                                    <input type="password" class="form-control" id="passsword" name="password" placeholder="Enter Password">
+                                    <input type="password" class="form-control" id="passsword" name="password" placeholder="Enter Password" required>
                                 </div><br>
 
                                 <div class="text-center py-3 mb-3">
