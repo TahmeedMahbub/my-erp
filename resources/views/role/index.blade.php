@@ -1,6 +1,6 @@
 @extends('imports.main.layout')
 
-@section('title', 'ERP - Roles')
+@section('title', 'Roles')
 
 @section('content')
     <div class="row">
