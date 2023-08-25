@@ -19,9 +19,7 @@ Route::get('/sidebar', function () {
     return view('imports.sidebar');
 });
 
-Route::get('/', function () {
-    return view('index');
-});
+Route::get('/', function () { return view('index'); })->name('home');
 
 // Route::get('/login', function () {
 //     return view('authenticates.login');
@@ -36,7 +34,13 @@ Route::get('/registration', [AuthController::class, 'registration'])->name('regi
 Route::post('/signup', [AuthController::class, 'signup'])->name('signup');
 
 // ADD MIDDLEWARES
-Route::get('/roles', [RoleController::class, 'roles'])->name('roles');
+Route::get('/roles', [RoleController::class, 'index'])->name('roles');
+Route::get('/roles-view/{id}', [RoleController::class, 'view'])->name('roles_view');
+Route::get('/roles-create', [RoleController::class, 'create'])->name('roles_create');
+Route::post('/roles-store', [RoleController::class, 'store'])->name('roles_store');
+Route::get('/roles-edit/{id}', [RoleController::class, 'edit'])->name('roles_edit');
+Route::post('/roles-update', [RoleController::class, 'update'])->name('roles_update');
+Route::get('/roles-delete/{id}', [RoleController::class, 'delete'])->name('roles_delete');
 
 // Route::get('/try', function () {
 //     return view('try');

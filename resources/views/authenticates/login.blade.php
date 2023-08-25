@@ -20,12 +20,12 @@
                             <form id="login-form" action="{{route('signin')}}" method="post">
                                 @csrf
                                 <div class="form-group">
-                                    <label for="username" class="form-label">Username or Phone Number or Email *</label>
+                                    <label for="username" class="form-label">Username or Phone Number or Email <span class="text-danger font-weight-bold">*</span></label>
                                     <input type="text" class="form-control" id="username" name="username" placeholder="Enter Username or Phone Number or Email">
                                 </div><br>
 
                                 <div class="form-group">
-                                    <label for="passsword" class="form-label">Password *</label>
+                                    <label for="passsword" class="form-label">Password <span class="text-danger font-weight-bold">*</span></label>
                                     <input type="password" class="form-control" id="passsword" name="password" placeholder="Enter Password">
                                 </div><br>
 
