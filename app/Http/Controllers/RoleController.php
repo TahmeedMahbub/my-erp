@@ -59,7 +59,7 @@ class RoleController extends Controller
     public function update(Request $request)
     {
         $role = Role::find($request->id);
-        $old_role = $role;
+        $old_role = clone $role;
 
         $role->role_name = $request->role_name;
         $role->details = $request->role_details;

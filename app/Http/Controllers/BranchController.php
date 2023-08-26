@@ -59,7 +59,7 @@ class BranchController extends Controller
     public function update(Request $request)
     {
         $branch = Branch::find($request->id);
-        $old_data = $branch;
+        $old_data = clone $branch;
         $branch->name = $request->branch_name;
         $branch->location = $request->branch_location;
         $branch->details = $request->branch_details;
