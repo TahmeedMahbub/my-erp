@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UserController;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,4 +46,14 @@ Route::group(['prefix' => 'branch', 'middleware' => 'auth'], function () { //
     Route::get('/edit/{id}', [BranchController::class, 'edit'])->name('branch_edit');
     Route::post('/update', [BranchController::class, 'update'])->name('branch_update');
     Route::get('/delete/{id}', [BranchController::class, 'delete'])->name('branch_delete');
+});
+
+Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () { //
+    Route::get('/', [UserController::class, 'index'])->name('user');
+    Route::get('/view/{id}', [UserController::class, 'view'])->name('user_view');
+    Route::get('/create', [UserController::class, 'create'])->name('user_create');
+    Route::post('/store', [UserController::class, 'store'])->name('user_store');
+    Route::get('/edit/{id}', [UserController::class, 'edit'])->name('user_edit');
+    Route::post('/update', [UserController::class, 'update'])->name('user_update');
+    Route::get('/delete/{id}', [UserController::class, 'delete'])->name('user_delete');
 });

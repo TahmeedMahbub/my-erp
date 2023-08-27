@@ -2,10 +2,6 @@ CREATE TABLE `my_erp`.`roles` (`id` INT NOT NULL AUTO_INCREMENT , `role_name` VA
 
 INSERT INTO `roles` (`id`, `role_name`, `details`, `created_by`, `created_at`, `updated_by`, `updated_at`) VALUES (NULL, 'Super Admin', 'Have All The Previlages', '1', CURRENT_TIMESTAMP, '1', CURRENT_TIMESTAMP);
 
-------------------------------------------
---------------Office Updated--------------
-------------------------------------------
-
 ALTER TABLE `roles` ADD `deletable` BOOLEAN NOT NULL DEFAULT TRUE AFTER `details`;
 
 CREATE TABLE `my_erp`.`modules` (`id` INT NOT NULL AUTO_INCREMENT , `module_name` INT NOT NULL , `module_prefix` INT NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , PRIMARY KEY (`id`)) ENGINE = InnoDB;
@@ -43,6 +39,15 @@ ALTER TABLE `histories` CHANGE `module` `module` VARCHAR(100) NOT NULL;
 ALTER TABLE `histories` CHANGE `previous` `previous` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL, CHANGE `after` `after` TEXT CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL;
 
 ALTER TABLE `histories` ADD `ip_address` VARCHAR(255) NULL DEFAULT NULL AFTER `user_id`;
+
 ------------------------------------------
 ---------------Home Updated---------------
+------------------------------------------
+
+ALTER TABLE `users` ADD `date_of_birth` DATE NULL DEFAULT NULL AFTER `details`;
+
+ALTER TABLE `users` ADD `joining_date` DATE NULL DEFAULT NULL AFTER `date_of_birth`;
+
+------------------------------------------
+--------------Office Updated--------------
 ------------------------------------------

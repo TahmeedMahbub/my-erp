@@ -37,7 +37,7 @@
                 <a class="nav-link" href="index.html">All Contacts</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Users</a>
+                <a class="nav-link" href="{{route('user')}}">Users</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">Contacts</a>

@@ -3,6 +3,7 @@
     <head>
         <title>ERP - @yield('title')</title>
         @include('imports.cdn.style')
+        @yield('head')
     </head>
 
     <body id="body" class="dark-sidebar">
