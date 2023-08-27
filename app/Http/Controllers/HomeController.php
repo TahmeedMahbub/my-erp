@@ -9,7 +9,10 @@ class HomeController extends Controller
 {
     public function history()
     {
-        $histories = History::all();
+        $histories = History::orderByDesc('id')
+        ->where('user_id', '>', 0)
+        ->paginate(5);
+
         return view('home.history', compact('histories'));
     }
 }

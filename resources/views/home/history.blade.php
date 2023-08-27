@@ -7,9 +7,9 @@
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('branch_create')}}" class="btn btn-success btn-sm"><i class="mdi mdi-plus"></i> Create Branch</a>
+                    {{ $histories->links() }}
                 </div>
-                <h4 class="page-title">Branches</h4>
+                <h4 class="page-title">Histories</h4>
             </div><!--end page-title-box-->
         </div><!--end col-->
     </div>
@@ -28,26 +28,26 @@
                             <tr>
                                 <th style="width: 3%;">Sl</th>
                                 <th style="width: 7%;">Module</th>
-                                <th style="width: 10%;">Operation</th>
-                                <th style="width: 30%;">Previous</th>
-                                <th style="width: 30%;">After</th>
-                                <th style="width: 10%;">Occured By</th>
-                                <th style="width: 10%;">User IP Address</th>
+                                <th style="width: 6%;">Operation</th>
+                                <th style="width: 26%;">Previous</th>
+                                <th style="width: 26%;">After</th>
+                                <th style="width: 20%;">Occured By</th>
+                                <th style="width: 12%;">IP Address</th>
                             </tr>
                             </thead>
                             <tbody>
                                 @foreach ($histories as $history)
                                     @php $changes = $helpers->historyChange($history->id); @endphp
                                     <tr>
-                                        <td> {{ $loop->iteration }}</td>
+                                        <td> {{ !empty($_GET["page"]) ? (($_GET["page"]-1) * 5 + $loop->iteration) : $loop->iteration }}</td>
                                         <td> {{ $history->module }} <br>(<small>ID: {{ $history->module_id }}</small>) </td>
                                         <td> {{ $history->operation }}</td>
-                                        <td> @php echo $changes["previous"] @endphp </td>
-                                        <td> @php echo $changes["after"] @endphp </td>
+                                        <td> @php echo !empty($changes["previous"]) ? $changes["previous"] : '<p class="text-muted">Nothing to Show</p>' @endphp </td>
+                                        <td> @php echo !empty($changes["after"]) ? $changes["after"] : '<p class="text-muted">Nothing to Show</p>' @endphp </td>
                                         <td> {{ $history->user->name }}, <small>{{ $history->user->role->role_name }}</small>
-                                            <br>(<small>{{ $history->user->email }}</small>)
+                                            <br>(<small>{{ date("g:i A, d-M-Y", strtotime($history->created_at)) }}</small>)
                                         </td>
-                                        <td> {{ $history->ip_address }}</td>
+                                        <td>{{ $history->ip_address }}</td>
                                     </tr>
 
                                 @endforeach

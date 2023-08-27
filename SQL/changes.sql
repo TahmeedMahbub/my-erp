@@ -40,14 +40,16 @@ ALTER TABLE `histories` CHANGE `previous` `previous` TEXT CHARACTER SET utf8mb4 
 
 ALTER TABLE `histories` ADD `ip_address` VARCHAR(255) NULL DEFAULT NULL AFTER `user_id`;
 
-------------------------------------------
----------------Home Updated---------------
-------------------------------------------
-
 ALTER TABLE `users` ADD `date_of_birth` DATE NULL DEFAULT NULL AFTER `details`;
 
 ALTER TABLE `users` ADD `joining_date` DATE NULL DEFAULT NULL AFTER `date_of_birth`;
 
 ------------------------------------------
 --------------Office Updated--------------
+------------------------------------------
+
+ALTER TABLE `users` CHANGE `phone_1` `phone_1` VARCHAR(20) NULL DEFAULT NULL;
+
+------------------------------------------
+---------------Home Updated---------------
 ------------------------------------------

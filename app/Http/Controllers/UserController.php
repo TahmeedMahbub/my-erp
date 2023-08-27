@@ -11,6 +11,10 @@ use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
 {
+    // SEND ROLES AND BRANCHES
+    // CHECK IS THE USERNAME VALID
+    // CHECK PASSWORD
+    
     public function index()
     {
         $users = User::where('id', '>', 0)->where('verified', 'yes')->get();
@@ -24,6 +28,7 @@ class UserController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         $user = new User();
         $user->name = $request->branch_name;
         $user->location = $request->branch_location;
