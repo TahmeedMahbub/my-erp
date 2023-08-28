@@ -9,7 +9,6 @@
 @endsection
 
 @section('content')
-    <!-- Page-Title -->
     <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
@@ -17,13 +16,12 @@
                     <a href="{{route('roles')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All User List</a>
                 </div>
                 <h4 class="page-title">Create User Role</h4>
-            </div><!--end page-title-box-->
-        </div><!--end col-->
+            </div>
+        </div>
     </div>
-    <!-- end page title end breadcrumb -->
 
     <div class="row">
-        <form action="{{ route('user_store') }}" method="post" enctype="multipart/form-data">
+        <form action="{{ route('user_store') }}" id="user_form" method="post" enctype="multipart/form-data">
             @csrf
             <div class="col-md-12 col-lg-12">
                 <div class="card overflow-hidden">
@@ -31,35 +29,33 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <div class=" row">
-                                        <label for="branch_select" class="col-sm-4 col-form-label text-end">Branch <span class="text-danger font-weight-bold">*</span></label>
+                                    <div class="row">
+                                        <label for="role_select" class="col-sm-4 col-form-label text-end">Role <span class="text-danger font-weight-bold">*</span></label>
                                         <div class="col-sm-8">
-                                            <select id="default1" class="form-select" required>
-                                                <option class="form-select" value="">Select Branch</option>
-                                                <option class="form-select" value="value-2">Value 2</option>
-                                                <option class="form-select" value="value-3">Value 3</option>
-                                                <option class="form-select" value="value-2">Value 2</option>
-                                                <option class="form-select" value="value-3">Value 3</option>
-                                                <option class="form-select" value="value-2">Value 2</option>
-                                                <option class="form-select" value="value-3">Value 3</option>
+                                            <select id="default2" class="form-select" name="role_id" required>
+                                                <option value="">Select Role</option>
+                                                @foreach ($roles as $role)
+                                                    <option class="form-select" value="{{ $role->id }}">{{ $role->role_name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class="row">
-                                        <label for="role_select" class="col-sm-4 col-form-label text-end">Role <span class="text-danger font-weight-bold">*</span></label>
+                                    <div class=" row">
+                                        <label for="branch_select" class="col-sm-4 col-form-label text-end">Branch <span class="text-danger font-weight-bold">*</span></label>
                                         <div class="col-sm-8">
-                                            <select id="default2" class="form-select" required>
-                                                <option value="">Select Role</option>
-                                                <option value="value-2">Value 2</option>
-                                                <option value="value-3">Value 3</option>
+                                            <select id="default1" class="form-select" name="branch_id" required>
+                                                <option class="form-select" value="">Select Branch</option>
+                                                @foreach ($branches as $branch)
+                                                    <option class="form-select" value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                                @endforeach
                                             </select>
                                         </div>
                                     </div>
                                 </div>
                             </div>
-                        </div><!--end card-header-->
+                        </div>
                         <div class="card-body">
                             <div class="card-body">
                                 <div class="row">
@@ -88,7 +84,7 @@
                                         <div class="mb-3 row">
                                             <label for="example-password-input" class="col-sm-4 col-form-label text-end">Password <span class="text-danger font-weight-bold">*</span></label>
                                             <div class="col-sm-8">
-                                                <input class="form-control" type="password" name="password" placeholder="Enter Password" required>
+                                                <input class="form-control" type="password" name="password" id="password" placeholder="Enter Password" required>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
@@ -117,9 +113,8 @@
                                             <label for="example-url-input" class="col-sm-4 col-form-label text-end">Username <span class="text-danger font-weight-bold">*</span></label>
                                             <div class="col-sm-8">
                                                 <div class="input-group">
-                                                    <input class="form-control" type="text" placeholder="Enter Unique Username" name="username" autocomplete="off"  minlength="5" required>
-                                                    <span class="input-group-text text-success" id="basic-addon2"><i class="mdi mdi-check-circle-outline"></i> Available</span>
-                                                    <span class="input-group-text text-danger" id="basic-addon2"><i class="mdi mdi-alert-circle-outline"></i> Occupied</span>
+                                                    <input class="form-control" type="text" placeholder="Enter Unique Username" id="username" name="username" autocomplete="off"  minlength="5" required>
+                                                    <div id="username_notice"></div>
                                                 </div>
                                             </div>
                                         </div>
@@ -138,7 +133,10 @@
                                         <div class="mb-3 row">
                                             <label for="example-week-input" class="col-sm-4 col-form-label text-end">Confirm Pass <span class="text-danger font-weight-bold">*</span></label>
                                             <div class="col-sm-8">
-                                                <input class="form-control" type="password" name="confirm_pass" placeholder="Confirm Your Password" required>
+                                                <div class="input-group">
+                                                    <input class="form-control" type="password" name="confirm_pass" id="confirm_pass" placeholder="Confirm Your Password" required>
+                                                    <div id="pass_notice"></div>
+                                                </div>
                                             </div>
                                         </div>
                                         <div class="mb-3 row">
@@ -156,7 +154,7 @@
                                         <div class="mb-3 row">
                                             <label for="example-month-input" class="col-sm-4 col-form-label text-end" name="details">Details</label>
                                             <div class="col-sm-8">
-                                                <textarea class="form-control" name="" id="" cols="30" rows="5"></textarea>
+                                                <textarea class="form-control" name="details" id="" cols="30" rows="5"></textarea>
                                             </div>
                                         </div>
                                     </div>
@@ -164,21 +162,80 @@
 
                                 <div class="row justify-content-center mt-3">
                                     <div class="col-lg-3">
-
                                         <input class="form-control btn btn-success" type="Submit" value="Create User">
                                     </div>
                                 </div>
-                            </div><!--end card-body-->
-                        </div><!--end card-body-->
-                    </div><!--end card-->
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div> <!--end col-->
+            </div>
         </form>
-    </div><!--end row-->
+    </div>
 @endsection
 
 
 @section('script')
+    <script>
+
+    $(document).ready(function() {
+        $("#username").on("input", function() {
+            const usernameValue = $(this).val();
+            const isValid = /^[a-z0-9_]+$/.test(usernameValue);
+            if (isValid) {
+                if (usernameValue.length >= 5) {
+                    $.ajax({
+                        type: "get",
+                        url: "{!! route('username_check', ['username' => '']) !!}" +'/'+ usernameValue,
+                        success: function (response) {
+                            if(response.status == "available") {
+                                var notice = '<span class="input-group-text text-success" id="basic-addon2"><i class="mdi mdi-check-circle-outline"></i> Available</span>';
+                            }
+                            else {
+                                var notice = '<span class="input-group-text text-danger" id="basic-addon2"><i class="mdi mdi-close-circle-outline"></i> Occupied</span>';
+                            }
+
+                            $("#username_notice").empty();
+                            $("#username_notice").append(notice);
+                        }
+                    });
+                }
+                else
+                {
+                    var notice = '<span class="input-group-text text-warning" id="basic-addon2"><i class="mdi mdi-alert-circle-outline"></i> Too Small</span>';
+                    $("#username_notice").empty();
+                    $("#username_notice").append(notice);
+                }
+            }
+            else
+            {
+                var notice = '<span class="input-group-text text-warning" id="basic-addon2"><i class="mdi mdi-alert-circle-outline"></i> Lower Case, 0-9 and _ only</span>';
+                $("#username_notice").empty();
+                $("#username_notice").append(notice);
+            }
+        });
+
+        $('#user_form').submit(function(event) {
+            if (!$('#username_notice').find('.text-success').length) {
+                event.preventDefault();
+                var notice = '<span class="input-group-text text-danger" id="basic-addon2"><i class="mdi mdi-close-circle-outline"></i> Invalid!!</span>';
+                $("#username_notice").empty();
+                $("#username_notice").append(notice);
+            }
+
+
+            const passwordValue = $("#password").val();
+            const confirmPassValue = $("#confirm_pass").val();
+
+            if (passwordValue != confirmPassValue) {
+                event.preventDefault();
+                var notice = '<span class="input-group-text text-danger" id="basic-addon2"><i class="mdi mdi-close-circle-outline"></i> Password not matched!!</span>';
+                $("#pass_notice").empty();
+                $("#pass_notice").append(notice);
+            }
+        });
+    });
+    </script>
     <script src="{{asset('assets/plugins/select/selectr.min.js')}}"></script>
     <script src="{{asset('assets/plugins/huebee/huebee.pkgd.min.js')}}"></script>
     <script src="{{asset('assets/plugins/datepicker/datepicker-full.min.js')}}"></script>

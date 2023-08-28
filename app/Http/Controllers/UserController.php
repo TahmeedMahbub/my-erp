@@ -2,9 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Branch;
 use App\Models\User;
 use Illuminate\Http\Request;
 use App\Models\History;
+use App\Models\Role;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
@@ -12,9 +14,8 @@ use Illuminate\Support\Facades\Session;
 class UserController extends Controller
 {
     // SEND ROLES AND BRANCHES
-    // CHECK IS THE USERNAME VALID
     // CHECK PASSWORD
-    
+
     public function index()
     {
         $users = User::where('id', '>', 0)->where('verified', 'yes')->get();
@@ -23,16 +24,27 @@ class UserController extends Controller
 
     public function create()
     {
-        return view('user.create');
+        $branches = Branch::all();
+        $roles = Role::all();
+        return view('user.create', compact('branches', 'roles'));
     }
 
     public function store(Request $request)
     {
-        dd($request->all());
         $user = new User();
-        $user->name = $request->branch_name;
-        $user->location = $request->branch_location;
-        $user->details = $request->branch_details;
+        $user->name = $request->name;
+        $user->phone = $request->phone;
+        $user->email = $request->email;
+        $user->password = $request->password;
+        $user->verified = "yes";
+        $user->branch_id = $request->branch_id;
+        $user->role_id = $request->role_id;
+        $user->date_of_birth = $request->dob;
+        $user->address = $request->address;
+        $user->username = $request->username;
+        $user->phone_1 = $request->phone_1;
+        $user->company = $request->company;
+        $user->joining_date = $request->joining_date;
         $user->created_by = Auth::user()->id;
         $user->created_at = Carbon::now()->toDateTimeString();
         $user->updated_by = Auth::user()->id;

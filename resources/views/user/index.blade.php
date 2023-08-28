@@ -35,10 +35,10 @@
                                     <th>Sl</th>
                                     <th>Name</th>
                                     <th>Username</th>
+                                    <th>Role</th>
                                     <th>Branch</th>
                                     <th>Email</th>
                                     <th>Phone</th>
-                                    <th>Role</th>
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
@@ -48,10 +48,10 @@
                                         <td>{{$loop->iteration}}</td>
                                         <td><img src="{{asset('assets\images\\'.$user->image)}}" alt="" class="rounded-circle thumb-xs me-1">{{$user->name}}</td>
                                         <td>{{$user->username}}</td>
+                                        <td>{{$user->role->role_name}}</td>
                                         <td>{{$user->branch->name}}</td>
                                         <td>{{$user->email}}</td>
                                         <td>0{{$user->phone}}</td>
-                                        <td>{{$user->role->role_name}}</td>
                                         <td class="text-end">
                                             <div class="d-flex justify-content-end">
                                                 <a href="{{ route('user_view', $user->id) }}" title="View" class="text-secondary-custom">

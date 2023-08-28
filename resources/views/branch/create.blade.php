@@ -37,7 +37,7 @@
                                     <div class="mb-3 row">
                                         <label for="example-text-input" class="col-sm-3 col-form-label">Branch Location</label>
                                         <div class="col-sm-9">
-                                            <input class="form-control" type="text" name="branch_location" placeholder="Enter Branch Location" id="example-text-input" required>
+                                            <input class="form-control" type="text" name="branch_location" placeholder="Enter Branch Location" id="example-text-input">
                                         </div>
                                     </div>
                                 </div>
@@ -49,7 +49,7 @@
                                     <div class="mb-3 row">
                                         <label for="example-url-input" class="col-sm-2 col-form-label">Branch Details</label>
                                         <div class="col-sm-10">
-                                            <input class="form-control" type="text" name="branch_details" placeholder="Enter Branch Details" id="example-url-input" required>
+                                            <input class="form-control" type="text" name="branch_details" placeholder="Enter Branch Details" id="example-url-input">
                                         </div>
                                     </div>
                                 </div>
