@@ -66,48 +66,7 @@
                                                 <input class="form-control" type="text" name="name" placeholder="Enter Full Name" required>
                                             </div>
                                         </div>
-                                        <div class="mb-3 row">
-                                            <label for="example-email-input" class="col-sm-4 col-form-label text-end">Phone <span class="text-danger font-weight-bold">*</span></label>
-                                            <div class="col-sm-8">
-                                                <div class="input-group">
-                                                    <div class="input-group-text">+880</div>
-                                                    <input class="form-control" type="number" step="1" name="phone" placeholder="Enter Phone Number" min="1000000000" max="9999999999" maxlength="10" required>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label for="example-tel-input" class="col-sm-4 col-form-label text-end">Email <span class="text-danger font-weight-bold">*</span></label>
-                                            <div class="col-sm-8">
-                                                <input class="form-control" type="email" placeholder="Enter Email Address" name="email" required>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label for="example-password-input" class="col-sm-4 col-form-label text-end">Password <span class="text-danger font-weight-bold">*</span></label>
-                                            <div class="col-sm-8">
-                                                <input class="form-control" type="password" name="password" id="password" placeholder="Enter Password" required>
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label for="example-month-input" class="col-sm-4 col-form-label text-end">Date Of Birth</label>
-                                            <div class="col-sm-8">
-                                                <input class="form-control" type="date" name="dob" placeholder="Enter Date Of Birth">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label for="example-month-input" class="col-sm-4 col-form-label text-end">Profile Image</label>
-                                            <div class="col-sm-8">
-                                                <input class="form-control" type="file" name="image" accept="image/*">
-                                            </div>
-                                        </div>
-                                        <div class="mb-3 row">
-                                            <label for="example-month-input" class="col-sm-4 col-form-label text-end">Address</label>
-                                            <div class="col-sm-8">
-                                                <textarea class="form-control" name="address" id="" cols="30" rows="5"></textarea>
-                                            </div>
-                                        </div>
                                     </div>
-
-
                                     <div class="col-lg-6">
                                         <div class="mb-3 row">
                                             <label for="example-url-input" class="col-sm-4 col-form-label text-end">Username <span class="text-danger font-weight-bold">*</span></label>
@@ -118,18 +77,57 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-3 row">
+                                            <label for="example-email-input" class="col-sm-4 col-form-label text-end">Phone <span class="text-danger font-weight-bold">*</span></label>
+                                            <div class="col-sm-8">
+                                                <div class="input-group">
+                                                    <div class="input-group-text">+880</div>
+                                                    <input class="form-control" type="number" step="1" name="phone" placeholder="Enter Phone Number" min="1000000000" max="9999999999" maxlength="10" required>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
                                         <div class="mb-3 row">
                                             <label for="example-date-input" class="col-sm-4 col-form-label text-end">Secondary Phone</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control" type="text" name="phone_1" placeholder="Enter Emergency Phone Number">
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-3 row">
+                                            <label for="example-tel-input" class="col-sm-4 col-form-label text-end">Email <span class="text-danger font-weight-bold">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" type="email" placeholder="Enter Email Address" name="email" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
                                         <div class="mb-3 row">
                                             <label for="example-text-input" class="col-sm-4 col-form-label text-end">Company</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control" type="text" name="company" placeholder="Enter Company Name">
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-3 row">
+                                            <label for="example-password-input" class="col-sm-4 col-form-label text-end">Password <span class="text-danger font-weight-bold">*</span></label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" type="password" name="password" id="password" placeholder="Enter Password" required>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
                                         <div class="mb-3 row">
                                             <label for="example-week-input" class="col-sm-4 col-form-label text-end">Confirm Pass <span class="text-danger font-weight-bold">*</span></label>
                                             <div class="col-sm-8">
@@ -139,18 +137,54 @@
                                                 </div>
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-3 row">
+                                            <label for="example-month-input" class="col-sm-4 col-form-label text-end">Date Of Birth</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" type="date" name="dob" placeholder="Enter Date Of Birth">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
                                         <div class="mb-3 row">
                                             <label for="example-month-input" class="col-sm-4 col-form-label text-end">Joining Date</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control" type="date" name="joining_date">
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-3 row">
+                                            <label for="example-month-input" class="col-sm-4 col-form-label text-end">Profile Image</label>
+                                            <div class="col-sm-8">
+                                                <input class="form-control" type="file" name="image" accept="image/*">
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
                                         <div class="mb-3 row">
                                             <label for="example-month-input" class="col-sm-4 col-form-label text-end">NID Card</label>
                                             <div class="col-sm-8">
                                                 <input class="form-control" type="file" name="nid_image" accept="image/*">
                                             </div>
                                         </div>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-6">
+                                        <div class="mb-3 row">
+                                            <label for="example-month-input" class="col-sm-4 col-form-label text-end">Address</label>
+                                            <div class="col-sm-8">
+                                                <textarea class="form-control" name="address" id="" cols="30" rows="5"></textarea>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="col-lg-6">
                                         <div class="mb-3 row">
                                             <label for="example-month-input" class="col-sm-4 col-form-label text-end" name="details">Details</label>
                                             <div class="col-sm-8">
