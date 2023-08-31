@@ -50,6 +50,8 @@ ALTER TABLE `users` ADD `joining_date` DATE NULL DEFAULT NULL AFTER `date_of_bir
 
 ALTER TABLE `users` CHANGE `phone_1` `phone_1` VARCHAR(20) NULL DEFAULT NULL;
 
+ALTER TABLE `roles` ADD `manager_role` INT NULL AFTER `details`;
+
 ------------------------------------------
 ---------------Home Updated---------------
 ------------------------------------------

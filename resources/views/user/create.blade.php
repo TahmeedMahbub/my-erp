@@ -3,9 +3,6 @@
 @section('title', 'User Create')
 
 @section('head')
-    <link href="{{asset('assets/plugins/select/selectr.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('assets/plugins/huebee/huebee.min.css')}}" rel="stylesheet" type="text/css" />
-    <link href="{{asset('assets/plugins/datepicker/datepicker.min.css')}}" rel="stylesheet" type="text/css" />
 @endsection
 
 @section('content')
@@ -270,10 +267,4 @@
         });
     });
     </script>
-    <script src="{{asset('assets/plugins/select/selectr.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/huebee/huebee.pkgd.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/datepicker/datepicker-full.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/moment/moment.js')}}"></script>
-    <script src="{{asset('assets/plugins/imask/imask.js')}}"></script>
-    <script src="{{asset('assets/pages/forms-advanced.js')}}"></script>
 @endsection

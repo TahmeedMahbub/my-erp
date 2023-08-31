@@ -21,7 +21,7 @@
     </div>
 
     <div class="row">
-        <form action="{{ route('user_store') }}" id="user_form" method="post" enctype="multipart/form-data">
+        <form action="{{ route('user_update') }}" id="user_form" method="post" enctype="multipart/form-data">
             @csrf
             <div class="col-md-12 col-lg-12">
                 <div class="card overflow-hidden">
@@ -193,7 +193,8 @@
                                 </div>
                                 <div class="row justify-content-center mt-3">
                                     <div class="col-lg-3">
-                                        <input class="form-control btn btn-success" type="Submit" value="Create User">
+                                        <input type="hidden" name="id" value="{{ $user->id }}">
+                                        <input class="form-control btn btn-warning" type="Submit" value="Edit User">
                                     </div>
                                 </div>
                             </div>
@@ -225,10 +226,4 @@
         });
     });
     </script>
-    <script src="{{asset('assets/plugins/select/selectr.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/huebee/huebee.pkgd.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/datepicker/datepicker-full.min.js')}}"></script>
-    <script src="{{asset('assets/plugins/moment/moment.js')}}"></script>
-    <script src="{{asset('assets/plugins/imask/imask.js')}}"></script>
-    <script src="{{asset('assets/pages/forms-advanced.js')}}"></script>
 @endsection

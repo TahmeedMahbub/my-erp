@@ -15,3 +15,10 @@
 <script src="{{asset('assets/plugins/apexcharts/apexcharts.min.js')}}"></script>
 <script src="{{asset('assets/pages/analytics-index.init.js')}}"></script>
 <script src="{{asset('assets/js/app.js')}}"></script>
+
+<script src="{{asset('assets/plugins/select/selectr.min.js')}}"></script>
+<script src="{{asset('assets/plugins/huebee/huebee.pkgd.min.js')}}"></script>
+<script src="{{asset('assets/plugins/datepicker/datepicker-full.min.js')}}"></script>
+<script src="{{asset('assets/plugins/moment/moment.js')}}"></script>
+<script src="{{asset('assets/plugins/imask/imask.js')}}"></script>
+<script src="{{asset('assets/pages/forms-advanced.js')}}"></script>

@@ -7,7 +7,14 @@
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    {{ $histories->links() }}
+                    <div class="row">
+                        <div class="col-sm">
+                            <a href="#" class="btn btn-de-primary btn-md"><i class="mdi mdi-magnify"></i> Filter History (<small>Remaining</small>)</a>
+                        </div>
+                        <div class="col-sm">
+                            {{ $histories->links() }}
+                        </div>
+                    </div>
                 </div>
                 <h4 class="page-title">Histories</h4>
             </div><!--end page-title-box-->

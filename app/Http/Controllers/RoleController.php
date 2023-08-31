@@ -20,7 +20,8 @@ class RoleController extends Controller
 
     public function create()
     {
-        return view('role.create');
+        $roles = Role::all();
+        return view('role.create', compact('roles'));
     }
 
     public function store(Request $request)
@@ -28,6 +29,7 @@ class RoleController extends Controller
         $role = new Role;
         $role->role_name = $request->role_name;
         $role->details = $request->role_details;
+        $role->manager_role = $request->manager_role;
         $role->created_by = Auth::user()->id;
         $role->created_at = Carbon::now()->toDateTimeString();
         $role->updated_by = Auth::user()->id;
@@ -53,7 +55,8 @@ class RoleController extends Controller
     public function edit($id)
     {
         $role = Role::find($id);
-        return view('role.edit', compact('role'));
+        $roles = Role::all();
+        return view('role.edit', compact('role', 'roles'));
     }
 
     public function update(Request $request)
@@ -62,6 +65,7 @@ class RoleController extends Controller
         $old_role = clone $role;
 
         $role->role_name = $request->role_name;
+        $role->manager_role = $request->manager_role;
         $role->details = $request->role_details;
         $role->updated_by = Auth::user()->id;
         $role->updated_at = Carbon::now()->toDateTimeString();
