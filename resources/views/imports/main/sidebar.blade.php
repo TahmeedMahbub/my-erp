@@ -16,14 +16,16 @@
         <ul class="nav nav-tabs menu-tab nav-justified" role="tablist">
             <li class="nav-item">
                 <a class="nav-link active" data-bs-toggle="tab" href="#Main" role="tab" aria-selected="true">
-                    Accounting <br>
-                    <b class="font-17 fw-bold line-height-lg">AMS</b>
+                    <span>Accounting<br></span>
+                    <i class="mdi mdi-chart-areaspline"></i>
+                    <span><b class="font-17 fw-bold line-height-lg">AMS</b></span>
                 </a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" data-bs-toggle="tab" href="#Extra" role="tab" aria-selected="false">
-                    Human <br>
-                    <b class="font-17 fw-bold line-height-lg">HRMS</b>
+                    <span>Human <br></span>
+                    <i class="mdi mdi-google-street-view"></i>
+                    <span><b class="font-17 fw-bold line-height-lg">HRMS</b></span>
                 </a>
             </li>
         </ul>

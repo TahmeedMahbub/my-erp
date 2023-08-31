@@ -214,6 +214,11 @@
 
                 <ul class="list-unstyled topbar-nav mb-0">
                     <li>
+                        <button class="nav-link button-menu-mobile nav-icon" id="togglemenu">
+                            <i class="ti ti-menu-2"></i>
+                        </button>
+                    </li>
+                    <li>
                         <h3 class="font-14 m-0 fw-bold">&nbsp; {{ Auth::user()->branch->name }} Branch</h3>
                     </li>
                     <li>

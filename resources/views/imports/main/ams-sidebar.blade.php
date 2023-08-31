@@ -1,7 +1,7 @@
-<li class="menu-label mt-0 text-primary font-12 fw-semibold">Account Management<br>
+{{-- <li class="menu-label mt-0 text-primary font-12 fw-semibold"><span>Account Management</span><br>
     <span class="font-10 text-secondary fw-normal">Tracking System of Business</span>
 </li>
-
+--}}
 
 <li class="nav-item">
     <a class="nav-link" href="#sidebarOrganization" data-bs-toggle="collapse" role="button"
