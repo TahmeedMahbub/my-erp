@@ -2,15 +2,14 @@
 
 @section('title', 'User Create')
 
-@section('head')
-@endsection
+{{-- @section('head') @endsection --}}
 
 @section('content')
     <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('roles')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All User List</a>
+                    <a href="{{route('user')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All User List</a>
                 </div>
                 <h4 class="page-title">Create User Role</h4>
             </div>

@@ -28,7 +28,7 @@ Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middle
 Route::get('/', function () { return view('index'); })->name('home')->middleware('auth');
 Route::get('/history', [HomeController::class, 'history'])->name('history')->middleware('auth');
 
-Route::group(['prefix' => 'role', 'middleware' => 'auth'], function () { //
+Route::group(['prefix' => 'role', 'middleware' => 'auth'], function () {
     Route::get('/', [RoleController::class, 'index'])->name('roles');
     Route::get('/view/{id}', [RoleController::class, 'view'])->name('roles_view');
     Route::get('/create', [RoleController::class, 'create'])->name('roles_create');
@@ -38,7 +38,7 @@ Route::group(['prefix' => 'role', 'middleware' => 'auth'], function () { //
     Route::get('/delete/{id}', [RoleController::class, 'delete'])->name('roles_delete');
 });
 
-Route::group(['prefix' => 'branch', 'middleware' => 'auth'], function () { //
+Route::group(['prefix' => 'branch', 'middleware' => 'auth'], function () {
     Route::get('/', [BranchController::class, 'index'])->name('branch');
     Route::get('/view/{id}', [BranchController::class, 'view'])->name('branch_view');
     Route::get('/create', [BranchController::class, 'create'])->name('branch_create');
@@ -48,7 +48,7 @@ Route::group(['prefix' => 'branch', 'middleware' => 'auth'], function () { //
     Route::get('/delete/{id}', [BranchController::class, 'delete'])->name('branch_delete');
 });
 
-Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () { //
+Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
     Route::get('/', [UserController::class, 'index'])->name('user');
     Route::get('/view/{id}', [UserController::class, 'view'])->name('user_view');
     Route::get('/create', [UserController::class, 'create'])->name('user_create');
@@ -56,4 +56,7 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () { //
     Route::get('/edit/{id}', [UserController::class, 'edit'])->name('user_edit');
     Route::post('/update', [UserController::class, 'update'])->name('user_update');
     Route::get('/delete/{id}', [UserController::class, 'delete'])->name('user_delete');
+
+    Route::get('/password-edit/{id}', [UserController::class, 'passwordEdit'])->name('user_password_edit');
+    Route::post('/password-update', [UserController::class, 'passwordUpdate'])->name('user_password_update');
 });

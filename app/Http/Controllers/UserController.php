@@ -11,6 +11,7 @@ use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Session;
 
 class UserController extends Controller
@@ -76,7 +77,7 @@ class UserController extends Controller
                 $success                    = $file->move('assets/images/user_nid', $new_file_name);
 
                 if ($success) {
-                    $user->image      = 'user_nid/' . $new_file_name;
+                    $user->nid_image      = 'user_nid/' . $new_file_name;
                 }
             }
 
@@ -128,7 +129,6 @@ class UserController extends Controller
             $user->name = $request->name;
             $user->phone = (int)$request->phone;
             $user->email = $request->email;
-            $user->password = $request->password;
             $user->verified = "yes";
             $user->branch_id = $request->branch_id;
             $user->role_id = $request->role_id;
@@ -163,7 +163,7 @@ class UserController extends Controller
                 $success                    = $file->move('assets/images/user_nid', $new_file_name);
 
                 if ($success) {
-                    $user->image      = 'user_nid/' . $new_file_name;
+                    $user->nid_image      = 'user_nid/' . $new_file_name;
                 }
             }
 
@@ -183,7 +183,7 @@ class UserController extends Controller
             return redirect()
             ->route('user')
             ->with('alert.status', 'success')
-            ->with('alert.message', 'User Created Successfully!');
+            ->with('alert.message', 'User Edit Successfully!');
         }
         catch(Exception $e)
         {
@@ -191,7 +191,7 @@ class UserController extends Controller
             return redirect()
             ->route('user')
             ->with('alert.status', 'danger')
-            ->with('alert.message', 'Error in User Creation!!!');
+            ->with('alert.message', 'Error to Edit User!!! '.$e);
         }
     }
 
@@ -225,5 +225,47 @@ class UserController extends Controller
             ->with('alert.status', 'danger')
             ->with('alert.message', 'This User Cannot be Deleted!');
         }
+    }
+
+    public function passwordEdit($id)
+    {
+        $user = User::find($id);
+        return view('user.password', compact('user'));
+    }
+
+    public function passwordUpdate(Request $request)
+    {
+        $user = User::find($request->id);
+        if(!Hash::check($request->prev_pass, $user->password))
+        {
+            return back()
+            ->with('alert.status', 'danger')
+            ->with('alert.message', 'Entered Wrong Password!');
+        }
+
+        if($request->new_pass != $request->confirm_pass)
+        {
+            return back()
+            ->with('alert.status', 'danger')
+            ->with('alert.message', 'New Password and Confirm Password Not Matched!');
+        }
+
+        $user->password = $request->new_pass;
+        $user->save();
+
+        $history = new History;
+        $history->module = "User";
+        $history->module_id = $user->id;
+        $history->operation = "Edit";
+        $history->previous = json_encode(['password' => 'Changed Previous']);
+        $history->after = json_encode(['password' => 'Added New Password']);
+        $history->user_id = Auth::user()->id;
+        $history->ip_address = Session::get('user_ip');
+        $history->save();
+
+        return redirect()
+        ->route('user')
+        ->with('alert.status', 'success')
+        ->with('alert.message', 'Password Changed Successfully!');
     }
 }

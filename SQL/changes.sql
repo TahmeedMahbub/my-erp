@@ -61,6 +61,12 @@ ALTER TABLE `users` ADD `deleted_at` DATETIME NULL DEFAULT NULL AFTER `updated_b
 ALTER TABLE `roles` ADD `deleted_at` DATETIME NULL DEFAULT NULL AFTER `updated_at`;
 
 ALTER TABLE `branches` ADD `deleted_at` DATETIME NULL DEFAULT NULL AFTER `updated_at`;
+
+ALTER TABLE `users` ADD `nid_image` TEXT NULL DEFAULT NULL AFTER `verified`;
+
+
+
+
 ------------------------------------------
 ---------------Home Updated---------------
 ------------------------------------------

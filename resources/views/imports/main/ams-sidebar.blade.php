@@ -37,7 +37,7 @@
                 <a class="nav-link" href="index.html">All Contacts (Remaining)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('user')}}">Users (Running)</a>
+                <a class="nav-link" href="{{route('user')}}">Users</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">Contacts (Remaining)</a>
