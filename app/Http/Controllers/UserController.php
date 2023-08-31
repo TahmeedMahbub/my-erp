@@ -113,7 +113,8 @@ class UserController extends Controller
         $branches = Branch::all();
         $roles = Role::all();
         $user = User::find($id);
-        return view('user.edit', compact('user', 'branches', 'roles'));
+        $users = User::where('id', '>', 0)->get();
+        return view('user.edit', compact('user', 'branches', 'roles', 'users'));
     }
 
     public function update(Request $request)
@@ -122,6 +123,8 @@ class UserController extends Controller
         try
         {
             $user = User::find($request->id);
+            $old_user = clone $user;
+
             $user->name = $request->name;
             $user->phone = (int)$request->phone;
             $user->email = $request->email;
@@ -129,6 +132,8 @@ class UserController extends Controller
             $user->verified = "yes";
             $user->branch_id = $request->branch_id;
             $user->role_id = $request->role_id;
+            $user->manager_role_id = $request->m_role_id;
+            $user->manager_id = $request->manager_id;
             $user->date_of_birth = $request->dob;
             $user->address = $request->address;
             $user->username = $request->username;
@@ -167,8 +172,8 @@ class UserController extends Controller
             $history = new History();
             $history->module = "User";
             $history->module_id = $user->id;
-            $history->operation = "Create";
-            $history->previous = null;
+            $history->operation = "Edit";
+            $history->previous = json_encode($old_user);
             $history->after = json_encode($user);
             $history->user_id = Auth::user()->id;
             $history->ip_address = Session::get('user_ip');

@@ -81,7 +81,12 @@
                                                     </tr>
                                                 </table>
                                             @else
-                                                <p>No Manager</p>
+                                                <table>
+                                                    <tr>
+                                                        <td><img src="{{ asset('assets\images\no-person.jpg') }}" alt="" class="rounded-circle thumb-xs me-1 img-fluid opacity-50"></td>
+                                                        <td>No Manager</td>
+                                                    </tr>
+                                                </table>
                                             @endif
                                         </td>
                                         {{-- <td>0{{$user->phone}}</td> --}}
