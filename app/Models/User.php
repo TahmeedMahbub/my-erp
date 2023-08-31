@@ -48,6 +48,15 @@ class User extends Authenticatable
         return $this->belongsTo('App\Models\Role');
     }
 
+    public function managerRole()
+    {
+        return $this->belongsTo('App\Models\Role');
+    }
+    public function manager()
+    {
+        return $this->belongsTo('App\Models\User');
+    }
+
     public function branch()
     {
         return $this->belongsTo('App\Models\Branch');

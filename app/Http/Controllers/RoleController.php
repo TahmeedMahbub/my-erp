@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\History;
 use App\Models\Role;
+use App\Models\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -117,5 +118,11 @@ class RoleController extends Controller
             ->with('alert.status', 'danger')
             ->with('alert.message', 'This Role Cannot be Deleted!');
         }
+    }
+
+    public function userByRole($role_id)
+    {
+        $users = User::where('role_id', $role_id)->where('id', '>', 0)->get();
+        return response()->json(['role_id' => $role_id, 'users' => $users]);
     }
 }

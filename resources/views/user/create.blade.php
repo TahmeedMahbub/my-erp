@@ -26,11 +26,37 @@
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-lg-6">
-                                    <div class="row">
+                                    <div class="row mb-3">
+                                        <label for="branch_select" class="col-sm-4 col-form-label text-end">Branch <span class="text-danger font-weight-bold">*</span></label>
+                                        <div class="col-sm-8">
+                                            <select id="default1" class="form-select" name="branch_id" required>
+                                                <option class="form-select" value="">Select Branch</option>
+                                                @foreach ($branches as $branch)
+                                                    <option class="form-select" value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row mb-3">
                                         <label for="role_select" class="col-sm-4 col-form-label text-end">Role <span class="text-danger font-weight-bold">*</span></label>
                                         <div class="col-sm-8">
-                                            <select id="default2" class="form-select" name="role_id" required>
+                                            <select id="role_id" class="form-select" name="role_id" required>
                                                 <option value="">Select Role</option>
+                                                @foreach ($roles as $role)
+                                                    <option class="form-select" value="{{ $role->id }}" data-m_role="{{ $role->manager_role_id }}">{{ $role->role_name }}</option>
+                                                @endforeach
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div class="row mb-3">
+                                        <label for="branch_select" class="col-sm-4 col-form-label text-end">Manager Role</label>
+                                        <div class="col-sm-8">
+                                            <select id="m_role_id" class="form-select" name="m_role_id" required>
+                                                <option value="">Select Manager Role</option>
                                                 @foreach ($roles as $role)
                                                     <option class="form-select" value="{{ $role->id }}">{{ $role->role_name }}</option>
                                                 @endforeach
@@ -39,13 +65,13 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-6">
-                                    <div class=" row">
-                                        <label for="branch_select" class="col-sm-4 col-form-label text-end">Branch <span class="text-danger font-weight-bold">*</span></label>
+                                    <div class="row mb-3">
+                                        <label for="branch_select" class="col-sm-4 col-form-label text-end">Manager</label>
                                         <div class="col-sm-8">
-                                            <select id="default1" class="form-select" name="branch_id" required>
-                                                <option class="form-select" value="">Select Branch</option>
-                                                @foreach ($branches as $branch)
-                                                    <option class="form-select" value="{{ $branch->id }}">{{ $branch->name }}</option>
+                                            <select id="manager_id" class="form-select" name="manager_id" required>
+                                                <option class="form-select" value="">Select Manager</option>
+                                                @foreach ($users as $user)
+                                                    <option class="form-select" value="{{ $user->id }}">{{ $user->name }}</option>
                                                 @endforeach
                                             </select>
                                         </div>
@@ -210,6 +236,74 @@
     <script>
 
     $(document).ready(function() {
+        $("#role_id").change(function() {
+            var selected_role   = $(this).val();
+            var manager_role    = $(this).find("option:selected").attr("data-m_role");
+            var roles           = {!! json_encode($roles) !!};
+            var m_role_opts     = $("#m_role_id");
+            var man_select      = $("#manager_id");
+            var manager_opts = '<option class="form-select" value="">Select Manager</option>';
+
+            m_role_opts.empty();
+            m_role_opts.append($('<option>', {
+                        value: "",
+                        text: "Select Manager Role"
+                    }));
+
+
+            $.each(roles, function(index, role) {
+                m_role_opts.append($('<option>', {
+                    value: role.id,
+                    text: role.role_name,
+                    selected: role.id == manager_role
+                }));
+            });
+
+            if(manager_role !== "" && manager_role !== null)
+            {
+                var managers_url = "{!! route('user_by_role') !!}" + "/" + manager_role;
+                $.ajax({
+                    type: "get",
+                    url: managers_url,
+                    success: function (response) {
+                        $.each(response.users, function (index, user) {
+                            manager_opts += '<option class="form-select" value="'+user.id+'">'+user.name+'</option>'
+                        });
+                        man_select.empty();
+                        man_select.append(manager_opts);
+                    }
+                });
+            }
+            else
+            {
+                var users = {!! json_encode($users) !!};
+                $.each(users, function (index, user) {
+                    manager_opts += '<option class="form-select" value="'+user.id+'">'+user.name+'</option>'
+                });
+                man_select.empty();
+                man_select.append(manager_opts);
+            }
+        });
+
+        $("#m_role_id").change(function() {
+            var manager_role    = $(this).val();
+            var man_select      = $("#manager_id");
+            var manager_opts    = '<option class="form-select" value="">Select Manager</option>';
+            var managers_url    = "{!! route('user_by_role') !!}" + "/" + manager_role;
+            $.ajax({
+                type: "get",
+                url: managers_url,
+                success: function (response) {
+                    $.each(response.users, function (index, user) {
+                        manager_opts += '<option class="form-select" value="'+user.id+'">'+user.name+'</option>'
+                    });
+                    man_select.empty();
+                    man_select.append(manager_opts);
+                }
+            });
+
+        });
+
         $("#username").on("input", function() {
             const usernameValue = $(this).val();
             const isValid = /^[a-z0-9_]+$/.test(usernameValue);

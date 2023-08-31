@@ -52,6 +52,9 @@ ALTER TABLE `users` CHANGE `phone_1` `phone_1` VARCHAR(20) NULL DEFAULT NULL;
 
 ALTER TABLE `roles` ADD `manager_role` INT NULL AFTER `details`;
 
+ALTER TABLE `roles` CHANGE `manager_role` `manager_role_id` INT NULL DEFAULT NULL;
+
+ALTER TABLE `users` ADD `manager_role_id` INT NULL DEFAULT NULL AFTER `branch_id`, ADD `manager_id` INT NULL DEFAULT NULL AFTER `manager_role_id`;
 ------------------------------------------
 ---------------Home Updated---------------
 ------------------------------------------

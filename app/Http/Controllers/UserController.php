@@ -28,7 +28,8 @@ class UserController extends Controller
     {
         $branches = Branch::all();
         $roles = Role::all();
-        return view('user.create', compact('branches', 'roles'));
+        $users = User::where('id', '>', 0)->get();
+        return view('user.create', compact('branches', 'roles', 'users'));
     }
 
     public function store(Request $request)
@@ -44,6 +45,8 @@ class UserController extends Controller
             $user->verified = "yes";
             $user->branch_id = $request->branch_id;
             $user->role_id = $request->role_id;
+            $user->manager_role_id = $request->m_role_id;
+            $user->manager_id = $request->manager_id;
             $user->date_of_birth = $request->dob;
             $user->address = $request->address;
             $user->username = $request->username;
