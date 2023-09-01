@@ -7,7 +7,7 @@
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('roles_create')}}" class="btn btn-success btn-sm"><i class="mdi mdi-plus"></i> Create Roles</a>
+                    <a href="{{route('roles_create')}}" class="btn btn-purple btn-sm"><i class="mdi mdi-plus"></i> Create Roles</a>
                 </div>
                 <h4 class="page-title">User Roles</h4>
             </div><!--end page-title-box-->

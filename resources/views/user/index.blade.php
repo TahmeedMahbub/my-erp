@@ -14,7 +14,7 @@
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('user_create')}}" class="btn btn-success btn-sm"><i class="mdi mdi-plus"></i> Create User</a>
+                    <a href="{{route('user_create')}}" class="btn btn-purple btn-sm"><i class="mdi mdi-plus"></i> Create User</a>
                 </div>
                 <h4 class="page-title">All Users</h4>
             </div>

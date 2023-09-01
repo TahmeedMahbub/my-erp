@@ -113,7 +113,7 @@
                                 <div class="row justify-content-center mt-3">
                                     <div class="col-lg-3">
                                         <input type="hidden" name="role_id" value="{{ $role_id }}">
-                                        <input class="form-control btn btn-warning" type="Submit" value="Save Role Access Level">
+                                        <input class="form-control btn btn-purple" type="Submit" value="Save Role Access Level">
                                     </div>
                                 </div>
                             </form>

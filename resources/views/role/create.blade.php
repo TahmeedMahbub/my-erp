@@ -59,7 +59,7 @@
                                 <div class="col-lg-2">
                                     <div class="mb-3 row justify-content-end">
                                         <div class="col-sm-10">
-                                            <input class="form-control btn btn-success" type="submit" value="Create Role">
+                                            <input class="form-control btn btn-purple" type="submit" value="Create Role">
                                         </div>
                                     </div>
                                 </div>

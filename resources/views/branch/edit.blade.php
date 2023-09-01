@@ -58,7 +58,7 @@
                                     <div class="mb-3 row justify-content-end">
                                         <div class="col-sm-10">
                                             <input type="hidden" name="id" value="{{ $branch->id }}">
-                                            <input class="form-control btn btn-warning" type="submit" value="Edit Branch">
+                                            <input class="form-control btn btn-secondary" type="submit" value="Edit Branch">
                                         </div>
                                     </div>
                                 </div>

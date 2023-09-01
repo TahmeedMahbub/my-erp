@@ -218,7 +218,7 @@
 
                                 <div class="row justify-content-center mt-3">
                                     <div class="col-lg-3">
-                                        <input class="form-control btn btn-success" type="Submit" value="Create User">
+                                        <input class="form-control btn btn-purple" type="Submit" value="Create User">
                                     </div>
                                 </div>
                             </div>

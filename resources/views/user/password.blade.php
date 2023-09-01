@@ -66,7 +66,7 @@
                                         <div class="col-lg-3">
                                             <center>
                                                 <input type="hidden" name="id" value="{{ $user->id }}" id="">
-                                                <input type="submit" value="Change Password" class="form-control btn btn-warning">
+                                                <input type="submit" value="Change Password" class="form-control btn btn-dark">
                                             </center>
                                         </div>
                                     </div>

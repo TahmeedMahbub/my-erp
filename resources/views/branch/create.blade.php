@@ -57,7 +57,7 @@
                                 <div class="col-lg-3">
                                     <div class="mb-3 row justify-content-end">
                                         <div class="col-sm-10">
-                                            <input class="form-control btn btn-success" type="submit" value="Create Branch">
+                                            <input class="form-control btn btn-purple" type="submit" value="Create Branch">
                                         </div>
                                     </div>
                                 </div>

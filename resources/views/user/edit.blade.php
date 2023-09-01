@@ -252,7 +252,7 @@
                             <div class="row justify-content-center mt-3">
                                 <div class="col-lg-3">
                                     <input type="hidden" name="id" value="{{ $user->id }}">
-                                    <input class="form-control btn btn-warning" type="Submit" value="Edit User">
+                                    <input class="form-control btn btn-secondary" type="Submit" value="Edit User">
                                 </div>
                             </div>
                         </div>
