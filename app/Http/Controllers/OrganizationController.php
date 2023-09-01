@@ -40,6 +40,7 @@ class OrganizationController extends Controller
             'delete' => 0,
         ];
         AccessLevel::where('role_id', $request->role_id)->update($access_unset);
+        $history_flag = false;
 
         if(!empty($request->access))
         {
@@ -57,6 +58,8 @@ class OrganizationController extends Controller
                     $access_level->update = 0;
                     $access_level->delete = 0;
                     $access_level->save();
+
+                    $history_flag = true;
                 }
 
                 foreach($access as $level => $on)
@@ -66,15 +69,30 @@ class OrganizationController extends Controller
                 }
             }
 
-            $history = new History;
-            $history->module = "Access Level";
-            $history->module_id = $access_level->id;
-            $history->operation = "Edit";
-            $history->previous = json_encode(['Comment' => "Role Access Level Changed"]);
-            $history->after = json_encode(['Comment' => "Role ID: ".$request->role_id]);
-            $history->user_id = Auth::user()->id;
-            $history->ip_address = Session::get('user_ip');
-            $history->save();
+            if($history_flag)
+            {
+                $history = new History;
+                $history->module = "Access Level";
+                $history->module_id = $access_level->id;
+                $history->operation = "Create";
+                $history->previous = json_encode(['Comment' => "Role Access Level Created"]);
+                $history->after = json_encode(['Comment' => "Role ID: ".$request->role_id]);
+                $history->user_id = Auth::user()->id;
+                $history->ip_address = Session::get('user_ip');
+                $history->save();
+            }
+            else
+            {
+                $history = new History;
+                $history->module = "Access Level";
+                $history->module_id = $access_level->id;
+                $history->operation = "Edit";
+                $history->previous = json_encode(['Comment' => "Role Access Level Changed"]);
+                $history->after = json_encode(['Comment' => "Role ID: ".$request->role_id]);
+                $history->user_id = Auth::user()->id;
+                $history->ip_address = Session::get('user_ip');
+                $history->save();
+            }
         }
 
         return redirect()
@@ -102,6 +120,7 @@ class OrganizationController extends Controller
             'delete' => 0,
         ];
         AccessLevel::where('user_id', $request->user_id)->update($access_unset);
+        $history_flag = false;
 
         if(!empty($request->access))
         {
@@ -119,6 +138,8 @@ class OrganizationController extends Controller
                     $access_level->update = 0;
                     $access_level->delete = 0;
                     $access_level->save();
+
+                    $history_flag = true;
                 }
 
                 foreach($access as $level => $on)
@@ -128,20 +149,55 @@ class OrganizationController extends Controller
                 }
             }
 
-            $history = new History;
-            $history->module = "Access Level";
-            $history->module_id = $access_level->id;
-            $history->operation = "Edit";
-            $history->previous = json_encode(['Comment' => "User Access Level Changed"]);
-            $history->after = json_encode(['Comment' => "User ID: ".$request->user_id]);
-            $history->user_id = Auth::user()->id;
-            $history->ip_address = Session::get('user_ip');
-            $history->save();
+            if($history_flag)
+            {
+                $history = new History;
+                $history->module = "Access Level";
+                $history->module_id = $access_level->id;
+                $history->operation = "Create";
+                $history->previous = json_encode(['Comment' => "User Access Level Created"]);
+                $history->after = json_encode(['Comment' => "User ID: ".$request->user_id]);
+                $history->user_id = Auth::user()->id;
+                $history->ip_address = Session::get('user_ip');
+                $history->save();
+            }
+            else
+            {
+                $history = new History;
+                $history->module = "Access Level";
+                $history->module_id = $access_level->id;
+                $history->operation = "Edit";
+                $history->previous = json_encode(['Comment' => "User Access Level Changed"]);
+                $history->after = json_encode(['Comment' => "User ID: ".$request->user_id]);
+                $history->user_id = Auth::user()->id;
+                $history->ip_address = Session::get('user_ip');
+                $history->save();
+            }
         }
 
         return redirect()
         ->route('access_level_user', ['user_id' => $request->user_id])
         ->with('alert.status', 'success')
         ->with('alert.message', 'User Access Level Updated Successfully!');
+    }
+
+    public function accessLevelUserRevert($user_id)
+    {
+        $history = new History;
+        $history->module = "Access Level";
+        $history->module_id = AccessLevel::where('user_id', $user_id)->first()->id;
+        $history->operation = "Delete";
+        $history->previous = json_encode(['Comment' => "User Access Level Reverted"]);
+        $history->after = json_encode(['Comment' => "User ID: ".$user_id]);
+        $history->user_id = Auth::user()->id;
+        $history->ip_address = Session::get('user_ip');
+        $history->save();
+
+        AccessLevel::where('user_id', $user_id)->delete();
+
+        return redirect()
+            ->route('access_level_user', ['user_id' => $user_id])
+            ->with('alert.status', 'success')
+            ->with('alert.message', 'User Access Level Reverted According to Role Successfully!');
     }
 }

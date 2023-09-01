@@ -20,6 +20,6 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
     return $request->user();
 });
 
-Route::get('/username-check/{username?}', [CommonController::class, 'usernameCheck'])->name('username_check');
+Route::get('/username-check/{username?}', [CommonController::class, 'usernameCheck'])->name('username_check')->middleware('auth');
 
-Route::get('/user-by-role/{role_id?}', [RoleController::class, 'userByRole'])->name('user_by_role');
+Route::get('/user-by-role/{role_id?}', [RoleController::class, 'userByRole'])->name('user_by_role')->middleware('auth');

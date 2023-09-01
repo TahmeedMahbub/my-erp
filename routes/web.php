@@ -34,6 +34,7 @@ Route::group(['prefix' => 'access-level', 'middleware' => 'auth'], function () {
     Route::post('/update', [OrganizationController::class, 'accessLevelUpdate'])->name('access_level_update')->middleware('updateAccess');
     Route::get('/user', [OrganizationController::class, 'accessLevelUser'])->name('access_level_user')->middleware('updateAccess');
     Route::post('/user-update', [OrganizationController::class, 'accessLevelUserUpdate'])->name('access_level_user_update')->middleware('updateAccess');
+    Route::get('/user-revert/{user_id}', [OrganizationController::class, 'accessLevelUserRevert'])->name('access_level_user_revert')->middleware('updateAccess');
 });
 
 Route::group(['prefix' => 'history', 'middleware' => 'auth'], function () {

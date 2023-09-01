@@ -18,10 +18,10 @@
                 <a class="nav-link" href="{{ route('branch') }}">Branch</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('access_level') }}">Access Levels (Roles)</a>
+                <a class="nav-link" href="{{ route('access_level') }}">Roles Accessibility</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('access_level_user') }}">Access Levels (Users)</a>
+                <a class="nav-link" href="{{ route('access_level_user') }}">Users Accessibility</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('history') }}">History</a>
@@ -40,13 +40,13 @@
     <div class="collapse " id="sidebarContacts">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="index.html">All Contacts (Remaining)</a>
+                <a class="nav-link" href="index.html">All Contacts (!!!)</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{route('user')}}">Users</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Contacts (Remaining)</a>
+                <a class="nav-link" href="index.html">Contacts (!!!)</a>
             </li>
         </ul>
     </div>
@@ -61,25 +61,25 @@
     <div class="collapse " id="sidebarInventory">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Product / Service (Remaining)</a>
+                <a class="nav-link" href="index.html">Product / Service (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Asset (Remaining)</a>
+                <a class="nav-link" href="index.html">Asset (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Attributes (Remaining)</a>
+                <a class="nav-link" href="index.html">Attributes (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Offers (Remaining)</a>
+                <a class="nav-link" href="index.html">Offers (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Damage (Remaining)</a>
+                <a class="nav-link" href="index.html">Damage (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Manufacture (Remaining)</a>
+                <a class="nav-link" href="index.html">Manufacture (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Costing Sheet (Remaining)</a>
+                <a class="nav-link" href="index.html">Costing Sheet (!!!)</a>
             </li>
         </ul>
     </div>
@@ -94,16 +94,16 @@
     <div class="collapse " id="sidebarBank">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Deposit (Remaining)</a>
+                <a class="nav-link" href="index.html">Deposit (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Withdraw (Remaining)</a>
+                <a class="nav-link" href="index.html">Withdraw (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Cheque Books (Remaining)</a>
+                <a class="nav-link" href="index.html">Cheque Books (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Bank Reports (Remaining)</a>
+                <a class="nav-link" href="index.html">Bank Reports (!!!)</a>
             </li>
         </ul>
     </div>
@@ -118,28 +118,28 @@
     <div class="collapse " id="sidebarMoneyIn">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Primary Sale (Remaining)</a>
+                <a class="nav-link" href="index.html">Primary Sale (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Depo Sale (Remaining)</a>
+                <a class="nav-link" href="index.html">Depo Sale (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Distributor Sale (Remaining)</a>
+                <a class="nav-link" href="index.html">Distributor Sale (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Money Received (Remaining)</a>
+                <a class="nav-link" href="index.html">Money Received (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Other Income (Remaining)</a>
+                <a class="nav-link" href="index.html">Other Income (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Quotation (Remaining)</a>
+                <a class="nav-link" href="index.html">Quotation (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Quotation Request (Remaining)</a>
+                <a class="nav-link" href="index.html">Quotation Request (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Purchase Return (Remaining)</a>
+                <a class="nav-link" href="index.html">Purchase Return (!!!)</a>
             </li>
         </ul>
     </div>
@@ -154,19 +154,19 @@
     <div class="collapse " id="sidebarMoneyOut">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Purchase (Remaining)</a>
+                <a class="nav-link" href="index.html">Purchase (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Payment (Remaining)</a>
+                <a class="nav-link" href="index.html">Payment (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Expense (Remaining)</a>
+                <a class="nav-link" href="index.html">Expense (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Refund (Remaining)</a>
+                <a class="nav-link" href="index.html">Refund (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Sale Return (Remaining)</a>
+                <a class="nav-link" href="index.html">Sale Return (!!!)</a>
             </li>
         </ul>
     </div>
@@ -181,10 +181,10 @@
     <div class="collapse " id="sidebarAccounting">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Chart of Accounts (Remaining)</a>
+                <a class="nav-link" href="index.html">Chart of Accounts (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Manual Journal (Remaining)</a>
+                <a class="nav-link" href="index.html">Manual Journal (!!!)</a>
             </li>
         </ul>
     </div>

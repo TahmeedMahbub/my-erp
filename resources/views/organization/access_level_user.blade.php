@@ -11,7 +11,7 @@
                 <div class="float-end">
                     <a href="{{route('roles')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All User Roles</a>
                 </div>
-                <h4 class="page-title">Access Level by Roles</h4>
+                <h4 class="page-title">Access Level by Users</h4>
             </div>
         </div>
     </div>
@@ -26,7 +26,7 @@
                                 <form action="{{ route('access_level_user') }}" method="GET">
                                     <div class="row">
                                         <label for="branch_select" class="col-sm-2 col-form-label">Access Level for User:</label>
-                                        <div class="col-sm-8">
+                                        <div class="col-sm-7">
                                             <select id="default" class="form-select" name="user_id" required>
                                                 <option class="form-select" value="">Search User By Name, Username, Role or Phone Number</option>
                                                 @foreach ($users as $user)
@@ -37,6 +37,11 @@
                                         <div class="col-sm-2">
                                             <input class="form-control btn btn-primary" type="Submit" value="Get Access Levels">
                                         </div>
+                                        @if (!empty($user_id))
+                                            <div class="col-sm-1">
+                                                <a href="{{route('access_level_user_revert', [$user_id])}}" class="btn btn-de-warning" title="Revert Access Level According to Role">Revert</a>
+                                            </div>
+                                        @endif
                                     </div>
                                 </form>
                             </div>
