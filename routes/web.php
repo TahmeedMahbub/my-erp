@@ -3,7 +3,9 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\CommonController;
 use App\Http\Controllers\HomeController;
+use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 
@@ -26,7 +28,13 @@ Route::post('/signup', [AuthController::class, 'signup'])->name('signup');
 
 Route::get('/logout', [AuthController::class, 'logout'])->name('logout')->middleware('auth');
 Route::get('/', function () { return view('index'); })->name('home')->middleware('auth');
-Route::get('/history', [HomeController::class, 'history'])->name('history')->middleware('auth');
+
+Route::group(['prefix' => 'access-level', 'middleware' => 'auth'], function () {
+    Route::get('/', [OrganizationController::class, 'accessLevel'])->name('access_level')->middleware('auth');
+    Route::post('/update', [OrganizationController::class, 'accessLevelUpdate'])->name('access_level_update')->middleware('auth');
+});
+
+Route::get('/history', [OrganizationController::class, 'history'])->name('history')->middleware('auth');
 
 Route::group(['prefix' => 'role', 'middleware' => 'auth'], function () {
     Route::get('/', [RoleController::class, 'index'])->name('roles');

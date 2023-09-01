@@ -18,6 +18,9 @@
                 <a class="nav-link" href="{{ route('branch') }}">Branch</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('access_level') }}">Access Levels</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{ route('history') }}">History</a>
             </li>
         </ul>

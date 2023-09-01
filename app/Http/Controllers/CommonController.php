@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Module;
+use App\Models\Role;
 use App\Models\User;
 use Illuminate\Http\Request;
 
@@ -10,7 +12,7 @@ class CommonController extends Controller
     public function usernameCheck($username)
     {
         $user = User::where('username', $username)->first();
-        
+
         if(empty($user))
         {
             return response()->json(['status' => 'available', 'message' => $username.' is available.']);
