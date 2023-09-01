@@ -24,7 +24,7 @@ class OrganizationController extends Controller
 
     public function accessLevel()
     {
-        $role_id = !empty($_GET["role_id"]) ? $_GET["role_id"] : 1;
+        $role_id = !empty($_GET["role_id"]) ? $_GET["role_id"] : 0;
         $roles = Role::all();
         $modules = Module::all();
         $access_levels = AccessLevel::where('role_id', $role_id)->get();
