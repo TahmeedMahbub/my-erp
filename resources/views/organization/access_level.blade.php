@@ -52,28 +52,32 @@
                                     </div>
                                 </div>
                                 <div class="col-lg-2 d-flex justify-content-center align-items-center">
-                                    <div class="form-check form-switch form-switch-purple">
+                                    <b>Create</b>
+                                    {{-- <div class="form-check form-switch form-switch-purple">
                                         <input class="form-check-input" type="checkbox" id="level_create" checked>
                                         <label class="form-check-label" for="level_create"><b>Create</b></label>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="col-lg-2 d-flex justify-content-center align-items-center">
-                                    <div class="form-check form-switch form-switch-purple">
+                                    <b>Read</b>
+                                    {{-- <div class="form-check form-switch form-switch-purple">
                                         <input class="form-check-input" type="checkbox" id="level_read" checked>
                                         <label class="form-check-label" for="level_read"><b>Read</b></label>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="col-lg-2 d-flex justify-content-center align-items-center">
-                                    <div class="form-check form-switch form-switch-purple">
+                                    <b>Update</b>
+                                    {{-- <div class="form-check form-switch form-switch-purple">
                                         <input class="form-check-input" type="checkbox" id="level_update" checked>
                                         <label class="form-check-label" for="level_update"><b>Update</b></label>
-                                    </div>
+                                    </div> --}}
                                 </div>
                                 <div class="col-lg-2 d-flex justify-content-center align-items-center">
-                                    <div class="form-check form-switch form-switch-purple">
+                                    <b>Delete</b>
+                                    {{-- <div class="form-check form-switch form-switch-purple">
                                         <input class="form-check-input" type="checkbox" id="level_delete" checked>
                                         <label class="form-check-label" for="level_delete"><b>Delete</b></label>
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             <form action="{{ route('access_level_update') }}" method="post">

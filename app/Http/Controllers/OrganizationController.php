@@ -7,6 +7,8 @@ use App\Models\History;
 use App\Models\Module;
 use App\Models\Role;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Session;
 
 class OrganizationController extends Controller
 {
@@ -62,6 +64,16 @@ class OrganizationController extends Controller
                     $access_level->save();
                 }
             }
+            
+            $history = new History;
+            $history->module = "Access Level";
+            $history->module_id = $access_level->id;
+            $history->operation = "Edit";
+            $history->previous = json_encode(['Comment' => "Access Level Changed"]);
+            $history->after = json_encode(['Comment' => "Role ID: ".$request->role_id]);
+            $history->user_id = Auth::user()->id;
+            $history->ip_address = Session::get('user_ip');
+            $history->save();
         }
 
         return redirect()
