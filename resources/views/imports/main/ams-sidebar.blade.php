@@ -18,7 +18,10 @@
                 <a class="nav-link" href="{{ route('branch') }}">Branch</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('access_level') }}">Access Levels</a>
+                <a class="nav-link" href="{{ route('access_level') }}">Access Levels (Roles)</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{ route('access_level_user') }}">Access Levels (Users)</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="{{ route('history') }}">History</a>

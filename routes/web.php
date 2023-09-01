@@ -32,6 +32,8 @@ Route::get('/', function () { return view('index'); })->name('home')->middleware
 Route::group(['prefix' => 'access-level', 'middleware' => 'auth'], function () {
     Route::get('/', [OrganizationController::class, 'accessLevel'])->name('access_level')->middleware('auth');
     Route::post('/update', [OrganizationController::class, 'accessLevelUpdate'])->name('access_level_update')->middleware('auth');
+    Route::get('/user', [OrganizationController::class, 'accessLevelUser'])->name('access_level_user')->middleware('auth');
+    Route::post('/user-update', [OrganizationController::class, 'accessLevelUserUpdate'])->name('access_level_user_update')->middleware('auth');
 });
 
 Route::get('/history', [OrganizationController::class, 'history'])->name('history')->middleware('auth');
