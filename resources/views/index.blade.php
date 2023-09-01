@@ -393,3 +393,8 @@
         </div><!--end /div-->
     </div><!--end offcanvas-body-->
 @endsection
+
+@section('script')
+    <script src="{{asset('assets/plugins/apexcharts/apexcharts.min.js')}}"></script>
+    <script src="{{asset('assets/pages/analytics-index.init.js')}}"></script>
+@endsection

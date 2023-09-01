@@ -2,7 +2,7 @@
 <div class="left-sidebar">
     <!-- LOGO -->
     <div class="brand">
-        <a href="{{ route('home') }}" class="logo">
+        <a href="{{route('home')}}" class="logo">
             <span>
                 <img src="{{ asset('assets/images/logo-sm.png') }}" alt="logo-small" class="logo-sm" style="height: 35px">
             </span>

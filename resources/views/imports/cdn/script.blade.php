@@ -12,8 +12,6 @@
 
 @yield('script')
 
-<script src="{{asset('assets/plugins/apexcharts/apexcharts.min.js')}}"></script>
-<script src="{{asset('assets/pages/analytics-index.init.js')}}"></script>
 <script src="{{asset('assets/js/app.js')}}"></script>
 
 <script src="{{asset('assets/plugins/select/selectr.min.js')}}"></script>

@@ -60,7 +60,7 @@
                                     <div class="mb-3 row justify-content-end">
                                         <div class="col-sm-10">
                                             <input type="hidden" name="id" value="{{ $role->id }}">
-                                            <input class="form-control btn btn-warning" type="submit" value="Edit Role">
+                                            <input class="form-control btn btn-secondary" type="submit" value="Edit Role">
                                         </div>
                                     </div>
                                 </div>

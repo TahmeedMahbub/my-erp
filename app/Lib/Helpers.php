@@ -2,7 +2,10 @@
 
 namespace App\Lib;
 
+use App\Models\AccessLevel;
 use App\Models\History;
+use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class Helpers
 {
@@ -124,6 +127,25 @@ class Helpers
 
             return $output;
         }
+    }
+
+    public function hasModuleAccess($prefixes){
+        $has_access = false;
+        $access_level = AccessLevel::with('module');
+        $access = $access_level->where('user_id', Auth::User()->id)->whereHas('module', function($query) use ($prefixes){
+            $query->whereIn('module_prefix', $prefixes);
+        })
+        ->where(function($query){
+            $query->where('create', 1)
+            ->orWhere('read', 1)
+            ->orWhere('update', 1)
+            ->orWhere('delete', 1);
+        })
+        ->count();
+
+        $has_access = $access > 0 ? true : false;
+        
+        return $has_access;
     }
 
 }
