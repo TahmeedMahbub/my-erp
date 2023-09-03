@@ -12,9 +12,6 @@
     <div class="collapse" id="sidebarOrganization">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('roles') }}">Role</a>
-            </li>
-            <li class="nav-item">
                 <a class="nav-link" href="{{ route('branch') }}">Branch</a>
             </li>
             <li class="nav-item">
@@ -43,7 +40,13 @@
                 <a class="nav-link" href="index.html">All Contacts (!!!)</a>
             </li>
             <li class="nav-item">
+                <a class="nav-link" href="{{ route('roles') }}">User Roles</a>
+            </li>
+            <li class="nav-item">
                 <a class="nav-link" href="{{route('user')}}">Users</a>
+            </li>
+            <li class="nav-item">
+                <a class="nav-link" href="{{route('contact_category')}}">Contact Category (!!!)</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">Contacts (!!!)</a>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BranchController;
 use App\Http\Controllers\CommonController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\RoleController;
@@ -72,4 +73,22 @@ Route::group(['prefix' => 'user', 'middleware' => 'auth'], function () {
 
     Route::get('/password-edit/{id}', [UserController::class, 'passwordEdit'])->name('user_password_edit')->middleware('updateAccess');
     Route::post('/password-update', [UserController::class, 'passwordUpdate'])->name('user_password_update')->middleware('updateAccess');
+});
+
+Route::group(['prefix' => 'contact', 'middleware' => 'auth'], function () {
+    Route::get('/', [ContactController::class, 'index'])->name('contact')->middleware('readAccess');
+    Route::get('/view/{id}', [ContactController::class, 'view'])->name('contact_view')->middleware('readAccess');
+    Route::get('/create', [ContactController::class, 'create'])->name('contact_create')->middleware('createAccess');
+    Route::post('/store', [ContactController::class, 'store'])->name('contact_store')->middleware('createAccess');
+    Route::get('/edit/{id}', [ContactController::class, 'edit'])->name('contact_edit')->middleware('updateAccess');
+    Route::post('/update', [ContactController::class, 'update'])->name('contact_update')->middleware('updateAccess');
+    Route::get('/delete/{id}', [ContactController::class, 'delete'])->name('contact_delete')->middleware('deleteAccess');
+
+    Route::get('/category/', [ContactController::class, 'categoryIndex'])->name('contact_category')->middleware('readAccess');
+    Route::get('/category/view/{id}', [ContactController::class, 'categoryView'])->name('contact_category_view')->middleware('readAccess');
+    Route::get('/category/create', [ContactController::class, 'categoryCreate'])->name('contact_category_create')->middleware('createAccess');
+    Route::post('/category/store', [ContactController::class, 'categoryStore'])->name('contact_category_store')->middleware('createAccess');
+    Route::get('/category/edit/{id}', [ContactController::class, 'categoryEdit'])->name('contact_category_edit')->middleware('updateAccess');
+    Route::post('/category/update', [ContactController::class, 'categoryUpdate'])->name('contact_category_update')->middleware('updateAccess');
+    Route::get('/category/delete/{id}', [ContactController::class, 'categoryDelete'])->name('contact_category_delete')->middleware('deleteAccess');
 });

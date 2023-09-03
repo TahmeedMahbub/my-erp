@@ -44,7 +44,7 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="mb-3 row">
-                                                <label for="example-email-input" class="col-sm-4 col-form-label text-end">Previous Password <span class="text-danger font-weight-bold">*</span></label>
+                                                <label for="example-email-input" class="col-sm-4 col-form-label text-end">New Password <span class="text-danger font-weight-bold">*</span></label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control" type="password" name="new_pass" id="new_pass" placeholder="Enter New Password" required>
                                                 </div>
@@ -54,7 +54,7 @@
                                     <div class="row">
                                         <div class="col-lg-12">
                                             <div class="mb-3 row">
-                                                <label for="example-email-input" class="col-sm-4 col-form-label text-end">Previous Password <span class="text-danger font-weight-bold">*</span></label>
+                                                <label for="example-email-input" class="col-sm-4 col-form-label text-end">Confirm Password <span class="text-danger font-weight-bold">*</span></label>
                                                 <div class="col-sm-8">
                                                     <input class="form-control" type="password" name="confirm_pass" id="confirm_pass" placeholder="Confirm Password" required>
                                                 </div>

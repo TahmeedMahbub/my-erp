@@ -72,6 +72,13 @@ INSERT INTO `modules` (`id`, `module_name`, `module_prefix`, `deletable`, `creat
 
 CREATE TABLE `my_erp`.`access_levels` (`id` INT NOT NULL AUTO_INCREMENT , `module_id` INT NOT NULL , `create` BOOLEAN NOT NULL , `read` BOOLEAN NOT NULL , `update` BOOLEAN NOT NULL , `delete` BOOLEAN NOT NULL , `role_id` INT NULL DEFAULT NULL , `user_id` INT NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
+CREATE TABLE `my_erp`.`contact_categories` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , `details` TEXT NULL DEFAULT NULL , `parent_category` INT NULL DEFAULT NULL , `created_by` INT NOT NULL , `updated_by` INT NOT NULL , `created_at` DATETIME NOT NULL , `updated_at` DATETIME NOT NULL , `deletable` BOOLEAN NOT NULL DEFAULT TRUE , `deleted_at` DATETIME NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+INSERT INTO `modules` (`id`, `module_name`, `module_prefix`, `deletable`, `created_at`, `updated_at`) VALUES (NULL, 'Contact', 'contact', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+INSERT INTO `contact_categories` (`id`, `name`, `details`, `parent_category`, `created_by`, `updated_by`, `created_at`, `updated_at`, `deletable`, `deleted_at`) VALUES (NULL, 'customer', 'Customer will buy products.', NULL, '1', '1', '2023-09-03 17:39:39.000000', '2023-09-03 17:39:39.000000', '1', NULL);
+
+ALTER TABLE `contact_categories` CHANGE `parent_category` `parent_category_id` INT NULL DEFAULT NULL;
 
 
 
