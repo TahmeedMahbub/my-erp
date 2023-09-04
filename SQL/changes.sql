@@ -84,6 +84,8 @@ CREATE TABLE `my_erp`.`contacts` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARC
 
 ALTER TABLE `contacts` ADD `image` VARCHAR(255) NULL DEFAULT 'contacts/contact.jpg' AFTER `code`;
 
+ALTER TABLE `contacts` ADD `details` TEXT NULL DEFAULT NULL AFTER `email`;
+
 
 
 ------------------------------------------

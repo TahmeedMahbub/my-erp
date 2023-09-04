@@ -18,11 +18,8 @@
                 </div>
                 <h4 class="page-title">All Users</h4>
             </div>
-            <!--end page-title-box-->
         </div>
-        <!--end col-->
     </div>
-    <!-- end page title end breadcrumb -->
 
     <div class="row">
         <div class="col-12">
@@ -34,12 +31,9 @@
                                 <tr>
                                     <th>Sl</th>
                                     <th>Name</th>
-                                    {{-- <th>Username</th> --}}
                                     <th>Designation</th>
-                                    {{-- <th>Branch</th> --}}
                                     <th>Contact</th>
                                     <th>Manager</th>
-                                    {{-- <th>Phone</th> --}}
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
@@ -58,13 +52,11 @@
                                                 </tr>
                                             </table>
                                         </td>
-                                        {{-- <td>{{$user->username}}</td> --}}
                                         <td>
                                             {{$user->role->role_name}},<br>
                                             <small>{{$user->branch->name}} Branch</small>
 
                                         </td>
-                                        {{-- <td>{{$user->branch->name}}</td> --}}
                                         <td>
                                             {{$user->email}},<br>
                                             <small><b>Phone: </b>0{{$user->phone}}</small>
@@ -89,7 +81,6 @@
                                                 </table>
                                             @endif
                                         </td>
-                                        {{-- <td>0{{$user->phone}}</td> --}}
                                         <td class="text-end">
                                             <div class="d-flex justify-content-end">
                                                 <a href="{{ route('user_view', $user->id) }}" title="View" class="text-secondary-custom">

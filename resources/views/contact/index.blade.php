@@ -1,6 +1,6 @@
 @extends('imports.main.layout')
 
-@section('title', 'Users')
+@section('title', 'Contacts')
 
 @section('head')
     <link href="assets/plugins/datatables/datatable.css" rel="stylesheet" type="text/css" />
@@ -14,9 +14,9 @@
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('user_create')}}" class="btn btn-purple btn-sm"><i class="mdi mdi-plus"></i> Create User</a>
+                    <a href="{{route('contact_create')}}" class="btn btn-purple btn-sm"><i class="mdi mdi-plus"></i> Create Contact</a>
                 </div>
-                <h4 class="page-title">All Users</h4>
+                <h4 class="page-title">All Contacts</h4>
             </div>
             <!--end page-title-box-->
         </div>
@@ -34,49 +34,44 @@
                                 <tr>
                                     <th>Sl</th>
                                     <th>Name</th>
-                                    {{-- <th>Username</th> --}}
-                                    <th>Designation</th>
-                                    {{-- <th>Branch</th> --}}
-                                    <th>Contact</th>
+                                    {{-- <th>Category</th>
+                                    <th>Phone</th>
                                     <th>Manager</th>
-                                    {{-- <th>Phone</th> --}}
-                                    <th class="text-end">Action</th>
+                                    <th class="text-end">Action</th> --}}
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($users as $user)
+                                @foreach ($contacts as $contact)
                                     <tr>
                                         <td>{{$loop->iteration}}</td>
                                         <td>
                                             <table>
                                                 <tr>
-                                                    <td><img src="{{ asset('assets\images\\' . $user->image) }}" alt="" class="rounded-circle thumb-xs me-1"></td>
+                                                    <td><img src="{{ asset('assets\images\\' . $contact->image) }}" alt="" class="rounded-circle thumb-xs me-1"></td>
                                                     <td>
-                                                        {{$user->name}}<br>
-                                                        <small>{{$user->username}}</small>
+                                                        {{$contact->name}}<br>
+                                                        <small>{{$contact->contactname}}</small>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </td>
-                                        {{-- <td>{{$user->username}}</td> --}}
-                                        <td>
-                                            {{$user->role->role_name}},<br>
-                                            <small>{{$user->branch->name}} Branch</small>
+                                        {{-- <td>
+                                            {{$contact->role->role_name}},<br>
+                                            <small>{{$contact->branch->name}} Branch</small>
 
                                         </td>
-                                        {{-- <td>{{$user->branch->name}}</td> --}}
                                         <td>
-                                            {{$user->email}},<br>
-                                            <small><b>Phone: </b>0{{$user->phone}}</small>
+                                            {{$contact->email}},<br>
+                                            <small><b>Phone: </b>0{{$contact->phone}}</small>
                                         </td>
                                         <td class="text-muted">
-                                            @if (!empty($user->manager_id))
+                                            @if (!empty($contact->manager_id))
                                                 <table>
                                                     <tr>
-                                                        <td><img src="{{ asset('assets\images\\' . $user->manager->image) }}" alt="" class="rounded-circle thumb-xs me-1 img-fluid opacity-50"></td>
+                                                        <td><img src="{{ asset('assets\images\\' . $contact->manager->image) }}" alt="" class="rounded-circle thumb-xs me-1 img-fluid opacity-50"></td>
                                                         <td>
-                                                            {{$user->manager->name}}<br>
-                                                            <small>{{ optional($user->managerRole)->role_name }}</small>
+                                                            {{$contact->manager->name}}<br>
+                                                            <small>{{ optional($contact->managerRole)->role_name }}</small>
                                                         </td>
                                                     </tr>
                                                 </table>
@@ -89,24 +84,23 @@
                                                 </table>
                                             @endif
                                         </td>
-                                        {{-- <td>0{{$user->phone}}</td> --}}
                                         <td class="text-end">
                                             <div class="d-flex justify-content-end">
-                                                <a href="{{ route('user_view', $user->id) }}" title="View" class="text-secondary-custom">
+                                                <a href="{{ route('contact_view', $contact->id) }}" title="View" class="text-secondary-custom">
                                                     <i class="mdi mdi-eye pe-2 fs-4"></i>
                                                 </a>
-                                                <a href="{{ route('user_edit', $user->id) }}" title="Edit" class="text-secondary-custom">
+                                                <a href="{{ route('contact_edit', $contact->id) }}" title="Edit" class="text-secondary-custom">
                                                     <i class="mdi mdi-lead-pencil pe-2 fs-4"></i>
                                                 </a>
-                                                @if($user->deletable)
-                                                    <a href="{{ route('user_delete', $user->id) }}" title="Delete" class="text-secondary-custom">
+                                                @if($contact->deletable)
+                                                    <a href="{{ route('contact_delete', $contact->id) }}" title="Delete" class="text-secondary-custom">
                                                         <i class="mdi mdi-delete-empty pe-2 fs-4"></i>
                                                     </a>
                                                 @else
                                                     <i class="mdi mdi-shield-check-outline pe-2 fs-4" title="Can not Delete"></i>
                                                 @endif
                                             </div>
-                                        </td>
+                                        </td> --}}
                                     </tr>
                                 @endforeach
                             </tbody>
