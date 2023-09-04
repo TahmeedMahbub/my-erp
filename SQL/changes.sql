@@ -80,6 +80,10 @@ INSERT INTO `contact_categories` (`id`, `name`, `details`, `parent_category`, `c
 
 ALTER TABLE `contact_categories` CHANGE `parent_category` `parent_category_id` INT NULL DEFAULT NULL;
 
+CREATE TABLE `my_erp`.`contacts` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , `code` VARCHAR(255) NULL DEFAULT NULL , `company` VARCHAR(255) NULL DEFAULT NULL , `category_id` INT NOT NULL , `phone` INT NOT NULL , `phone_1` VARCHAR(20) NULL DEFAULT NULL , `email` VARCHAR(255) NULL DEFAULT NULL , `address` TEXT NULL DEFAULT NULL , `status` VARCHAR(255) NOT NULL DEFAULT 'active' , `branch_id` INT NULL DEFAULT NULL , `created_at` DATETIME NOT NULL , `updated_at` DATETIME NOT NULL , `created_by` INT NOT NULL , `updated_by` INT NOT NULL , `deletable` BOOLEAN NOT NULL DEFAULT TRUE , `deleted_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`), UNIQUE `contact_code_unique` (`code`)) ENGINE = InnoDB;
+
+ALTER TABLE `contacts` ADD `image` VARCHAR(255) NULL DEFAULT 'contacts/contact.jpg' AFTER `code`;
+
 
 
 ------------------------------------------

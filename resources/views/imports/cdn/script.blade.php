@@ -20,3 +20,4 @@
 <script src="{{asset('assets/plugins/moment/moment.js')}}"></script>
 <script src="{{asset('assets/plugins/imask/imask.js')}}"></script>
 <script src="{{asset('assets/pages/forms-advanced.js')}}"></script>
+<script src="{{ asset('assets/pages/form-validation.js') }}"></script>

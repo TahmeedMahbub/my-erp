@@ -46,10 +46,10 @@
                 <a class="nav-link" href="{{route('user')}}">Users</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('contact_category')}}">Contact Category (!!!)</a>
+                <a class="nav-link" href="{{route('contact_category')}}">Contact Category</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Contacts (!!!)</a>
+                <a class="nav-link" href="{{route('contact_create')}}">Contacts (!!!)</a>
             </li>
         </ul>
     </div>
