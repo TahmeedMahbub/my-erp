@@ -31,13 +31,23 @@ class Helpers
 
             // HANDLE CREATE AND DELETE
             foreach ($afterData as $key => $afterValue) {
-                if (!in_array($key, ['created_at', 'updated_at', 'created_by', 'updated_by', 'id', 'deletable'])) {
+                if (!in_array($key, ['created_at', 'updated_at', 'created_by', 'updated_by', 'id', 'deletable', 'files'])) {
                     $changes = 1;
                     $formattedKey = ucwords(str_replace('_', ' ', $key));
 
                     if (strpos($formattedKey, "At") !== false) {
                         $afterValue = \Carbon\Carbon::parse($afterValue)->format('d-M-Y, h:i A');
                     }
+
+                    $after_changes[] = "<b>{$formattedKey}</b> ⇒ <small>{$afterValue}</small> <br>";
+                }
+
+                if(in_array($key, ['files']))
+                {
+                    $changes = 1;
+                    $formattedKey = ucwords($key);
+
+                    $afterValue = count(json_decode($afterValue)). " File(s)";
 
                     $after_changes[] = "<b>{$formattedKey}</b> ⇒ <small>{$afterValue}</small> <br>";
                 }
@@ -66,7 +76,7 @@ class Helpers
 
             // HANDLE CREATE AND DELETE
             foreach ($previousData as $key => $prevValue) {
-                if (!in_array($key, ['created_at', 'updated_at', 'created_by', 'updated_by', 'id', 'deletable'])) {
+                if (!in_array($key, ['created_at', 'updated_at', 'created_by', 'updated_by', 'id', 'deletable', 'files'])) {
                     $afterValue = $afterData[$key];
                     if ($prevValue !== $afterValue) {
                         $changes = 1;
@@ -81,6 +91,18 @@ class Helpers
                             $previous_changes[] = "<b>{$formattedKey}</b> ⇒ <small>{$prevValue}</small> <br>";
                             $after_changes[] = "<b>{$formattedKey}</b> ⇒ <small>{$afterValue}</small> <br>";
                         }
+                    }
+                }
+
+                if(in_array($key, ['files']))
+                {
+                    $changes = 1;
+                    $formattedKey = ucwords($key);
+                    $afterValue = $afterData[$key];
+
+                    if ($prevValue !== $afterValue) {
+                        $previous_changes[] = "<b>{$formattedKey}</b> ⇒ <small>".count(json_decode($prevValue)). " File(s) </small> <br>";
+                        $after_changes[] = "<b>{$formattedKey}</b> ⇒ <small>".count(json_decode($afterValue)). " File(s) </small> <br>";
                     }
                 }
             }
@@ -108,12 +130,22 @@ class Helpers
 
             // HANDLE CREATE AND DELETE
             foreach ($previousData as $key => $prevValue) {
-                if (!in_array($key, ['created_at', 'updated_at', 'created_by', 'updated_by', 'id', 'deletable'])) {
+                if (!in_array($key, ['created_at', 'updated_at', 'created_by', 'updated_by', 'id', 'deletable', 'files'])) {
                     $changes = 1;
                     $formattedKey = ucwords(str_replace('_', ' ', $key));
                     if (strpos($formattedKey, "At") !== false) {
                         $prevValue = \Carbon\Carbon::parse($prevValue)->format('d-M-Y, h:i A');
                     }
+                    $previous_changes[] = "<b>{$formattedKey}</b> ⇒ <small>{$prevValue}</small> <br>";
+                }
+
+                if(in_array($key, ['files']))
+                {
+                    $changes = 1;
+                    $formattedKey = ucwords($key);
+
+                    $prevValue = count(json_decode($prevValue)). " File(s)";
+
                     $previous_changes[] = "<b>{$formattedKey}</b> ⇒ <small>{$prevValue}</small> <br>";
                 }
             }
@@ -144,7 +176,7 @@ class Helpers
         ->count();
 
         $has_access = $access > 0 ? true : false;
-        
+
         return $has_access;
     }
 

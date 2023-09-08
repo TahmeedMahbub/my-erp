@@ -31,10 +31,8 @@ class ContactController extends Controller
     public function create()
     {
         $branches = Branch::all();
-        $roles = Role::all();
-        $users = User::where('id', '>', 0)->get();
         $categories = ContactCategory::all();
-        return view('contact.create', compact('categories', 'branches', 'roles', 'users'));
+        return view('contact.create', compact('categories', 'branches'));
     }
 
     public function store(Request $request)
@@ -42,19 +40,17 @@ class ContactController extends Controller
         $this->validate($request,[
             'category_id' => 'required',
             'name' => 'required',
-            'code' => 'nullable|unique',
-            'phone' => 'required|min:1000000000|max:1999999999|numeric'
+            'code' => 'nullable|unique:contacts,code',
+            'phone' => 'required|min:1300000000|max:1999999999|numeric'
         ],[
             'code.unique' => 'Contact Code Must Be Unique.',
+            'phone.min' => 'Invalid Phone Number',
+            'phone.max' => 'Invalid Phone Number',
         ]);
 
         DB::beginTransaction();
         try
         {
-            $contact_category = ContactCategory::find($request->category_id);
-            $contact_category->deletable = 0;
-            $contact_category->save();
-
             $contact = new Contact();
             $contact->name = $request->name;
             $contact->phone = (int)$request->phone;
@@ -70,29 +66,29 @@ class ContactController extends Controller
             $contact->created_at = Carbon::now()->toDateTimeString();
             $contact->updated_by = Auth::user()->id;
             $contact->updated_at = Carbon::now()->toDateTimeString();
+            $contact->save();
 
-            // if ($request->hasFile('image')) {
-            //     $file                       = $request->file('image');
-            //     $file_extention             = $file->getClientOriginalExtension();
-            //     $new_file_name              = "user_" . $user->username . "." . $file_extention;
-            //     $success                    = $file->move('assets/images/users', $new_file_name);
+            if ($request->hasFile('image')) {
+                $file                       = $request->file('image');
+                $file_extention             = $file->getClientOriginalExtension();
+                $new_file_name              = "contact_" . $contact->id . "." . $file_extention;
+                $success                    = $file->move('assets/images/contacts', $new_file_name);
 
-            //     if ($success) {
-            //         $user->image      = 'users/' . $new_file_name;
-            //     }
-            // }
+                if ($success) {
+                    $contact->image      = 'contacts/' . $new_file_name;
+                }
+            }
 
-            // if ($request->hasFile('nid_image')) {
-            //     $file                       = $request->file('nid_image');
-            //     $file_extention             = $file->getClientOriginalExtension();
-            //     $new_file_name              = "nid_" . $user->username . "." . $file_extention;
-            //     $success                    = $file->move('assets/images/user_nid', $new_file_name);
+            if ($request->hasFile('files')) {
+                foreach($request->file('files') as $key => $file)
+                {
+                    $fileName = rand(100,999).'_'.$contact->id.'_'.$file->getClientOriginalName();
+                    $file->move(public_path('assets/files/contacts'), $fileName);
+                    $files[] = 'contacts/' . $fileName;
+                }
+            }
 
-            //     if ($success) {
-            //         $user->nid_image      = 'user_nid/' . $new_file_name;
-            //     }
-            // }
-
+            $contact->files = json_encode($files);
             $contact->save();
 
             $history = new History();
@@ -121,19 +117,119 @@ class ContactController extends Controller
         }
     }
 
-    public function edit()
+    public function edit($id)
     {
-        //
+        $contact = Contact::find($id);
+        $branches = Branch::all();
+        $categories = ContactCategory::all();
+        return view('contact.edit', compact('categories', 'branches', 'contact'));
     }
 
     public function update(Request $request)
     {
-        //
+        // CONTACT EDIT NOT STARTED YET. JUST COPIED FROM CONTACT CREATE NEED TO WORK FOR UPDATE
+        $this->validate($request,[
+            'category_id' => 'required',
+            'name' => 'required',
+            'code' => 'nullable|unique:contacts,code',
+            'phone' => 'required|min:1300000000|max:1999999999|numeric'
+        ],[
+            'code.unique' => 'Contact Code Must Be Unique.',
+            'phone.min' => 'Invalid Phone Number',
+            'phone.max' => 'Invalid Phone Number',
+        ]);
+
+        DB::beginTransaction();
+        try
+        {
+            $contact = new Contact();
+            $contact->name = $request->name;
+            $contact->phone = (int)$request->phone;
+            $contact->phone_1 = $request->phone_1;
+            $contact->email = $request->email;
+            $contact->status = Auth::user()->role_id == 1 ? 'active' : 'inactive';
+            $contact->branch_id = $request->branch_id ?? null;
+            $contact->category_id = $request->category_id;
+            $contact->address = $request->address;
+            $contact->code = $request->code;
+            $contact->company = $request->company;
+            $contact->created_by = Auth::user()->id;
+            $contact->created_at = Carbon::now()->toDateTimeString();
+            $contact->updated_by = Auth::user()->id;
+            $contact->updated_at = Carbon::now()->toDateTimeString();
+            $contact->save();
+
+            if ($request->hasFile('image')) {
+                $file                       = $request->file('image');
+                $file_extention             = $file->getClientOriginalExtension();
+                $new_file_name              = "contact_" . $contact->id . "." . $file_extention;
+                $success                    = $file->move('assets/images/contacts', $new_file_name);
+
+                if ($success) {
+                    $contact->image      = 'contacts/' . $new_file_name;
+                }
+            }
+
+            if ($request->hasFile('files')) {
+                foreach($request->file('files') as $key => $file)
+                {
+                    $fileName = rand(100,999).'_'.$contact->id.'_'.$file->getClientOriginalName();
+                    $file->move(public_path('assets/files/contacts'), $fileName);
+                    $files[] = 'contacts/' . $fileName;
+                }
+            }
+
+            $contact->files = json_encode($files);
+            $contact->save();
+
+            $history = new History();
+            $history->module = "Contact";
+            $history->module_id = $contact->id;
+            $history->operation = "Create";
+            $history->previous = null;
+            $history->after = json_encode($contact);
+            $history->user_id = Auth::user()->id;
+            $history->ip_address = Session::get('user_ip');
+            $history->save();
+            DB::commit();
+
+            return redirect()
+            ->route('contact')
+            ->with('alert.status', 'success')
+            ->with('alert.message', 'Contact Created Successfully!');
+        }
+        catch(Exception $e)
+        {
+            DB::rollBack();
+            return redirect()
+            ->route('user')
+            ->with('alert.status', 'danger')
+            ->with('alert.message', 'Error in Contact Creation!!!');
+        }
     }
 
-    public function delete()
+    public function delete($id)
     {
-        //
+        $contact = Contact::find($id);
+
+        // CHECK CONDITIONS BEFORE DELETE
+
+        $history = new History();
+        $history->module = "Contact";
+        $history->module_id = $contact->id;
+        $history->operation = "Delete";
+        $history->after = null;
+        $history->previous = json_encode($contact);
+        $history->user_id = Auth::user()->id;
+        $history->ip_address = Session::get('user_ip');
+        $history->save();
+
+        $contact->delete();
+
+        return redirect()
+        ->route('contact')
+        ->with('alert.status', 'success')
+        ->with('alert.message', 'Contact Deleted Successfully!');
     }
 
     public function categoryIndex()
@@ -221,34 +317,40 @@ class ContactController extends Controller
     public function categoryDelete($id)
     {
         $category = ContactCategory::where('parent_category_id', $id)->first();
-        // $contact = Contact::where('category_id', $id)->first();
-        if(!empty($category))// || !empty($contact)
+        if(!empty($category))
         {
             return redirect()
             ->route('contact_category')
             ->with('alert.status', 'danger')
-            ->with('alert.message', 'Contact Category Is Used Somewhere Else. It Cannot Be Deleted!');
+            ->with('alert.message', 'Contact Category Is Used As a Parent Category. It Cannot Be Deleted!');
         }
-        else
+
+        $contact = Contact::where('category_id', $id)->first();
+        if(!empty($contact))
         {
-            $category = ContactCategory::find($id);
-
-            $history = new History();
-            $history->module = "Contact Category";
-            $history->module_id = $category->id;
-            $history->operation = "Delete";
-            $history->previous = json_encode($category);
-            $history->after = null;
-            $history->user_id = Auth::user()->id;
-            $history->ip_address = Session::get('user_ip');
-            $history->save();
-
-            $category->delete();
-
             return redirect()
             ->route('contact_category')
-            ->with('alert.status', 'success')
-            ->with('alert.message', 'Contact Category Deleted Successfully!');
+            ->with('alert.status', 'danger')
+            ->with('alert.message', 'Contact Category Is Used as a Category of a Contact. It Cannot Be Deleted!');
         }
+
+        $category = ContactCategory::find($id);
+
+        $history = new History();
+        $history->module = "Contact Category";
+        $history->module_id = $category->id;
+        $history->operation = "Delete";
+        $history->previous = json_encode($category);
+        $history->after = null;
+        $history->user_id = Auth::user()->id;
+        $history->ip_address = Session::get('user_ip');
+        $history->save();
+
+        $category->delete();
+
+        return redirect()
+        ->route('contact_category')
+        ->with('alert.status', 'success')
+        ->with('alert.message', 'Contact Category Deleted Successfully!');
     }
 }

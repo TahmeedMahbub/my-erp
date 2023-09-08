@@ -87,7 +87,7 @@ class BranchController extends Controller
 
     public function delete($id)
     {
-        $branch = Branch::where('id', $id)->where('deletable', 1)->first();
+        $branch = Branch::where('id', $id)->first();
 
         if($branch)
         {

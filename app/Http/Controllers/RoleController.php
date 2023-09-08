@@ -90,7 +90,7 @@ class RoleController extends Controller
 
     public function delete($id)
     {
-        $role = Role::where('id', $id)->where('deletable', 1)->first();
+        $role = Role::where('id', $id)->first();
 
         if($role)
         {

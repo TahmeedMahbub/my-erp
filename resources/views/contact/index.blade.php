@@ -34,10 +34,9 @@
                                 <tr>
                                     <th>Sl</th>
                                     <th>Name</th>
-                                    {{-- <th>Category</th>
+                                    <th>Category</th>
                                     <th>Phone</th>
-                                    <th>Manager</th>
-                                    <th class="text-end">Action</th> --}}
+                                    <th class="text-end">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
@@ -50,39 +49,18 @@
                                                     <td><img src="{{ asset('assets\images\\' . $contact->image) }}" alt="" class="rounded-circle thumb-xs me-1"></td>
                                                     <td>
                                                         {{$contact->name}}<br>
-                                                        <small>{{$contact->contactname}}</small>
+                                                        <small>{{$contact->code}}</small>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </td>
-                                        {{-- <td>
-                                            {{$contact->role->role_name}},<br>
-                                            <small>{{$contact->branch->name}} Branch</small>
-
+                                        <td>
+                                            {{$contact->category->name}}<br>
+                                            <small>{{!empty($contact->branch) ? $contact->branch->name. " Branch" : ""}}</small>
                                         </td>
                                         <td>
-                                            {{$contact->email}},<br>
-                                            <small><b>Phone: </b>0{{$contact->phone}}</small>
-                                        </td>
-                                        <td class="text-muted">
-                                            @if (!empty($contact->manager_id))
-                                                <table>
-                                                    <tr>
-                                                        <td><img src="{{ asset('assets\images\\' . $contact->manager->image) }}" alt="" class="rounded-circle thumb-xs me-1 img-fluid opacity-50"></td>
-                                                        <td>
-                                                            {{$contact->manager->name}}<br>
-                                                            <small>{{ optional($contact->managerRole)->role_name }}</small>
-                                                        </td>
-                                                    </tr>
-                                                </table>
-                                            @else
-                                                <table>
-                                                    <tr>
-                                                        <td><img src="{{ asset('assets\images\no-person.jpg') }}" alt="" class="rounded-circle thumb-xs me-1 img-fluid opacity-50"></td>
-                                                        <td>No Manager</td>
-                                                    </tr>
-                                                </table>
-                                            @endif
+                                            <b>Phone: </b>0{{$contact->phone}},<br>
+                                            <small>{{$contact->email}}</small>
                                         </td>
                                         <td class="text-end">
                                             <div class="d-flex justify-content-end">
@@ -100,7 +78,7 @@
                                                     <i class="mdi mdi-shield-check-outline pe-2 fs-4" title="Can not Delete"></i>
                                                 @endif
                                             </div>
-                                        </td> --}}
+                                        </td>
                                     </tr>
                                 @endforeach
                             </tbody>

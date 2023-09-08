@@ -197,7 +197,7 @@ class UserController extends Controller
 
     public function delete($id)
     {
-        $user = User::where('id', $id)->where('deletable', 1)->first();
+        $user = User::where('id', $id)->first();
 
         if($user)
         {
