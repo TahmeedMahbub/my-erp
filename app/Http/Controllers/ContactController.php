@@ -60,6 +60,7 @@ class ContactController extends Controller
             $contact->branch_id = $request->branch_id ?? null;
             $contact->category_id = $request->category_id;
             $contact->address = $request->address;
+            $contact->details = $request->details;
             $contact->code = $request->code;
             $contact->company = $request->company;
             $contact->created_by = Auth::user()->id;
@@ -86,9 +87,9 @@ class ContactController extends Controller
                     $file->move(public_path('assets/files/contacts'), $fileName);
                     $files[] = 'contacts/' . $fileName;
                 }
+                $contact->files = json_encode($files);
             }
 
-            $contact->files = json_encode($files);
             $contact->save();
 
             $history = new History();
@@ -111,9 +112,9 @@ class ContactController extends Controller
         {
             DB::rollBack();
             return redirect()
-            ->route('user')
+            ->route('contact')
             ->with('alert.status', 'danger')
-            ->with('alert.message', 'Error in Contact Creation!!!');
+            ->with('alert.message', 'Error in Contact Creation!!!'.$e);
         }
     }
 
@@ -131,10 +132,8 @@ class ContactController extends Controller
         $this->validate($request,[
             'category_id' => 'required',
             'name' => 'required',
-            'code' => 'nullable|unique:contacts,code',
             'phone' => 'required|min:1300000000|max:1999999999|numeric'
         ],[
-            'code.unique' => 'Contact Code Must Be Unique.',
             'phone.min' => 'Invalid Phone Number',
             'phone.max' => 'Invalid Phone Number',
         ]);
@@ -142,7 +141,7 @@ class ContactController extends Controller
         DB::beginTransaction();
         try
         {
-            $contact = new Contact();
+            $contact = Contact::find($request->id);
             $contact->name = $request->name;
             $contact->phone = (int)$request->phone;
             $contact->phone_1 = $request->phone_1;
@@ -151,7 +150,7 @@ class ContactController extends Controller
             $contact->branch_id = $request->branch_id ?? null;
             $contact->category_id = $request->category_id;
             $contact->address = $request->address;
-            $contact->code = $request->code;
+            $contact->details = $request->details;
             $contact->company = $request->company;
             $contact->created_by = Auth::user()->id;
             $contact->created_at = Carbon::now()->toDateTimeString();
@@ -177,15 +176,15 @@ class ContactController extends Controller
                     $file->move(public_path('assets/files/contacts'), $fileName);
                     $files[] = 'contacts/' . $fileName;
                 }
+                $contact->files = json_encode($files);
             }
 
-            $contact->files = json_encode($files);
             $contact->save();
 
             $history = new History();
             $history->module = "Contact";
             $history->module_id = $contact->id;
-            $history->operation = "Create";
+            $history->operation = "Edit";
             $history->previous = null;
             $history->after = json_encode($contact);
             $history->user_id = Auth::user()->id;
@@ -196,7 +195,7 @@ class ContactController extends Controller
             return redirect()
             ->route('contact')
             ->with('alert.status', 'success')
-            ->with('alert.message', 'Contact Created Successfully!');
+            ->with('alert.message', 'Contact Edited Successfully!');
         }
         catch(Exception $e)
         {
