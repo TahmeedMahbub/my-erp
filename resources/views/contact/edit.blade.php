@@ -4,65 +4,35 @@
 
 @section('head')
 <style>
-    .gallery{
-        display: grid;
-        grid-template-columns: repeat( 4, auto);
-        gap: 10px;
-        justify-content: flex-start;
-        align-items: flex-start;
-    }
-    .gallery__image{
+    .image-container {
         position: relative;
-        height: 120px;
-        overflow: hidden;
+        display: inline-block;
     }
-    .gallery__image img{
-        width: 100%;
-        height: 100%;
-        /* border-radius: 10px; */
-        object-fit: cover;
-        transition: transform 0.3s ease;
+    .deleted-image {
+        position: relative;
+        display: inline-block;
     }
-    .food__image-overlay{
+
+    .image-container img {
+        margin: 5px;
+        max-height: 120px;
+        width: auto;
+    }
+
+    .deleted-image img {
+        filter: grayscale(100%);
+        opacity: 0.5;
+        margin: 5px;
+        max-height: 120px;
+        width: auto;
+    }
+
+    .file_remove {
         position: absolute;
-        top: 0;
-        left: 0;
-        width: 100%;
-        height: 100%;
-        background-color: rgba(0, 0, 0, 0.7);
-        opacity: 0;
-        transition: opacity 0.3s ease;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        text-align: center;
+        bottom: 5px;
+        right: 5px;
     }
 
-    .gallery__image:hover .food__image-overlay{
-        opacity: 1;
-        /* border-radius: 10px; */
-    }
-
-    .food__info{
-        color: white;
-        padding: 20px;
-    }
-
-    .add-to-cart {
-        background-color: var(--bs-red);
-        color: white;
-        border: none;
-        height: 50px;
-        width: 50px;
-        border-radius: 50%;
-        padding: 10px 15px;
-        cursor: pointer;
-        transition: background-color 0.3s ease;
-    }
-
-    .add-to-cart:hover {
-        background-color: var(--bs-red);
-    }
 </style>
 @endsection
 
@@ -85,43 +55,6 @@
             <div class="col-md-12 col-lg-12">
                 <div class="card overflow-hidden">
                     <div class="card">
-                        <div class="card-header">
-                            <div class="row">
-                                <div class="col-lg-3">
-                                    <center>
-                                        <h5>Image of {{ $contact->name }}</h5>
-                                        <img src="{{ asset('assets\images\\' . $contact->image) }}" alt="" class="img-thumbnail" style="height: 120px;"><br>
-                                    </center>
-                                </div>
-                                @if ($contact->files)
-                                    <div class="col-lg-9">
-                                        <h5>Attachments:</h5>
-                                            <div class="gallery">
-                                                @foreach (json_decode($contact->files) as $key => $file)
-                                                {{-- <div id="file_div_{{ $key }}" class="image-container"> --}}
-                                                    {{-- <img src="{{ asset('assets\files\\' . $file) }}" alt="Image" style="height: 120px;">
-                                                    <div class="overlay">
-                                                        <i class="mdi mdi-delete-forever delete-icon"></i>
-                                                    </div> --}}
-                                                    <div class="gallery__image">
-                                                        <img src="{{ asset('assets\files\\' . $file) }}" alt="gallery image">
-                                                        <div class="food__image-overlay">
-                                                            <div class="food__info">
-                                                                {{-- <h3>Food Name</h3> --}}
-                                                                <button class="add-to-cart"><i class="mdi mdi-delete-forever fs-4"></i></button>
-                                                            </div>
-                                                        </div>
-                                                    </div>
-
-                                                    {{-- <button class="btn btn-danger p-0 ps-2 pe-2 pt-1 pb-1 file_remove" style="position: absolute;"><i class="mdi mdi-delete-forever fs-4"></i></button>
-                                                    <img src="{{ asset('assets\files\\' . $file) }}" alt="" class="img-thumbnail" style="height: 120px;">&emsp; --}}
-                                                    {{-- </div> --}}
-                                            @endforeach
-                                        </div>
-                                    </div>
-                                @endif
-                            </div>
-                        </div>
                         <div class="card-header">
                             <div class="row">
                                 <div class="col-lg-6">
@@ -153,7 +86,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="card-body">
+                        <div class="card-header">
                             <div class="row">
                                 <div class="col-lg-6">
                                     <div class="mb-3 row">
@@ -253,12 +186,64 @@
                                     </div>
                                 </div>
                             </div>
+                        </div>
 
-                            <div class="row justify-content-center mt-3">
-                                <div class="col-lg-3">
-                                    <input type="hidden" name="id" value="{{ $contact->id }}" id="">
-                                    <input class="form-control btn btn-secondary" type="Submit" value="Edit Contact">
+                        @if ($contact->files)
+                            <div class="card-body">
+                                <div class="row">
+                                    <div class="col-lg-12">
+                                        <h5>Attachments:</h5>
+
+
+                                        <div id="file_div_0" class="image-container">
+                                            <img src="https://media.sproutsocial.com/uploads/2017/02/10x-featured-social-media-image-size.png" alt="" class="img-thumbnail">
+                                            <button class="btn btn-danger p-0 ps-2 pe-2 pt-1 pb-1 file_remove"><i class="mdi mdi-delete-forever fs-4"></i></button>
+                                        </div>
+                                        <div id="file_div_1" class="image-container">
+                                            <img src="https://simpsonscreative.co.uk/wp-content/uploads/2022/01/2022-Dimensions.jpg" alt="" class="img-thumbnail" style="filter: grayscale(100%); opacity: 0.5;">
+                                            <button class="btn btn-success p-0 ps-2 pe-2 pt-1 pb-1 file_remove"><i class="mdi mdi-restore fs-4"></i></button>
+                                        </div>
+                                        <div id="file_div_2" class="image-container">
+                                            <img src="https://img.freepik.com/free-icon/picture_318-315168.jpg" alt="" class="img-thumbnail">
+                                            <button class="btn btn-danger p-0 ps-2 pe-2 pt-1 pb-1 file_remove"><i class="mdi mdi-delete-forever fs-4"></i></button>
+                                        </div>
+                                        <div id="file_div_3" class="image-container">
+                                            <img src="https://img.freepik.com/premium-vector/illustration-vector-graphic-cartoon-character-image-upload_516790-1872.jpg" alt="" class="img-thumbnail">
+                                            <button class="btn btn-danger p-0 ps-2 pe-2 pt-1 pb-1 file_remove"><i class="mdi mdi-delete-forever fs-4"></i></button>
+                                        </div>
+                                        <div id="file_div_0" class="image-container">
+                                            <img src="https://img.freepik.com/free-vector/social-media-post-with-picture-blogger-video-like-sharing-repost-flat-vector-illustration-communication-marketing-influencer_74855-8589.jpg" alt="" class="img-thumbnail">
+                                            <button class="btn btn-danger p-0 ps-2 pe-2 pt-1 pb-1 file_remove"><i class="mdi mdi-delete-forever fs-4"></i></button>
+                                        </div>
+                                        <div id="file_div_1" class="image-container">
+                                            <img src="https://img.freepik.com/free-vector/landing-page-concept-new-message_52683-25720.jpg" alt="" class="img-thumbnail" style="filter: grayscale(100%); opacity: 0.5;">
+                                            <button class="btn btn-success p-0 ps-2 pe-2 pt-1 pb-1 file_remove"><i class="mdi mdi-restore fs-4"></i></button>
+                                        </div>
+                                        <div id="file_div_2" class="image-container">
+                                            <img src="https://img.freepik.com/free-vector/new-message-concept-landing-page_23-2148322667.jpg" alt="" class="img-thumbnail" style="filter: grayscale(100%); opacity: 0.5;">
+                                            <button class="btn btn-success p-0 ps-2 pe-2 pt-1 pb-1 file_remove"><i class="mdi mdi-restore fs-4"></i></button>
+                                        </div>
+                                        <div id="file_div_3" class="image-container">
+                                            <img src="https://img.freepik.com/premium-vector/imposter-syndromewoman-standing-number-one-imposter-syndrome-woman-get-reward-social-with-anxiety-lack-selfconfidence-work-person-fakes-is-someone-else-concept-vector-illustrator_101179-2256.jpg" alt="" class="img-thumbnail">
+                                            <button class="btn btn-danger p-0 ps-2 pe-2 pt-1 pb-1 file_remove"><i class="mdi mdi-delete-forever fs-4"></i></button>
+                                        </div>
+
+
+                                        {{-- @foreach (json_decode($contact->files) as $key => $file)
+                                            <div id="file_div_{{ $key }}" class="image-container">
+                                                <img src="{{ asset('assets\files\\' . $file) }}" alt="" class="img-thumbnail">
+                                                <button class="btn btn-danger p-0 ps-2 pe-2 pt-1 pb-1 file_remove"><i class="mdi mdi-delete-forever fs-4"></i></button>
+                                            </div>
+                                        @endforeach --}}
+                                    </div>
                                 </div>
+                            </div>
+                        @endif
+
+                        <div class="row justify-content-center mt-3">
+                            <div class="col-lg-3">
+                                <input type="hidden" name="id" value="{{ $contact->id }}" id="">
+                                <input class="form-control btn btn-secondary" type="Submit" value="Edit Contact">
                             </div>
                         </div>
                     </div>

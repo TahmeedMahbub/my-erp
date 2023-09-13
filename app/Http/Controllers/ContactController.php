@@ -128,6 +128,7 @@ class ContactController extends Controller
 
     public function update(Request $request)
     {
+        dd($request->all());
         // CONTACT EDIT NOT STARTED YET. JUST COPIED FROM CONTACT CREATE NEED TO WORK FOR UPDATE
         $this->validate($request,[
             'category_id' => 'required',
