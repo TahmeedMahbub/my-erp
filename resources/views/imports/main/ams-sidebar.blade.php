@@ -64,10 +64,10 @@
     <div class="collapse " id="sidebarInventory">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="{{route('product_category')}}"> Product Category </a>
+                <a class="nav-link" href="{{route('item_category')}}"> Item Category </a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('product')}}">Product / Service (!!!)</a>
+                <a class="nav-link" href="{{route('item')}}">Item / Service (!!!)</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">Asset (!!!)</a>

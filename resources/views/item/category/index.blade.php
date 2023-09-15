@@ -7,7 +7,7 @@
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('product_category_create')}}" class="btn btn-purple btn-sm"><i class="mdi mdi-plus"></i> Create Category</a>
+                    <a href="{{route('item_category_create')}}" class="btn btn-purple btn-sm"><i class="mdi mdi-plus"></i> Create Category</a>
                 </div>
                 <h4 class="page-title">Product Category</h4>
             </div><!--end page-title-box-->
@@ -41,14 +41,14 @@
                                         <td>{{ optional($category->parent)->name }}</td>
                                         <td class="text-end">
                                             <div class="d-flex justify-content-end">
-                                                <a href="{{ route('product_category_view', $category->id) }}" title="View" class="text-secondary-custom">
+                                                <a href="{{ route('item_category_view', $category->id) }}" title="View" class="text-secondary-custom">
                                                     <i class="mdi mdi-eye pe-2 fs-4"></i>
                                                 </a>
-                                                <a href="{{ route('product_category_edit', $category->id) }}" title="Edit" class="text-secondary-custom">
+                                                <a href="{{ route('item_category_edit', $category->id) }}" title="Edit" class="text-secondary-custom">
                                                     <i class="mdi mdi-lead-pencil pe-2 fs-4"></i>
                                                 </a>
                                                 @if($category->deletable)
-                                                    <a href="{{ route('product_category_delete', $category->id) }}" title="Delete" class="text-secondary-custom">
+                                                    <a href="{{ route('item_category_delete', $category->id) }}" title="Delete" class="text-secondary-custom">
                                                         <i class="mdi mdi-delete-empty pe-2 fs-4"></i>
                                                     </a>
                                                 @else

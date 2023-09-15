@@ -88,6 +88,8 @@ ALTER TABLE `contacts` ADD `details` TEXT NULL DEFAULT NULL AFTER `email`;
 
 INSERT INTO `modules` (`id`, `module_name`, `module_prefix`, `deletable`, `created_at`, `updated_at`) VALUES (NULL, 'Product / Service', 'product', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+UPDATE `modules` SET `module_name` = 'Item / Service', `module_prefix` = 'item' WHERE `modules`.`id` = 7;
+
 CREATE TABLE `my_erp`.`products` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , `code` VARCHAR(100) NULL DEFAULT NULL , `image` TEXT NULL DEFAULT NULL , `details` TEXT NULL DEFAULT NULL , `purchase_rate` DOUBLE NULL DEFAULT NULL , `sales_rate` DOUBLE NULL DEFAULT NULL , `low_stock` INT NULL DEFAULT NULL , `category_id` INT NOT NULL , `created_by` INT NOT NULL , `updated_by` INT NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `deleted_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`), UNIQUE `code_unique` (`code`)) ENGINE = InnoDB;
 
 ALTER TABLE `products` ADD `unit_id` INT NOT NULL DEFAULT '1' AFTER `details`, ADD `carton_size` INT NULL DEFAULT NULL AFTER `unit_id`;
@@ -101,6 +103,10 @@ CREATE TABLE `my_erp`.`units` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR
 INSERT INTO `units` (`id`, `name`, `base_unit`, `details`, `created_by`, `updated_by`, `created_at`, `updated_at`, `deleted_at`) VALUES ('1', 'Base Unit', '1', 'This is the Base Unit. By default Unit for Products', '1', '1', '2023-09-15 17:23:41.000000', '2023-09-15 17:23:41.000000', NULL);
 
 CREATE TABLE `my_erp`.`item_categories` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , `details` TEXT NULL DEFAULT NULL , `parent_category_id` INT NULL DEFAULT NULL , `created_by` INT NOT NULL , `updated_by` INT NOT NULL , `created_at` DATETIME NOT NULL , `updated_at` DATETIME NOT NULL , `deletable` BOOLEAN NOT NULL DEFAULT TRUE , `deleted_at` DATETIME NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `items` CHANGE `image` `image` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'products/item.jpg';
+
+CREATE TABLE `my_erp`.`brands` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , `details` TEXT NULL DEFAULT NULL , `category_id` INT NULL DEFAULT NULL , `created_by` INT NOT NULL , `updated_by` INT NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `deleted_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 
 

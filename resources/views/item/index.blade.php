@@ -1,6 +1,6 @@
 @extends('imports.main.layout')
 
-@section('title', 'Contacts')
+@section('title', 'Items')
 
 @section('head')
     <link href="assets/plugins/datatables/datatable.css" rel="stylesheet" type="text/css" />
@@ -14,9 +14,9 @@
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('contact_create')}}" class="btn btn-purple btn-sm"><i class="mdi mdi-plus"></i> Create Contact</a>
+                    <a href="{{route('item_create')}}" class="btn btn-purple btn-sm"><i class="mdi mdi-plus"></i> Create Item</a>
                 </div>
-                <h4 class="page-title">All Contacts</h4>
+                <h4 class="page-title">All Items</h4>
             </div>
             <!--end page-title-box-->
         </div>
@@ -35,48 +35,42 @@
                                     <th>Sl</th>
                                     <th>Name</th>
                                     <th>Category</th>
-                                    <th>Phone</th>
+                                    <th>Details</th>
                                     <th class="text-end">Action</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                @foreach ($contacts as $contact)
+                                @foreach ($items as $item)
                                     <tr>
                                         <td>{{$loop->iteration}}</td>
                                         <td>
                                             <table>
                                                 <tr>
-                                                    <td><img src="{{ asset('assets\images\\' . $contact->image) }}" alt="" class="rounded-circle thumb-xs me-1"></td>
+                                                    <td><img src="{{ asset('assets\images\\' . $item->image) }}" alt="" class="rounded-circle thumb-xs me-1"></td>
                                                     <td>
-                                                        {{$contact->name}}<br>
-                                                        <small>{{$contact->code}}</small>
+                                                        {{$item->name}}<br>
+                                                        <small>{{$item->code}}</small>
                                                     </td>
                                                 </tr>
                                             </table>
                                         </td>
                                         <td>
-                                            {{$contact->category->name}}<br>
-                                            <small>{{!empty($contact->branch) ? $contact->branch->name. " Branch" : ""}}</small>
+                                            {{$item->category->name}}
                                         </td>
                                         <td>
-                                            <b>Phone: </b>0{{$contact->phone}},<br>
-                                            <small>{{$contact->email}}</small>
+                                            {{$item->category->name}}
                                         </td>
                                         <td class="text-end">
                                             <div class="d-flex justify-content-end">
-                                                <a href="{{ route('contact_view', $contact->id) }}" title="View" class="text-secondary-custom">
+                                                <a href="{{ route('item_view', $item->id) }}" title="View" class="text-secondary-custom">
                                                     <i class="mdi mdi-eye pe-2 fs-4"></i>
                                                 </a>
-                                                <a href="{{ route('contact_edit', $contact->id) }}" title="Edit" class="text-secondary-custom">
+                                                <a href="{{ route('item_edit', $item->id) }}" title="Edit" class="text-secondary-custom">
                                                     <i class="mdi mdi-lead-pencil pe-2 fs-4"></i>
                                                 </a>
-                                                @if($contact->deletable)
-                                                    <a href="{{ route('contact_delete', $contact->id) }}" title="Delete" class="text-secondary-custom">
-                                                        <i class="mdi mdi-delete-empty pe-2 fs-4"></i>
-                                                    </a>
-                                                @else
-                                                    <i class="mdi mdi-shield-check-outline pe-2 fs-4" title="Can not Delete"></i>
-                                                @endif
+                                                <a href="{{ route('item_delete', $item->id) }}" title="Delete" class="text-secondary-custom">
+                                                    <i class="mdi mdi-delete-empty pe-2 fs-4"></i>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>
