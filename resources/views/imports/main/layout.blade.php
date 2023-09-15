@@ -21,7 +21,7 @@
             </div>
         </div>
 
-
+        @include('imports.main.minimized-leftbar')
     </body>
     <!--end body-->
 </html>
