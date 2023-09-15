@@ -50,7 +50,7 @@ class ItemController extends Controller
         DB::beginTransaction();
         try
         {
-            $contact = new Contact();
+            $contact = new Item();
             $contact->name = $request->name;
             $contact->phone = (int)$request->phone;
             $contact->phone_1 = $request->phone_1;
@@ -119,10 +119,11 @@ class ItemController extends Controller
 
     public function edit($id)
     {
-        $contact = Contact::find($id);
-        $branches = Branch::all();
-        $categories = ContactCategory::all();
-        return view('item.edit', compact('categories', 'branches', 'contact'));
+        $item = Item::find($id);
+        $brands = Brand::all();
+        $units = Unit::all();
+        $categories = ItemCategory::all();
+        return view('item.edit', compact('categories', 'units', 'brands', 'item'));
     }
 
     public function update(Request $request)

@@ -121,7 +121,7 @@
                                     <div class="mb-3 row">
                                         <label for="example-tel-input" class="col-sm-4 col-form-label text-end">Purchase Price</label>
                                         <div class="col-sm-8">
-                                            <input class="form-control" type="number" value="{{ old('carton_size') }}" placeholder="Enter Items Per Carton" name="carton_size">
+                                            <input class="form-control" type="number" value="{{ old('purchase_price') }}" placeholder="Enter Purchase Price" name="purchase_price">
                                             <span class="text-danger">{{ $errors->first('carton_size') }}</span>
                                         </div>
                                     </div>
@@ -130,7 +130,7 @@
                                     <div class="mb-3 row">
                                         <label for="example-text-input" class="col-sm-4 col-form-label text-end">Selling Price</label>
                                         <div class="col-sm-8">
-                                            <input class="form-control" type="number" value="{{ old('low_stock') }}" name="low_stock" placeholder="Enter Alert for Stock Refill" min="0">
+                                            <input class="form-control" type="number" value="{{ old('selling_price') }}" placeholder="Enter Selling Price" name="selling_price">
                                         </div>
                                     </div>
                                 </div>

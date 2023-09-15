@@ -108,6 +108,10 @@ ALTER TABLE `items` CHANGE `image` `image` VARCHAR(255) CHARACTER SET utf8mb4 CO
 
 CREATE TABLE `my_erp`.`brands` (`id` INT NOT NULL AUTO_INCREMENT , `name` VARCHAR(255) NOT NULL , `details` TEXT NULL DEFAULT NULL , `category_id` INT NULL DEFAULT NULL , `created_by` INT NOT NULL , `updated_by` INT NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `deleted_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
+ALTER TABLE `items` ADD `brand_id` INT NOT NULL AFTER `details`;
+
+ALTER TABLE `items` CHANGE `purchase_rate` `purchase_price` DOUBLE NULL DEFAULT NULL, CHANGE `sales_rate` `selling_price` DOUBLE NULL DEFAULT NULL;
+
 
 
 ------------------------------------------
