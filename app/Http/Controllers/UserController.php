@@ -140,8 +140,6 @@ class UserController extends Controller
             $user->phone_1 = $request->phone_1;
             $user->company = $request->company;
             $user->joining_date = $request->joining_date;
-            $user->created_by = Auth::user()->id;
-            $user->created_at = Carbon::now()->toDateTimeString();
             $user->updated_by = Auth::user()->id;
             $user->updated_at = Carbon::now()->toDateTimeString();
 

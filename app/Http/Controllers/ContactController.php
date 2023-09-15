@@ -153,8 +153,6 @@ class ContactController extends Controller
             $contact->address = $request->address;
             $contact->details = $request->details;
             $contact->company = $request->company;
-            $contact->created_by = Auth::user()->id;
-            $contact->created_at = Carbon::now()->toDateTimeString();
             $contact->updated_by = Auth::user()->id;
             $contact->updated_at = Carbon::now()->toDateTimeString();
             $contact->save();
@@ -292,9 +290,7 @@ class ContactController extends Controller
         $category->name = $request->category_name;
         $category->parent_category_id = $request->parent_category;
         $category->details = $request->category_details;
-        $category->created_by = Auth::user()->id;
         $category->updated_by = Auth::user()->id;
-        $category->created_at = Carbon::now()->toDateTimeString();
         $category->updated_at = Carbon::now()->toDateTimeString();
         $category->save();
 

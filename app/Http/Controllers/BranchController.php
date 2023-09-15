@@ -63,8 +63,6 @@ class BranchController extends Controller
         $branch->name = $request->branch_name;
         $branch->location = $request->branch_location;
         $branch->details = $request->branch_details;
-        $branch->created_by = Auth::user()->id;
-        $branch->created_at = Carbon::now()->toDateTimeString();
         $branch->updated_by = Auth::user()->id;
         $branch->updated_at = Carbon::now()->toDateTimeString();
         $branch->save();

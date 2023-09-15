@@ -7,6 +7,7 @@ use App\Http\Controllers\CommonController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\ProductController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UserController;
 
@@ -91,4 +92,22 @@ Route::group(['prefix' => 'contact', 'middleware' => 'auth'], function () {
     Route::get('/category/edit/{id}', [ContactController::class, 'categoryEdit'])->name('contact_category_edit')->middleware('updateAccess');
     Route::post('/category/update', [ContactController::class, 'categoryUpdate'])->name('contact_category_update')->middleware('updateAccess');
     Route::get('/category/delete/{id}', [ContactController::class, 'categoryDelete'])->name('contact_category_delete')->middleware('deleteAccess');
+});
+
+Route::group(['prefix' => 'product', 'middleware' => 'auth'], function () {
+    Route::get('/', [ProductController::class, 'index'])->name('product')->middleware('readAccess');
+    Route::get('/view/{id}', [ProductController::class, 'view'])->name('product_view')->middleware('readAccess');
+    Route::get('/create', [ProductController::class, 'create'])->name('product_create')->middleware('createAccess');
+    Route::post('/store', [ProductController::class, 'store'])->name('product_store')->middleware('createAccess');
+    Route::get('/edit/{id}', [ProductController::class, 'edit'])->name('product_edit')->middleware('updateAccess');
+    Route::post('/update', [ProductController::class, 'update'])->name('product_update')->middleware('updateAccess');
+    Route::get('/delete/{id}', [ProductController::class, 'delete'])->name('product_delete')->middleware('deleteAccess');
+
+    Route::get('/category/', [ProductController::class, 'categoryIndex'])->name('product_category')->middleware('readAccess');
+    Route::get('/category/view/{id}', [ProductController::class, 'categoryView'])->name('product_category_view')->middleware('readAccess');
+    Route::get('/category/create', [ProductController::class, 'categoryCreate'])->name('product_category_create')->middleware('createAccess');
+    Route::post('/category/store', [ProductController::class, 'categoryStore'])->name('product_category_store')->middleware('createAccess');
+    Route::get('/category/edit/{id}', [ProductController::class, 'categoryEdit'])->name('product_category_edit')->middleware('updateAccess');
+    Route::post('/category/update', [ProductController::class, 'categoryUpdate'])->name('product_category_update')->middleware('updateAccess');
+    Route::get('/category/delete/{id}', [ProductController::class, 'categoryDelete'])->name('product_category_delete')->middleware('deleteAccess');
 });
