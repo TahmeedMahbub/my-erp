@@ -180,4 +180,29 @@ class Helpers
         return $has_access;
     }
 
+    public function codeGenerator($model, $id)
+    {
+        $modelClassName = "\\App\\Models\\{$model}";
+        $record = $modelClassName::find($id);
+
+        $words = explode(' ', $record->name);
+
+        $abbreviated = '';
+        for ($i = 0; $i < min(2, count($words)); $i++) {
+            $abbreviated .= strtoupper(substr($words[$i], 0, 1));
+        }
+
+        if(count($words) == 1)
+        {
+            $code = $abbreviated.str_pad($record->id, 5, 0,STR_PAD_LEFT);
+        }
+        else
+        {
+            $code = $abbreviated.str_pad($record->id, 4, 0,STR_PAD_LEFT);
+        }
+        $record = $modelClassName::where('code', $code)->first();
+
+        return empty($record) ? $code : null;
+    }
+
 }

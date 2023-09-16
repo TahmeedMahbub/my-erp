@@ -10,6 +10,8 @@ use App\Models\Item;
 use App\Models\ItemCategory;
 use App\Models\Unit;
 use Carbon\Carbon;
+use Exception;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;
 
@@ -37,83 +39,73 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         $this->validate($request,[
-            'category_id' => 'required',
+            'category' => 'required',
             'name' => 'required',
-            'code' => 'nullable|unique:contacts,code',
-            'phone' => 'required|min:1300000000|max:1999999999|numeric'
-        ],[
-            'code.unique' => 'Contact Code Must Be Unique.',
-            'phone.min' => 'Invalid Phone Number',
-            'phone.max' => 'Invalid Phone Number',
+            'unit' => 'required',
+            'code' => 'nullable|unique:items,code',
         ]);
 
         DB::beginTransaction();
         try
         {
-            $contact = new Item();
-            $contact->name = $request->name;
-            $contact->phone = (int)$request->phone;
-            $contact->phone_1 = $request->phone_1;
-            $contact->email = $request->email;
-            $contact->status = Auth::user()->role_id == 1 ? 'active' : 'inactive';
-            $contact->branch_id = $request->branch_id ?? null;
-            $contact->category_id = $request->category_id;
-            $contact->address = $request->address;
-            $contact->details = $request->details;
-            $contact->code = $request->code;
-            $contact->company = $request->company;
-            $contact->created_by = Auth::user()->id;
-            $contact->created_at = Carbon::now()->toDateTimeString();
-            $contact->updated_by = Auth::user()->id;
-            $contact->updated_at = Carbon::now()->toDateTimeString();
-            $contact->save();
+            $item = new Item();
+            $item->name = $request->name;
+            $item->code = $request->code ?? null;
+            $item->category_id = $request->category;
+            $item->unit_id = $request->unit;
+            $item->brand_id = $request->brand;
+            $item->carton_size = $request->carton_size ?? 1;
+            $item->low_stock = $request->low_stock ?? 0;
+            $item->purchase_price = $request->purchase_price;
+            $item->selling_price = $request->selling_price;
+            $item->details = $request->details;
+            $item->created_by = Auth::user()->id;
+            $item->created_at = Carbon::now()->toDateTimeString();
+            $item->updated_by = Auth::user()->id;
+            $item->updated_at = Carbon::now()->toDateTimeString();
+            $item->save();
+
+            $helpers = new \App\Lib\Helpers;
+            $code = $helpers->codeGenerator("Item", $item->id);
+            $item->code = $code;
+            $item->save();
 
             if ($request->hasFile('image')) {
                 $file                       = $request->file('image');
                 $file_extention             = $file->getClientOriginalExtension();
-                $new_file_name              = "contact_" . $contact->id . "." . $file_extention;
-                $success                    = $file->move('assets/images/contacts', $new_file_name);
+                $new_file_name              = "item_" . $item->id . "." . $file_extention;
+                $success                    = $file->move('assets/images/items', $new_file_name);
 
                 if ($success) {
-                    $contact->image      = 'contacts/' . $new_file_name;
+                    $item->image      = 'items/' . $new_file_name;
                 }
             }
 
-            if ($request->hasFile('files')) {
-                foreach($request->file('files') as $key => $file)
-                {
-                    $fileName = rand(100,999).'_'.$contact->id.'_'.$file->getClientOriginalName();
-                    $file->move(public_path('assets/files/contacts'), $fileName);
-                    $files[] = 'contacts/' . $fileName;
-                }
-                $contact->files = json_encode($files);
-            }
-
-            $contact->save();
+            $item->save();
 
             $history = new History();
-            $history->module = "Contact";
-            $history->module_id = $contact->id;
+            $history->module = "Item";
+            $history->module_id = $item->id;
             $history->operation = "Create";
             $history->previous = null;
-            $history->after = json_encode($contact);
+            $history->after = json_encode($item);
             $history->user_id = Auth::user()->id;
             $history->ip_address = Session::get('user_ip');
             $history->save();
             DB::commit();
 
             return redirect()
-            ->route('contact')
+            ->route('item')
             ->with('alert.status', 'success')
-            ->with('alert.message', 'Contact Created Successfully!');
+            ->with('alert.message', 'Item Created Successfully!');
         }
         catch(Exception $e)
         {
             DB::rollBack();
             return redirect()
-            ->route('contact')
+            ->route('item')
             ->with('alert.status', 'danger')
-            ->with('alert.message', 'Error in Contact Creation!!!'.$e);
+            ->with('alert.message', 'Error in Item Creation!!!'.$e);
         }
     }
 
@@ -128,73 +120,57 @@ class ItemController extends Controller
 
     public function update(Request $request)
     {
-        dd($request->all());
-        // CONTACT EDIT NOT STARTED YET. JUST COPIED FROM CONTACT CREATE NEED TO WORK FOR UPDATE
         $this->validate($request,[
-            'category_id' => 'required',
-            'name' => 'required',
-            'phone' => 'required|min:1300000000|max:1999999999|numeric'
-        ],[
-            'phone.min' => 'Invalid Phone Number',
-            'phone.max' => 'Invalid Phone Number',
+            'category' => 'required',
+            'name' => 'required'
         ]);
 
         DB::beginTransaction();
         try
         {
-            $contact = Contact::find($request->id);
-            $contact->name = $request->name;
-            $contact->phone = (int)$request->phone;
-            $contact->phone_1 = $request->phone_1;
-            $contact->email = $request->email;
-            $contact->status = Auth::user()->role_id == 1 ? 'active' : 'inactive';
-            $contact->branch_id = $request->branch_id ?? null;
-            $contact->category_id = $request->category_id;
-            $contact->address = $request->address;
-            $contact->details = $request->details;
-            $contact->company = $request->company;
-            $contact->updated_by = Auth::user()->id;
-            $contact->updated_at = Carbon::now()->toDateTimeString();
-            $contact->save();
+            $item = Item::find($request->id);
+            $old_item = clone $item;
+            $item->name = $request->name;
+            $item->category_id = $request->category;
+            $item->unit_id = $request->unit;
+            $item->brand_id = $request->brand;
+            $item->carton_size = $request->carton_size ?? 1;
+            $item->low_stock = $request->low_stock ?? 0;
+            $item->purchase_price = $request->purchase_price;
+            $item->selling_price = $request->selling_price;
+            $item->details = $request->details;
+            $item->updated_by = Auth::user()->id;
+            $item->updated_at = Carbon::now()->toDateTimeString();
 
             if ($request->hasFile('image')) {
                 $file                       = $request->file('image');
                 $file_extention             = $file->getClientOriginalExtension();
-                $new_file_name              = "contact_" . $contact->id . "." . $file_extention;
-                $success                    = $file->move('assets/images/contacts', $new_file_name);
+                $new_file_name              = "item_" . $item->id . "." . $file_extention;
+                $success                    = $file->move('assets/images/items', $new_file_name);
 
                 if ($success) {
-                    $contact->image      = 'contacts/' . $new_file_name;
+                    $item->image      = 'items/' . $new_file_name;
                 }
             }
 
-            if ($request->hasFile('files')) {
-                foreach($request->file('files') as $key => $file)
-                {
-                    $fileName = rand(100,999).'_'.$contact->id.'_'.$file->getClientOriginalName();
-                    $file->move(public_path('assets/files/contacts'), $fileName);
-                    $files[] = 'contacts/' . $fileName;
-                }
-                $contact->files = json_encode($files);
-            }
-
-            $contact->save();
+            $item->save();
 
             $history = new History();
-            $history->module = "Contact";
-            $history->module_id = $contact->id;
+            $history->module = "Item";
+            $history->module_id = $item->id;
             $history->operation = "Edit";
-            $history->previous = null;
-            $history->after = json_encode($contact);
+            $history->previous = json_encode($old_item);
+            $history->after = json_encode($item);
             $history->user_id = Auth::user()->id;
             $history->ip_address = Session::get('user_ip');
             $history->save();
             DB::commit();
 
             return redirect()
-            ->route('contact')
+            ->route('item')
             ->with('alert.status', 'success')
-            ->with('alert.message', 'Contact Edited Successfully!');
+            ->with('alert.message', 'Item Edited Successfully!');
+
         }
         catch(Exception $e)
         {
@@ -202,32 +178,30 @@ class ItemController extends Controller
             return redirect()
             ->route('user')
             ->with('alert.status', 'danger')
-            ->with('alert.message', 'Error in Contact Creation!!!');
+            ->with('alert.message', 'Error in Contact Editing!!!');
         }
     }
 
     public function delete($id)
     {
-        $contact = Contact::find($id);
-
-        // CHECK CONDITIONS BEFORE DELETE
+        $item = Item::find($id);
 
         $history = new History();
-        $history->module = "Contact";
-        $history->module_id = $contact->id;
+        $history->module = "Item";
+        $history->module_id = $item->id;
         $history->operation = "Delete";
         $history->after = null;
-        $history->previous = json_encode($contact);
+        $history->previous = json_encode($item);
         $history->user_id = Auth::user()->id;
         $history->ip_address = Session::get('user_ip');
         $history->save();
 
-        $contact->delete();
+        $item->delete();
 
         return redirect()
-        ->route('contact')
+        ->route('item')
         ->with('alert.status', 'success')
-        ->with('alert.message', 'Contact Deleted Successfully!');
+        ->with('alert.message', 'Item Deleted Successfully!');
     }
 
     public function categoryIndex()
@@ -261,7 +235,7 @@ class ItemController extends Controller
         $category->save();
 
         $history = new History();
-        $history->module = "Product Category";
+        $history->module = "Item Category";
         $history->module_id = $category->id;
         $history->operation = "Create";
         $history->previous = null;
@@ -296,7 +270,7 @@ class ItemController extends Controller
         $category->save();
 
         $history = new History();
-        $history->module = "Product Category";
+        $history->module = "Item Category";
         $history->module_id = $category->id;
         $history->operation = "Edit";
         $history->previous = json_encode($old_category);
@@ -319,22 +293,22 @@ class ItemController extends Controller
             return redirect()
             ->route('item_category')
             ->with('alert.status', 'danger')
-            ->with('alert.message', 'Product Category Is Used As a Parent Category. It Cannot Be Deleted!');
+            ->with('alert.message', 'Item Category Is Used As a Parent Category. It Cannot Be Deleted!');
         }
 
-        $contact = Item::where('category_id', $id)->first();
-        if(!empty($contact))
+        $item = Item::where('category_id', $id)->first();
+        if(!empty($item))
         {
             return redirect()
             ->route('item_category')
             ->with('alert.status', 'danger')
-            ->with('alert.message', 'Product Category Is Used as a Category of a Item. It Cannot Be Deleted!');
+            ->with('alert.message', 'Item Category Is Used as a Category of a Item. It Cannot Be Deleted!');
         }
 
         $category = ItemCategory::find($id);
 
         $history = new History();
-        $history->module = "Contact Category";
+        $history->module = "Item Category";
         $history->module_id = $category->id;
         $history->operation = "Delete";
         $history->previous = json_encode($category);
@@ -348,7 +322,7 @@ class ItemController extends Controller
         return redirect()
         ->route('item_category')
         ->with('alert.status', 'success')
-        ->with('alert.message', 'Contact Category Deleted Successfully!');
+        ->with('alert.message', 'Item Category Deleted Successfully!');
     }
 
 }

@@ -112,6 +112,10 @@ ALTER TABLE `items` ADD `brand_id` INT NOT NULL AFTER `details`;
 
 ALTER TABLE `items` CHANGE `purchase_rate` `purchase_price` DOUBLE NULL DEFAULT NULL, CHANGE `sales_rate` `selling_price` DOUBLE NULL DEFAULT NULL;
 
+ALTER TABLE `items` CHANGE `image` `image` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL DEFAULT 'items/item.jpg';
+
+ALTER TABLE `items` CHANGE `brand_id` `brand_id` INT NULL DEFAULT NULL;
+
 
 
 ------------------------------------------

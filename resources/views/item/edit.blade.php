@@ -17,7 +17,7 @@
     </div>
 
     <div class="row">
-        <form action="{{ route('item_store') }}" id="item_form" method="post" enctype="multipart/form-data">
+        <form action="{{ route('item_update') }}" id="item_form" method="post" enctype="multipart/form-data">
             @csrf
             <div class="col-md-12 col-lg-12">
                 <div class="card overflow-hidden">
@@ -159,6 +159,7 @@
 
                             <div class="row justify-content-center mt-3">
                                 <div class="col-lg-3">
+                                    <input type="hidden" name="id" value="{{ $item->id }}">
                                     <input class="form-control btn btn-secondary" type="Submit" value="Edit Item">
                                 </div>
                             </div>

@@ -1,6 +1,6 @@
 @extends('imports.main.layout')
 
-@section('title', 'Product Create')
+@section('title', 'Item Create')
 
 {{-- @section('head') @endsection --}}
 
@@ -9,9 +9,9 @@
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('product')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All Product List</a>
+                    <a href="{{route('item')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All Item List</a>
                 </div>
-                <h4 class="page-title">Create Product</h4>
+                <h4 class="page-title">Create Item</h4>
             </div>
         </div>
     </div>
@@ -35,9 +35,9 @@
                                 </div>
                                 <div class="col-lg-6">
                                     <div class="mb-3 row">
-                                        <label for="example-url-input" class="col-sm-4 col-form-label text-end">Product Code</label>
+                                        <label for="example-url-input" class="col-sm-4 col-form-label text-end">Item Code</label>
                                         <div class="col-sm-8">
-                                            <input class="form-control" type="text" value="{{ old('code') }}" placeholder="Enter Unique Product Code" name="code">
+                                            <input class="form-control" type="text" value="{{ old('code') }}" placeholder="Enter Unique Item Code" name="code">
                                             <span class="text-danger">{{ $errors->first('code') }}</span>
                                         </div>
                                     </div>
@@ -148,27 +148,13 @@
 
                             <div class="row justify-content-center mt-3">
                                 <div class="col-lg-3">
-                                    <input class="form-control btn btn-purple" type="Submit" value="Create Product">
+                                    <input class="form-control btn btn-purple" type="Submit" value="Create Item">
                                 </div>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-            {{-- <div class="row">
-                <div class="col-md-6">
-                    <div class="form-group {{ $errors->has('firstname') ? 'has-error' : '' }}">
-                        <label for="firstname">First Name:</label>
-                        <input type="text" id="firstname" name="firstname" class="form-control" placeholder="Enter First Name" value="{{ old('firstname') }}">
-                        <span class="text-danger">{{ $errors->first('firstname') }}</span>
-                    </div>
-                </div>
-            </div>
-
-
-            <div class="form-group">
-                <button class="btn btn-success">Submit</button>
-            </div> --}}
         </form>
     </div>
 @endsection

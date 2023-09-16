@@ -73,7 +73,7 @@
                 <a class="nav-link" href="index.html">Unit (!!!)</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="{{route('item')}}">Item / Service (!!!)</a>
+                <a class="nav-link" href="{{route('item')}}">Item / Service</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">Asset (!!!)</a>

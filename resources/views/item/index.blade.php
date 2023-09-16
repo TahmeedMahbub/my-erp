@@ -46,10 +46,10 @@
                                         <td>
                                             <table>
                                                 <tr>
-                                                    <td><img src="{{ asset('assets\images\\' . $item->image) }}" alt="" class="rounded-circle thumb-xs me-1"></td>
+                                                    <td><img src="{{ asset('assets\images\\' . $item->image) }}" alt="" class=" thumb-xs me-1"></td>
                                                     <td>
                                                         {{$item->name}}<br>
-                                                        <small>{{$item->code}}</small>
+                                                        @if($item->code) <small><b>Code: </b>{{$item->code}}</small> @endif
                                                     </td>
                                                 </tr>
                                             </table>
@@ -58,7 +58,7 @@
                                             {{$item->category->name}}
                                         </td>
                                         <td>
-                                            {{$item->category->name}}
+                                            {{$item->details}}
                                         </td>
                                         <td class="text-end">
                                             <div class="d-flex justify-content-end">

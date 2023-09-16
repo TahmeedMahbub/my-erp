@@ -143,6 +143,7 @@ class ContactController extends Controller
         try
         {
             $contact = Contact::find($request->id);
+            $old_contact = clone $contact;
             $contact->name = $request->name;
             $contact->phone = (int)$request->phone;
             $contact->phone_1 = $request->phone_1;
@@ -184,7 +185,7 @@ class ContactController extends Controller
             $history->module = "Contact";
             $history->module_id = $contact->id;
             $history->operation = "Edit";
-            $history->previous = null;
+            $history->previous = json_encode($old_contact);
             $history->after = json_encode($contact);
             $history->user_id = Auth::user()->id;
             $history->ip_address = Session::get('user_ip');
