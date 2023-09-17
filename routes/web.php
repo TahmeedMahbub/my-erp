@@ -3,12 +3,14 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BranchController;
+use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CommonController;
 use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrganizationController;
 use App\Http\Controllers\RoleController;
+use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
 
 /*
@@ -51,6 +53,26 @@ Route::group(['prefix' => 'role', 'middleware' => 'auth'], function () {
     Route::get('/edit/{id}', [RoleController::class, 'edit'])->name('roles_edit')->middleware('updateAccess');
     Route::post('/update', [RoleController::class, 'update'])->name('roles_update')->middleware('updateAccess');
     Route::get('/delete/{id}', [RoleController::class, 'delete'])->name('roles_delete')->middleware('deleteAccess');
+});
+
+Route::group(['prefix' => 'unit', 'middleware' => 'auth'], function () {
+    Route::get('/', [UnitController::class, 'index'])->name('unit')->middleware('readAccess');
+    Route::get('/view/{id}', [UnitController::class, 'view'])->name('unit_view')->middleware('readAccess');
+    Route::get('/create', [UnitController::class, 'create'])->name('unit_create')->middleware('createAccess');
+    Route::post('/store', [UnitController::class, 'store'])->name('unit_store')->middleware('createAccess');
+    Route::get('/edit/{id}', [UnitController::class, 'edit'])->name('unit_edit')->middleware('updateAccess');
+    Route::post('/update', [UnitController::class, 'update'])->name('unit_update')->middleware('updateAccess');
+    Route::get('/delete/{id}', [UnitController::class, 'delete'])->name('unit_delete')->middleware('deleteAccess');
+});
+
+Route::group(['prefix' => 'brand', 'middleware' => 'auth'], function () {
+    Route::get('/', [BrandController::class, 'index'])->name('brand')->middleware('readAccess');
+    Route::get('/view/{id}', [BrandController::class, 'view'])->name('brand_view')->middleware('readAccess');
+    Route::get('/create', [BrandController::class, 'create'])->name('brand_create')->middleware('createAccess');
+    Route::post('/store', [BrandController::class, 'store'])->name('brand_store')->middleware('createAccess');
+    Route::get('/edit/{id}', [BrandController::class, 'edit'])->name('brand_edit')->middleware('updateAccess');
+    Route::post('/update', [BrandController::class, 'update'])->name('brand_update')->middleware('updateAccess');
+    Route::get('/delete/{id}', [BrandController::class, 'delete'])->name('brand_delete')->middleware('deleteAccess');
 });
 
 Route::group(['prefix' => 'branch', 'middleware' => 'auth'], function () {

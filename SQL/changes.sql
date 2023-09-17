@@ -44,10 +44,6 @@ ALTER TABLE `users` ADD `date_of_birth` DATE NULL DEFAULT NULL AFTER `details`;
 
 ALTER TABLE `users` ADD `joining_date` DATE NULL DEFAULT NULL AFTER `date_of_birth`;
 
-------------------------------------------
---------------Office Updated--------------
-------------------------------------------
-
 ALTER TABLE `users` CHANGE `phone_1` `phone_1` VARCHAR(20) NULL DEFAULT NULL;
 
 ALTER TABLE `roles` ADD `manager_role` INT NULL AFTER `details`;
@@ -116,8 +112,16 @@ ALTER TABLE `items` CHANGE `image` `image` VARCHAR(255) CHARACTER SET utf8mb4 CO
 
 ALTER TABLE `items` CHANGE `brand_id` `brand_id` INT NULL DEFAULT NULL;
 
+------------------------------------------
+---------------Home Updated---------------
+------------------------------------------
+
+INSERT INTO `modules` (`id`, `module_name`, `module_prefix`, `deletable`, `created_at`, `updated_at`) VALUES (NULL, 'Unit', 'unit', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), (NULL, 'Brand', 'brand', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+ALTER TABLE `units` CHANGE `base_unit` `base_unit` DOUBLE NULL DEFAULT NULL;
+
 
 
 ------------------------------------------
----------------Home Updated---------------
+--------------Office Updated--------------
 ------------------------------------------
