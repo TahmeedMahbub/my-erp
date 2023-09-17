@@ -1,6 +1,6 @@
 @extends('imports.main.layout')
 
-@section('title', 'Unit Create')
+@section('title', 'Brand Create')
 
 @section('content')
     <!-- Page-Title -->
@@ -8,9 +8,9 @@
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('unit')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All Units</a>
+                    <a href="{{route('brand')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All Brands</a>
                 </div>
-                <h4 class="page-title">Create User Unit</h4>
+                <h4 class="page-title">Create Brand</h4>
             </div><!--end page-title-box-->
         </div><!--end col-->
     </div>
@@ -18,47 +18,59 @@
 
     <div class="row">
         <div class="col-md-12 col-lg-12">
-            <div class="card overflow-hidden">
+            <div class="card overflow-hidden" style="padding-bottom: 35%;">
                 <div class="card-body">
                     <div class="card-body">
-                        <form action="{{ route('unit_store') }}" method="post">
+                        <form action="{{ route('brand_store') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-lg-5">
+                                <div class="col-lg-6">
                                     <div class="mb-3 row">
-                                        <label for="example-text-input" class="col-sm-4 col-form-label text-end">Unit Name <span class="text-danger font-weight-bold">*</span></label>
+                                        <label for="example-text-input" class="col-sm-3 col-form-label text-end"><span class="text-danger font-weight-bold">*</span> Brand Name </label>
                                         <div class="col-sm-8">
-                                            <input class="form-control" type="text" name="name" placeholder="Enter Unit Name (Required)" id="example-text-input" required>
+                                            <input class="form-control" type="text" name="name" placeholder="Enter Brand Name (Required)" id="example-text-input" required>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-7">
+                                <div class="col-lg-6">
                                     <div class="mb-3 row">
-                                        <label for="example-text-input" class="col-sm-3 col-form-label text-end">Equivalent</label>
-                                        <div class="col-sm-9">
-                                            <div class="input-group">
-                                                <input class="form-control" type="number" placeholder="Enter Equivalent Base Unit" name="base_unit" step="0.001">
-                                                <span class="input-group-text" id="basic-addon2">Base Unit(s)</span>
-                                            </div>
+                                        <label for="example-text-input" class="col-sm-3 col-form-label text-end">Brand Category</label>
+                                        <div class="col-sm-8">
+                                            <select id="default" class="form-select" name="category">
+                                                <option class="form-select" value="">Brand Category (Not Mandatory)</option>
+                                                @foreach ($categories as $category)
+                                                    <option class="form-select" value="{{ $category->id }}">{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-10">
+                                <div class="col-lg-6">
                                     <div class="mb-3 row">
-                                        <label for="example-url-input" class="col-sm-2 col-form-label text-end">Unit Details</label>
-                                        <div class="col-sm-10">
-                                            <input class="form-control" type="text" name="details" placeholder="Enter Unit Details (Not Mandatory)" id="example-url-input">
+                                        <label for="example-month-input" class="col-sm-3 col-form-label text-end">Image</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" type="file" name="image" accept="image/*">
+                                            @if(count($errors) && old('image')) <span class="text-danger">Upload Image Again</span> @endif
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-2">
-                                    <div class="mb-3 row justify-content-end">
-                                        <div class="col-sm-10">
-                                            <input class="form-control btn btn-purple" type="submit" value="Create Unit">
+                                <div class="col-lg-6">
+                                    <div class="mb-3 row">
+                                        <label for="example-text-input" class="col-sm-3 col-form-label text-end">Brand Details</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" type="text" name="details" placeholder="Enter Brand Details (Not Mandatory)" id="example-url-input">
                                         </div>
+                                    </div>
+                                </div>
+
+
+
+                                <div class="row justify-content-center mt-3">
+                                    <div class="col-lg-3">
+                                        <input class="form-control btn btn-purple" type="Submit" value="Create Brand">
                                     </div>
                                 </div>
                             </div>

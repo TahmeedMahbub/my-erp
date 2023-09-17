@@ -1,6 +1,6 @@
 @extends('imports.main.layout')
 
-@section('title', 'Unit Edit')
+@section('title', 'Brand Edit')
 
 @section('content')
     <!-- Page-Title -->
@@ -8,9 +8,9 @@
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('roles')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All Units</a>
+                    <a href="{{route('brand')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All Brands</a>
                 </div>
-                <h4 class="page-title">Edit Unit</h4>
+                <h4 class="page-title">Edit Brand</h4>
             </div><!--end page-title-box-->
         </div><!--end col-->
     </div>
@@ -21,44 +21,56 @@
             <div class="card overflow-hidden">
                 <div class="card-body">
                     <div class="card-body">
-                        <form action="{{ route('unit_update') }}" method="post">
+                        <form action="{{ route('brand_update') }}" method="post" enctype="multipart/form-data">
                             @csrf
                             <div class="row">
-                                <div class="col-lg-5">
+                                <div class="col-lg-6">
                                     <div class="mb-3 row">
-                                        <label for="example-text-input" class="col-sm-4 col-form-label text-end">Unit Name <span class="text-danger font-weight-bold">*</span></label>
+                                        <label for="example-text-input" class="col-sm-3 col-form-label text-end"><span class="text-danger font-weight-bold">*</span> Brand Name </label>
                                         <div class="col-sm-8">
-                                            <input class="form-control" type="text" name="name" value="{{$unit->name}}" placeholder="Enter Unit Name (Required)" id="example-text-input" required>
+                                            <input class="form-control" type="text" name="name" value="{{$brand->name}}" placeholder="Enter Brand Name (Required)" id="example-text-input" required>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-7">
+                                <div class="col-lg-6">
                                     <div class="mb-3 row">
-                                        <label for="example-text-input" class="col-sm-3 col-form-label text-end">Equivalent</label>
-                                        <div class="col-sm-9">
-                                            <div class="input-group">
-                                                <input class="form-control" type="number" placeholder="Enter Equivalent Base Unit" name="base_unit" value="{{$unit->base_unit}}" step="0.001">
-                                                <span class="input-group-text" id="basic-addon2">Base Unit(s)</span>
-                                            </div>
+                                        <label for="example-text-input" class="col-sm-3 col-form-label text-end">Brand Category</label>
+                                        <div class="col-sm-8">
+                                            <select id="default" class="form-select" name="category">
+                                                <option class="form-select" value="">Brand Category (Not Mandatory)</option>
+                                                @foreach ($categories as $category)
+                                                    <option class="form-select" value="{{ $category->id }}" {{$brand->category_id == $category->id ? 'selected' : ''}}>{{ $category->name }}</option>
+                                                @endforeach
+                                            </select>
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-10">
+                                <div class="col-lg-6">
                                     <div class="mb-3 row">
-                                        <label for="example-url-input" class="col-sm-2 col-form-label text-end">Unit Details</label>
-                                        <div class="col-sm-10">
-                                            <input class="form-control" type="text" name="details" value="{{$unit->details}}" placeholder="Enter Unit Details (Not Mandatory)" id="example-url-input">
+                                        <label for="example-month-input" class="col-sm-3 col-form-label text-end"><img src="{{ asset('assets\images\\' . $brand->image) }}" alt="" class="thumb-xs me-1"> Image</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" type="file" name="image" accept="image/*">
+                                            @if(count($errors) && old('image')) <span class="text-danger">Upload Image Again</span> @endif
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-lg-2">
-                                    <div class="mb-3 row justify-content-end">
-                                        <div class="col-sm-10">
-                                            <input type="hidden" name="id" value="{{ $unit->id }}">
-                                            <input class="form-control btn btn-secondary" type="submit" value="Edit Role">
+                                <div class="col-lg-6">
+                                    <div class="mb-3 row">
+                                        <label for="example-text-input" class="col-sm-3 col-form-label text-end">Brand Details</label>
+                                        <div class="col-sm-8">
+                                            <input class="form-control" type="text" name="details" value="{{$brand->details}}" placeholder="Enter Brand Details (Not Mandatory)" id="example-url-input">
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="col-lg-12">
+                                    <div class="row justify-content-center mt-3">
+                                        <div class="col-lg-3">
+                                            <input type="hidden" name="id" value="{{ $brand->id }}">
+                                            <input class="form-control btn btn-secondary" type="Submit" value="Edit Brand">
                                         </div>
                                     </div>
                                 </div>

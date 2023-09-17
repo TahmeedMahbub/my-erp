@@ -10,7 +10,7 @@
                 <div class="float-end">
                     <a href="{{route('unit')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All Units</a>
                 </div>
-                <h4 class="page-title">Create User Unit</h4>
+                <h4 class="page-title">Create Unit</h4>
             </div><!--end page-title-box-->
         </div><!--end col-->
     </div>

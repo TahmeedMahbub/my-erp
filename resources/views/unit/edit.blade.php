@@ -8,7 +8,7 @@
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('roles')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All Units</a>
+                    <a href="{{route('unit')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All Units</a>
                 </div>
                 <h4 class="page-title">Edit Unit</h4>
             </div><!--end page-title-box-->

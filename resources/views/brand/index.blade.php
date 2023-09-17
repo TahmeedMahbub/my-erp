@@ -1,15 +1,15 @@
 @extends('imports.main.layout')
 
-@section('title', 'Unit')
+@section('title', 'Brand')
 
 @section('content')
     <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('unit_create')}}" class="btn btn-purple btn-sm"><i class="mdi mdi-plus"></i> Create Unit</a>
+                    <a href="{{route('brand_create')}}" class="btn btn-purple btn-sm"><i class="mdi mdi-plus"></i> Create Brand</a>
                 </div>
-                <h4 class="page-title">Unit</h4>
+                <h4 class="page-title">Brand</h4>
             </div><!--end page-title-box-->
         </div><!--end col-->
     </div>
@@ -24,38 +24,37 @@
                             <thead class="table-secondary">
                             <tr>
                                 <th>Sl</th>
-                                <th>Unit Name</th>
-                                <th>Equivalent</th>
+                                <th>Brand Name</th>
                                 <th>Details</th>
                                 <th class="text-end">Action</th>
                             </tr>
                             </thead>
                             <tbody>
-                                @foreach ($units as $unit)
+                                @foreach ($brands as $brand)
                                     <tr>
                                         <td> {{ $loop->iteration }} </td>
-                                        <td> {{ $unit->name }} </td>
                                         <td>
-                                            @if(!empty($unit->base_unit) && $unit->base_unit == 1)
-                                                {{ $unit->base_unit }} Base Unit</td>
-                                            @elseif(!empty($unit->base_unit))
-                                                {{ $unit->base_unit }} Base Units</td>
-                                            @endif
-
-                                        <td>{{ $unit->details }}</td>
+                                            <table>
+                                                <tr>
+                                                    <td><img src="{{ asset('assets\images\\' . $brand->image) }}" alt="" class="thumb-xs me-1"></td>
+                                                    <td>
+                                                        {{$brand->name}}
+                                                    </td>
+                                                </tr>
+                                            </table>
+                                        </td>
+                                        <td>{{ $brand->details }}</td>
                                         <td class="text-end">
                                             <div class="d-flex justify-content-end">
-                                                <a href="{{ route('unit_view', $unit->id) }}" title="View" class="text-secondary-custom">
+                                                <a href="{{ route('brand_view', $brand->id) }}" title="View" class="text-secondary-custom">
                                                     <i class="mdi mdi-eye pe-2 fs-4"></i>
                                                 </a>
-                                                @if($unit->id != 1)
-                                                    <a href="{{ route('unit_edit', $unit->id) }}" title="Edit" class="text-secondary-custom">
-                                                        <i class="mdi mdi-lead-pencil pe-2 fs-4"></i>
-                                                    </a>
-                                                    <a href="{{ route('unit_delete', $unit->id) }}" title="Delete" class="text-secondary-custom">
-                                                        <i class="mdi mdi-delete-empty pe-2 fs-4"></i>
-                                                    </a>
-                                                @endif
+                                                <a href="{{ route('brand_edit', $brand->id) }}" title="Edit" class="text-secondary-custom">
+                                                    <i class="mdi mdi-lead-pencil pe-2 fs-4"></i>
+                                                </a>
+                                                <a href="{{ route('brand_delete', $brand->id) }}" title="Delete" class="text-secondary-custom">
+                                                    <i class="mdi mdi-delete-empty pe-2 fs-4"></i>
+                                                </a>
                                             </div>
                                         </td>
                                     </tr>

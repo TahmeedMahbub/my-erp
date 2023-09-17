@@ -63,7 +63,7 @@ class UnitController extends Controller
     public function update(Request $request)
     {
         $unit = Unit::find($request->id);
-        $old_role = clone $unit;
+        $old_unit = clone $unit;
 
         $unit->name = $request->name;
         $unit->base_unit = $request->base_unit;
@@ -76,7 +76,7 @@ class UnitController extends Controller
         $history->module = "Unit";
         $history->module_id = $unit->id;
         $history->operation = "Edit";
-        $history->previous = json_encode($old_role);
+        $history->previous = json_encode($old_unit);
         $history->after = json_encode($unit);
         $history->user_id = Auth::user()->id;
         $history->ip_address = Session::get('user_ip');

@@ -120,6 +120,8 @@ INSERT INTO `modules` (`id`, `module_name`, `module_prefix`, `deletable`, `creat
 
 ALTER TABLE `units` CHANGE `base_unit` `base_unit` DOUBLE NULL DEFAULT NULL;
 
+ALTER TABLE `brands` ADD `image` VARCHAR(255) NOT NULL DEFAULT 'brands/brand.jpg' AFTER `name`;
+
 
 
 ------------------------------------------

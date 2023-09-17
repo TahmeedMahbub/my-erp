@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Brand;
 use App\Models\History;
 use App\Models\Item;
+use App\Models\ItemCategory;
 use App\Models\Unit;
 use App\Models\User;
 use Carbon\Carbon;
@@ -15,123 +17,145 @@ class BrandController extends Controller
 {
     public function index()
     {
-        $units = Unit::all();
-        return view('unit.index', compact('units'));
+        $brands = Brand::all();
+        return view('brand.index', compact('brands'));
     }
 
     public function create()
     {
-        $units = Unit::all();
-        return view('unit.create', compact('units'));
+        $brands = Brand::all();
+        $categories = ItemCategory::all();
+        return view('brand.create', compact('brands', 'categories'));
     }
 
     public function store(Request $request)
     {
-        $unit = new Unit;
-        $unit->name = $request->name;
-        $unit->details = $request->details;
-        $unit->base_unit = $request->base_unit;
-        $unit->created_by = Auth::user()->id;
-        $unit->created_at = Carbon::now()->toDateTimeString();
-        $unit->updated_by = Auth::user()->id;
-        $unit->updated_at = Carbon::now()->toDateTimeString();
-        $unit->save();
+        $brand = new Brand;
+        $brand->name = $request->name;
+        $brand->details = $request->details;
+        $brand->category_id = $request->category;
+        $brand->created_by = Auth::user()->id;
+        $brand->created_at = Carbon::now()->toDateTimeString();
+        $brand->updated_by = Auth::user()->id;
+        $brand->updated_at = Carbon::now()->toDateTimeString();
+        $brand->save();
+
+        if ($request->hasFile('image')) {
+            $file                       = $request->file('image');
+            $file_extention             = $file->getClientOriginalExtension();
+            $new_file_name              = "brand_" . $brand->id . "." . $file_extention;
+            $success                    = $file->move('assets/images/brands', $new_file_name);
+
+            if ($success) {
+                $brand->image      = 'brands/' . $new_file_name;
+                $brand->save();
+            }
+        }
+
 
         $history = new History;
-        $history->module = "Unit";
-        $history->module_id = $unit->id;
+        $history->module = "Brand";
+        $history->module_id = $brand->id;
         $history->operation = "Create";
         $history->previous = null;
-        $history->after = json_encode($unit);
+        $history->after = json_encode($brand);
         $history->user_id = Auth::user()->id;
         $history->ip_address = Session::get('user_ip');
         $history->save();
 
         return redirect()
-        ->route('unit')
+        ->route('brand')
         ->with('alert.status', 'success')
-        ->with('alert.message', 'Unit Created Successfully!');
+        ->with('alert.message', 'Brand Created Successfully!');
     }
 
     public function edit($id)
     {
-        $unit = Unit::find($id);
-        $units = Unit::all();
-        return view('unit.edit', compact('unit', 'units'));
+        $brand = Brand::find($id);
+        $categories = ItemCategory::all();
+        return view('brand.edit', compact('brand', 'categories'));
     }
 
     public function update(Request $request)
     {
-        $unit = Unit::find($request->id);
-        $old_role = clone $unit;
+        $brand = Brand::find($request->id);
+        $old_brand = clone $brand;
 
-        $unit->name = $request->name;
-        $unit->base_unit = $request->base_unit;
-        $unit->details = $request->details;
-        $unit->updated_by = Auth::user()->id;
-        $unit->updated_at = Carbon::now()->toDateTimeString();
-        $unit->save();
+        $brand->name = $request->name;
+        $brand->details = $request->details;
+        $brand->category_id = $request->category;
+        $brand->created_by = Auth::user()->id;
+        $brand->created_at = Carbon::now()->toDateTimeString();
+        $brand->updated_by = Auth::user()->id;
+        $brand->updated_at = Carbon::now()->toDateTimeString();
+
+        if ($request->hasFile('image')) {
+            $file                       = $request->file('image');
+            $file_extention             = $file->getClientOriginalExtension();
+            $new_file_name              = "brand_" . $brand->id . "." . $file_extention;
+            $success                    = $file->move('assets/images/brands', $new_file_name);
+
+            if ($success) {
+                $brand->image      = 'brands/' . $new_file_name;
+            }
+        }
+
+        $brand->save();
 
         $history = new History;
-        $history->module = "Unit";
-        $history->module_id = $unit->id;
+        $history->module = "Brand";
+        $history->module_id = $brand->id;
         $history->operation = "Edit";
-        $history->previous = json_encode($old_role);
-        $history->after = json_encode($unit);
+        $history->previous = json_encode($old_brand);
+        $history->after = json_encode($brand);
         $history->user_id = Auth::user()->id;
         $history->ip_address = Session::get('user_ip');
         $history->save();
 
         return redirect()
-        ->route('unit')
+        ->route('brand')
         ->with('alert.status', 'success')
-        ->with('alert.message', 'Unit Edited Successfully!');
+        ->with('alert.message', 'Brand Edited Successfully!');
     }
 
     public function delete($id)
     {
-        $item = Item::where('unit_id', $id)->first();
+        $item = Item::where('brand_id', $id)->first();
         if(!empty($item))
         {
             return redirect()
-            ->route('unit')
+            ->route('brand')
             ->with('alert.status', 'danger')
-            ->with('alert.message', 'Few Items Are Using This Unit. It Cannot Be Deleted!!!');
+            ->with('alert.message', 'Few Items Are Using This Brand. It Cannot Be Deleted!!!');
         }
 
-        $unit = Unit::where('id', $id)->first();
+        $brand = Brand::find($id);
 
-        if($unit)
+        if($brand)
         {
             $history = new History;
-            $history->module = "Unit";
-            $history->module_id = $unit->id;
+            $history->module = "Brand";
+            $history->module_id = $brand->id;
             $history->operation = "Delete";
-            $history->previous = json_encode($unit);
+            $history->previous = json_encode($brand);
             $history->after = null;
             $history->user_id = Auth::user()->id;
             $history->ip_address = Session::get('user_ip');
             $history->save();
 
-            $unit->delete();
+            $brand->delete();
 
             return redirect()
-            ->route('unit')
+            ->route('brand')
             ->with('alert.status', 'success')
-            ->with('alert.message', 'Unit Deleted Successfully!');
+            ->with('alert.message', 'Brand Deleted Successfully!');
         }
         else
         {
             return redirect()
-            ->route('unit')
+            ->route('brand')
             ->with('alert.status', 'danger')
-            ->with('alert.message', 'This Unit Cannot be Deleted!');
+            ->with('alert.message', 'This Brand Cannot be Deleted!');
         }
-    }
-
-    public function userByUnit($unit_id)
-    {
-        $users = User::where('role_id', $unit_id)->where('id', '>', 0)->get();
-        return response()->json(['role_id' => $unit_id, 'users' => $users]);
     }
 }

@@ -37,11 +37,11 @@
                                         <td> {{ $unit->name }} </td>
                                         <td>
                                             @if(!empty($unit->base_unit) && $unit->base_unit == 1)
-                                                {{ $unit->base_unit }} Base Unit</td>
+                                                {{ $unit->base_unit }} Base Unit
                                             @elseif(!empty($unit->base_unit))
-                                                {{ $unit->base_unit }} Base Units</td>
+                                                {{ $unit->base_unit }} Base Units
                                             @endif
-
+                                        </td>
                                         <td>{{ $unit->details }}</td>
                                         <td class="text-end">
                                             <div class="d-flex justify-content-end">
