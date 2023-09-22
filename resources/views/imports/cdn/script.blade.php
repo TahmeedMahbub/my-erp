@@ -8,6 +8,14 @@
         document.getElementById('time').innerText = formattedWeek+' | '+formattedDate+' | '+formattedTime;
     }, 1000);
 
+    $(document).ready(function () {
+        const customSelects = document.querySelectorAll('.custom_select');
+
+        customSelects.forEach(function(element) {
+        new Selectr(element);
+        });
+    });
+
 </script>
 
 @yield('script')

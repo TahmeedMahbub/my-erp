@@ -9,6 +9,7 @@ use App\Http\Controllers\ContactController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ItemController;
 use App\Http\Controllers\OrganizationController;
+use App\Http\Controllers\PurchaseController;
 use App\Http\Controllers\RoleController;
 use App\Http\Controllers\UnitController;
 use App\Http\Controllers\UserController;
@@ -132,4 +133,14 @@ Route::group(['prefix' => 'item', 'middleware' => 'auth'], function () {
     Route::get('/category/edit/{id}', [ItemController::class, 'categoryEdit'])->name('item_category_edit')->middleware('updateAccess');
     Route::post('/category/update', [ItemController::class, 'categoryUpdate'])->name('item_category_update')->middleware('updateAccess');
     Route::get('/category/delete/{id}', [ItemController::class, 'categoryDelete'])->name('item_category_delete')->middleware('deleteAccess');
+});
+
+Route::group(['prefix' => 'purchase', 'middleware' => 'auth'], function () {
+    Route::get('/', [PurchaseController::class, 'index'])->name('purchase')->middleware('readAccess');
+    Route::get('/view/{id}', [PurchaseController::class, 'view'])->name('purchase_view')->middleware('readAccess');
+    Route::get('/create', [PurchaseController::class, 'create'])->name('purchase_create')->middleware('createAccess');
+    Route::post('/store', [PurchaseController::class, 'store'])->name('purchase_store')->middleware('createAccess');
+    Route::get('/edit/{id}', [PurchaseController::class, 'edit'])->name('purchase_edit')->middleware('updateAccess');
+    Route::post('/update', [PurchaseController::class, 'update'])->name('purchase_update')->middleware('updateAccess');
+    Route::get('/delete/{id}', [PurchaseController::class, 'delete'])->name('purchase_delete')->middleware('deleteAccess');
 });

@@ -169,7 +169,7 @@
     <div class="collapse " id="sidebarMoneyOut">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Purchase (!!!)</a>
+                <a class="nav-link" href="{{ route('purchase') }}">Purchase (!!!)</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">Payment (!!!)</a>
@@ -214,7 +214,7 @@
 
 
 {{-- DESIGN OF INVOICE --}}
-
+{{--
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -1441,4 +1441,4 @@
     </body>
     <!--end body-->
 </html>
-
+ --}}

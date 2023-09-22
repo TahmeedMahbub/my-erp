@@ -28,7 +28,7 @@
                                     <div class="row mb-3">
                                         <label for="branch_select" class="col-sm-4 col-form-label text-end">Branch <span class="text-danger font-weight-bold">*</span></label>
                                         <div class="col-sm-8">
-                                            <select id="default1" class="form-select select2" name="branch_id" required>
+                                            <select id="default1" class="form-select custom_select" name="branch_id" required>
                                                 <option class="form-select" value="">Select Branch</option>
                                                 @foreach ($branches as $branch)
                                                     <option class="form-select" value="{{ $branch->id }}">{{ $branch->name }}</option>
@@ -41,7 +41,7 @@
                                     <div class="row mb-3">
                                         <label for="role_select" class="col-sm-4 col-form-label text-end">Role <span class="text-danger font-weight-bold">*</span></label>
                                         <div class="col-sm-8">
-                                            <select id="role_id" class="form-select select2" name="role_id" required>
+                                            <select id="role_id" class="form-select custom_select" name="role_id" required>
                                                 <option value="">Select Role</option>
                                                 @foreach ($roles as $role)
                                                     <option class="form-select" value="{{ $role->id }}" data-m_role="{{ $role->manager_role_id }}">{{ $role->role_name }}</option>
@@ -54,7 +54,7 @@
                                     <div class="row mb-3">
                                         <label for="branch_select" class="col-sm-4 col-form-label text-end">Manager Role</label>
                                         <div class="col-sm-8">
-                                            <select id="m_role_id" class="form-select select2" name="m_role_id" required>
+                                            <select id="m_role_id" class="form-select custom_select" name="m_role_id" required>
                                                 <option value="">Select Manager Role</option>
                                                 @foreach ($roles as $role)
                                                     <option class="form-select" value="{{ $role->id }}">{{ $role->role_name }}</option>
@@ -67,7 +67,7 @@
                                     <div class="row mb-3">
                                         <label for="branch_select" class="col-sm-4 col-form-label text-end">Manager</label>
                                         <div class="col-sm-8">
-                                            <select id="manager_id" class="form-select select2" name="manager_id" required>
+                                            <select id="manager_id" class="form-select custom_select" name="manager_id" required>
                                                 <option class="form-select" value="">Select Manager</option>
                                                 @foreach ($users as $user)
                                                     <option class="form-select" value="{{ $user->id }}">{{ $user->name }}</option>
@@ -235,7 +235,6 @@
     <script>
 
     $(document).ready(function() {
-        $('.select2').select2();
         $("#role_id").change(function() {
             var selected_role   = $(this).val();
             var manager_role    = $(this).find("option:selected").attr("data-m_role");

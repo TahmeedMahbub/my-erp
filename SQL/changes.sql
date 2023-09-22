@@ -113,8 +113,10 @@ ALTER TABLE `items` CHANGE `image` `image` VARCHAR(255) CHARACTER SET utf8mb4 CO
 ALTER TABLE `items` CHANGE `brand_id` `brand_id` INT NULL DEFAULT NULL;
 
 ------------------------------------------
----------------Home Updated---------------
+--------------Office Updated--------------
 ------------------------------------------
+
+INSERT INTO `modules` (`id`, `module_name`, `module_prefix`, `deletable`, `created_at`, `updated_at`) VALUES ('8', 'Purchase', 'purchase', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
 INSERT INTO `modules` (`id`, `module_name`, `module_prefix`, `deletable`, `created_at`, `updated_at`) VALUES (NULL, 'Unit', 'unit', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP), (NULL, 'Brand', 'brand', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
@@ -122,8 +124,15 @@ ALTER TABLE `units` CHANGE `base_unit` `base_unit` DOUBLE NULL DEFAULT NULL;
 
 ALTER TABLE `brands` ADD `image` VARCHAR(255) NOT NULL DEFAULT 'brands/brand.jpg' AFTER `name`;
 
+INSERT INTO `contact_categories` (`id`, `name`, `details`, `parent_category_id`, `created_by`, `updated_by`, `created_at`, `updated_at`, `deletable`, `deleted_at`) VALUES ('1', 'Customer', 'Customer will buy products.', NULL, '1', '1', '2023-09-21 17:19:49.000000', '2023-09-21 17:19:49.000000', '0', NULL);
+
+INSERT INTO `contact_categories` (`id`, `name`, `details`, `parent_category_id`, `created_by`, `updated_by`, `created_at`, `updated_at`, `deletable`, `deleted_at`) VALUES ('2', 'Vendor', 'Comany will purchase products from Vendor', NULL, '1', '1', '2023-09-21 17:19:49.000000', '2023-09-21 17:19:49.000000', '0', NULL);
+
+INSERT INTO `contact_categories` (`id`, `name`, `details`, `parent_category_id`, `created_by`, `updated_by`, `created_at`, `updated_at`, `deletable`, `deleted_at`) VALUES ('3', 'Delivery Person', 'Ships the products', NULL, '1', '1', '2023-09-21 17:19:49.000000', '2023-09-21 17:19:49.000000', '0', NULL);
+
+INSERT INTO `contact_categories` (`id`, `name`, `details`, `parent_category_id`, `created_by`, `updated_by`, `created_at`, `updated_at`, `deletable`, `deleted_at`) VALUES ('4', 'Purchase Delivery Person', 'Deliver Only Purchased Products', '3', '1', '1', '2023-09-21 17:26:55.000000', '2023-09-21 17:26:55.000000', '1', NULL), ('5', 'Sale Delivery Person', 'Deliver Only Sold Products', '3', '1', '1', '2023-09-21 17:26:55.000000', '2023-09-21 17:26:55.000000', '1', NULL);
 
 
 ------------------------------------------
---------------Office Updated--------------
+---------------Home Updated---------------
 ------------------------------------------

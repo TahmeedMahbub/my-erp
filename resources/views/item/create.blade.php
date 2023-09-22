@@ -48,7 +48,7 @@
                                     <div class="mb-3 row">
                                         <label for="example-email-input" class="col-sm-4 col-form-label text-end"><span class="text-danger font-weight-bold">*</span> Category</label>
                                         <div class="col-sm-8">
-                                            <select name="category" id="" class="form-control select2">
+                                            <select name="category" id="" class="form-control custom_select">
                                                 <option value="">Select Category</option>
                                                 @foreach ($categories as $category)
                                                     <option value="{{ $category->id }}">{{ $category->name }}</option>
@@ -62,7 +62,7 @@
                                     <div class="mb-3 row">
                                         <label for="example-date-input" class="col-sm-4 col-form-label text-end"><span class="text-danger font-weight-bold">*</span> Unit</label>
                                         <div class="col-sm-8">
-                                            <select name="unit" id="" class="form-control select2">
+                                            <select name="unit" id="" class="form-control custom_select">
                                                 @foreach ($units as $unit)
                                                     <option value="{{ $unit->id }}">{{ $unit->name }}</option>
                                                 @endforeach
@@ -86,7 +86,7 @@
                                     <div class="mb-3 row">
                                         <label for="example-text-input" class="col-sm-4 col-form-label text-end">Brand</label>
                                         <div class="col-sm-8">
-                                            <select name="brand" id="" class="form-control select2">
+                                            <select name="brand" id="" class="form-control custom_select">
                                                 <option value="">Select Brand</option>
                                                 @foreach ($brands as $brand)
                                                     <option value="{{ $brand->id }}">{{ $brand->name }}</option>
@@ -157,13 +157,4 @@
             </div>
         </form>
     </div>
-@endsection
-
-
-@section('script')
-    <script>
-        $(document).ready(function () {
-            $('.select2').select2();
-        });
-    </script>
 @endsection

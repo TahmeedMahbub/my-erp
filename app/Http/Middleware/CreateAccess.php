@@ -30,6 +30,14 @@ class CreateAccess
 
         $prefix = substr($request->route()->getPrefix(), 1);
         $module = Module::where('module_prefix', $prefix)->first();
+
+        if(!isset($module))
+        {
+            return redirect()->back()
+                ->with('alert.status', 'warning')
+                ->with('alert.message', 'No Permission Module Found! Contact Your Dev To Create Module for Permission.');
+        }
+
         $role_access_levels  = AccessLevel::where('module_id', $module->id)->where('role_id', $user->role_id)->first();
         $user_access_levels  = AccessLevel::where('module_id', $module->id)->where('user_id', $user->id)->first();
 
