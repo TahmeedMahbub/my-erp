@@ -77,7 +77,7 @@
                         <div class="table-responsive">
                             <table class="table-sm mb-0">
                                 <thead class="thead-light">
-                                    <tr class="border-bottom">
+                                    <tr class="border-bottom item_rows">
                                         <th class="p-2" style="width: 2%;">#</th>
                                         <th class="p-2" style="width: 5%;">Image</th>
                                         <th class="p-2" style="width: 25%;">Item / Service</th>
@@ -133,7 +133,7 @@
                                             <div id="amount_show_0" class="text-end item_amounts">0.00</div>
                                         </td>
                                         <td class="p-2">
-                                            <div class="text-center"><a title="Remove Item" id="remove_0" class="text-secondary-custom"><i class="mdi mdi-delete-empty pe-2 fs-2"></i></a></div>
+                                            <div class="text-center"><a title="Remove Item" id="remove_0" class="text-secondary-custom remove_items"><i class="mdi mdi-delete-empty pe-2 fs-2"></i></a></div>
                                         </td>
                                     </tr>
                                     <tr id="amount_row">
@@ -288,16 +288,16 @@
                                         <span class="text-danger">{{ $errors->first('item_${newItemId}') }}</span>
                                     </td>
                                     <td class="p-2">
-                                        <input class="form-control item-data-changed" type="number" id="carton_${newItemId}" value="0.00" step="0.001" name="carton_qty[]" placeholder="Carton QTY">
+                                        <input class="form-control item-data-changed" type="number" id="carton_${newItemId}" value="0" step="0.001" name="carton_qty[]" placeholder="Carton QTY">
                                         <span class="text-danger">{{ $errors->first('carton_${newItemId}') }}</span>
                                     </td>
                                     <td class="p-2">
-                                        <input class="form-control item-data-changed" type="number" id="base_${newItemId}" value="0.00" step="0.001" name="base_qty[]" placeholder="Base QTY">
+                                        <input class="form-control item-data-changed" type="number" id="base_${newItemId}" value="0" step="0.001" name="base_qty[]" placeholder="Base QTY">
                                         <span class="text-danger">{{ $errors->first('base_${newItemId}') }}</span>
                                     </td>
                                     <td class="p-2">
                                         <div class="input-group">
-                                            <input class="form-control item-data-changed" type="number" style="width: 70px;" id="rate_${newItemId}" value="0.00" step="0.01" name="rates[]" placeholder="Rate Per Unit">
+                                            <input class="form-control item-data-changed" type="number" style="width: 70px;" id="rate_${newItemId}" value="0" step="0.01" name="rates[]" placeholder="Rate Per Unit">
                                             <select id="unit_${newItemId}" class="form-select item-data-changed" name="units[]">
                                                 <option value="base">Base</option>
                                                 <option value="ctn">Ctn</option>
@@ -307,7 +307,7 @@
                                     </td>
                                     <td class="p-2">
                                         <div class="input-group">
-                                            <input class="form-control item-data-changed" type="number" style="width: 70px;" id="discount_${newItemId}" value="0.00" step="0.001" name="discounts[]" placeholder="Discount">
+                                            <input class="form-control item-data-changed" type="number" style="width: 70px;" id="discount_${newItemId}" value="0" step="0.001" name="discounts[]" placeholder="Discount">
                                             <select id="discount_type_${newItemId}" class="form-select item-data-changed" name="discount_types[]">
                                                 <option value="tk">TK</option>
                                                 <option value="%">%</option>
@@ -318,7 +318,7 @@
                                         <div id="amount_show_${newItemId}" class="text-end item_amounts">0.00</div>
                                     </td>
                                     <td class="p-2">
-                                        <div class="text-center"><a title="Remove Item" id="remove_${newItemId}" class="text-secondary-custom"><i class="mdi mdi-delete-empty pe-2 fs-2"></i></a></div>
+                                        <div class="text-center"><a title="Remove Item" id="remove_${newItemId}" class="text-secondary-custom remove_items"><i class="mdi mdi-delete-empty pe-2 fs-2"></i></a></div>
                                     </td>
                                 </tr>`;
                 $(".item_rows:last").after(newItemRow);
@@ -361,6 +361,12 @@
         });
 
         $(document).on("input", ".data-changed", function () {
+            calculate_amounts();
+        });
+
+        $(document).on("click", ".remove_items", function () {
+            var inputId = parseInt($(this).attr('id').match(/\d+/));
+            $("#item_row_"+inputId).empty();
             calculate_amounts();
         });
 
