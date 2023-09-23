@@ -1180,7 +1180,7 @@
                                                     <div id="amount_0" class="text-end">12,000.00</div>
                                                 </td>
                                                 <td class="p-2">
-                                                    <div id="remove_0" class="text-center"><a href="" title="Delete" class="text-secondary-custom"><i class="mdi mdi-delete-empty pe-2 fs-2"></i></a></div>
+                                                    <div id="remove_0" class="text-center"><a href="" title="Delete" class="text-secondary-custom"><i class="mdi mdi-delete pe-2 fs-2"></i></a></div>
                                                 </td>
                                             </tr>
                                             <tr class="border-bottom">
@@ -1240,7 +1240,7 @@
                                                     <div id="amount_0" class="text-end">12,000.00</div>
                                                 </td>
                                                 <td class="p-2">
-                                                    <div id="remove_0" class="text-center"><a href="" title="Delete" class="text-secondary-custom"><i class="mdi mdi-delete-empty pe-2 fs-2"></i></a></div>
+                                                    <div id="remove_0" class="text-center"><a href="" title="Delete" class="text-secondary-custom"><i class="mdi mdi-delete pe-2 fs-2"></i></a></div>
                                                 </td>
                                             </tr>
                                             <tr>

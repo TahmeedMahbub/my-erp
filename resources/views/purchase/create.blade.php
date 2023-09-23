@@ -133,7 +133,7 @@
                                             <div id="amount_show_0" class="text-end item_amounts">0.00</div>
                                         </td>
                                         <td class="p-2">
-                                            <div class="text-center"><a title="Remove Item" id="remove_0" class="text-secondary-custom remove_items"><i class="mdi mdi-delete-empty pe-2 fs-2"></i></a></div>
+                                            <div class="text-center"><a title="Remove Item" id="remove_0" class="text-secondary-custom remove_items"><i class="mdi mdi-delete pe-2 fs-2"></i></a></div>
                                         </td>
                                     </tr>
                                     <tr id="amount_row">
@@ -318,7 +318,7 @@
                                         <div id="amount_show_${newItemId}" class="text-end item_amounts">0.00</div>
                                     </td>
                                     <td class="p-2">
-                                        <div class="text-center"><a title="Remove Item" id="remove_${newItemId}" class="text-secondary-custom remove_items"><i class="mdi mdi-delete-empty pe-2 fs-2"></i></a></div>
+                                        <div class="text-center"><a title="Remove Item" id="remove_${newItemId}" class="text-secondary-custom remove_items"><i class="mdi mdi-delete pe-2 fs-2"></i></a></div>
                                     </td>
                                 </tr>`;
                 $(".item_rows:last").after(newItemRow);

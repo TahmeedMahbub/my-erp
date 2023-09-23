@@ -53,7 +53,7 @@
                                                     <i class="mdi mdi-lead-pencil pe-2 fs-4"></i>
                                                 </a>
                                                 <a href="{{ route('brand_delete', $brand->id) }}" title="Delete" class="text-secondary-custom">
-                                                    <i class="mdi mdi-delete-empty pe-2 fs-4"></i>
+                                                    <i class="mdi mdi-delete pe-2 fs-4"></i>
                                                 </a>
                                             </div>
                                         </td>

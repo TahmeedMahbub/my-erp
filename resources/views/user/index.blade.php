@@ -91,7 +91,7 @@
                                                 </a>
                                                 @if($user->deletable)
                                                     <a href="{{ route('user_delete', $user->id) }}" title="Delete" class="text-secondary-custom">
-                                                        <i class="mdi mdi-delete-empty pe-2 fs-4"></i>
+                                                        <i class="mdi mdi-delete pe-2 fs-4"></i>
                                                     </a>
                                                 @else
                                                     <i class="mdi mdi-shield-check-outline pe-2 fs-4" title="Can not Delete"></i>
