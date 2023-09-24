@@ -9,6 +9,7 @@
 /public/assets/images/items
 /public/assets/images/brands
 /public/assets/files/contacts
+/public/assets/files/purchases
 /storage/*.key
 /vendor
 .env

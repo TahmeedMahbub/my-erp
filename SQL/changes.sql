@@ -132,6 +132,13 @@ INSERT INTO `contact_categories` (`id`, `name`, `details`, `parent_category_id`,
 
 INSERT INTO `contact_categories` (`id`, `name`, `details`, `parent_category_id`, `created_by`, `updated_by`, `created_at`, `updated_at`, `deletable`, `deleted_at`) VALUES ('4', 'Purchase Delivery Person', 'Deliver Only Purchased Products', '3', '1', '1', '2023-09-21 17:26:55.000000', '2023-09-21 17:26:55.000000', '1', NULL), ('5', 'Sale Delivery Person', 'Deliver Only Sold Products', '3', '1', '1', '2023-09-21 17:26:55.000000', '2023-09-21 17:26:55.000000', '1', NULL);
 
+CREATE TABLE `my_erp`.`purchases` (`id` INT NOT NULL AUTO_INCREMENT , `code` VARCHAR(10) NOT NULL , `vendor_id` INT NOT NULL , `delivery_preson_id` INT NOT NULL , `branch_id` INT NOT NULL , `total_amount` DOUBLE(10,2) NOT NULL DEFAULT '0' , `paid_through_id` INT NULL DEFAULT NULL , `cheque_no` VARCHAR(30) NULL DEFAULT NULL , `cheque_date` DATE NULL DEFAULT NULL , `payment_comment` TEXT NULL DEFAULT NULL , `discount` DOUBLE(10,2) NOT NULL DEFAULT '0' , `discount_type` VARCHAR(10) NOT NULL DEFAULT 'tk' , `vat` DOUBLE(10,2) NOT NULL DEFAULT '0' , `vat_type` VARCHAR(10) NOT NULL DEFAULT '%' , `shipping_charge` DOUBLE(10,2) NOT NULL DEFAULT '0' , `note` TEXT NULL DEFAULT NULL , `files` TEXT NULL DEFAULT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_by` INT NOT NULL , `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_by` INT NOT NULL , `deleted_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `purchases` CHANGE `code` `code` VARCHAR(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL;
+
+ALTER TABLE `purchases` CHANGE `delivery_preson_id` `delivery_preson_id` INT NULL DEFAULT NULL;
+
+ALTER TABLE `purchases` ADD `paid_amount` DOUBLE(10,2) NULL DEFAULT '0' AFTER `total_amount`;
 
 ------------------------------------------
 ---------------Home Updated---------------

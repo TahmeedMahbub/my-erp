@@ -38,7 +38,7 @@
                                     <select id="vendor" class="form-select custom_select" name="vendor" required>
                                         <option value="">Select Vendor</option>
                                         @foreach ($vendors as $vendor)
-                                            <option value="">{{ $vendor->name }} (0{{ $vendor->phone }}), {{ $vendor->code }}</option>
+                                            <option value="{{ $vendor->id }}">{{ $vendor->name }} (0{{ $vendor->phone }}), {{ $vendor->code }}</option>
                                         @endforeach
                                     </select>
                                     <!-- <span class="text-danger">{{ $errors->first('vendor') }}</span> -->
@@ -48,7 +48,7 @@
                                     <select id="delivery" class="form-select custom_select" name="delivery">
                                         <option value="">Select Delivery</option>
                                         @foreach ($delivery_persons as $delivery_person)
-                                            <option value="">{{ $delivery_person->name }} (0{{ $delivery_person->phone }}), {{ $delivery_person->code }}</option>
+                                            <option value="{{ $delivery_person->id }}">{{ $delivery_person->name }} (0{{ $delivery_person->phone }}), {{ $delivery_person->code }}</option>
                                         @endforeach
                                     </select>
                                     <!-- <span class="text-danger">{{ $errors->first('delivery') }}</span> -->
@@ -82,14 +82,14 @@
                                         <tr class="border-bottom item_rows">
                                             <th class="p-2" style="width: 2%;">#</th>
                                             <th class="p-2" style="width: 5%;">Image</th>
-                                            <th class="p-2" style="width: 25%;">Item / Service</th>
-                                            <th class="p-2" style="width: 11%;">Expiry Date</th>
+                                            <th class="p-2" style="width: 23%;">Item / Service</th>
+                                            <th class="p-2" style="width: 7%;">Expiry Date</th>
                                             <th class="p-2" style="width: 8%;">Carton Quantity </th>
-                                            <th class="p-2" style="width: 7%;">Base Quantity </th>
+                                            <th class="p-2" style="width: 10%;">Base Quantity </th>
                                             <th class="p-2" style="width: 13%;">Rate Per Unit</th>
                                             <th class="p-2" style="width: 12%;">Discount</th>
                                             <th class="p-2" style="width: 5%;">Amount</th>
-                                            <th class="p-2 text-center" style="width: 6%;"><a title="Add Item" class="text-secondary-custom" id="add_item"><i class="mdi mdi-plus-box pe-2 fs-2"></i></a></th>
+                                            <th class="p-2 text-center" style="width: 2%;"><a title="Add Item" class="text-secondary-custom" id="add_item"><i class="mdi mdi-plus-box pe-2 fs-2"></i></a></th>
                                         </tr>
                                     </thead>
                                     <tbody>
@@ -119,7 +119,7 @@
                                             </td>
                                             <td class="p-2">
                                                 <div class="input-group">
-                                                    <input class="form-control item-data-changed" type="number" style="width: 70px;" id="rate_0" value="0.00" step="0.01" name="rates[]" placeholder="Rate Per Unit">
+                                                    <input class="form-control item-data-changed" type="number" style="width: 70px;" id="rate_0" value="0.00" step="0.01" name="rates[]" placeholder="Rate Per Unit" required>
                                                     <select id="unit_0" class="form-select item-data-changed" name="units[]">
                                                         <option value="base">Base</option>
                                                         <option value="ctn">Ctn</option>
@@ -150,7 +150,7 @@
                                                 <div class="row p-2">
                                                     <div class="col-lg-6">
                                                         <label for="">Amount</label>
-                                                        <input type="number" class="form-control data-changed" name="amount" id="main_payment" min="0" step="0.01" placeholder="Payment Amount">
+                                                        <input type="number" class="form-control data-changed" name="payment_amount" id="main_payment" min="0" step="0.01" placeholder="Payment Amount">
                                                     </div>
                                                     <div class="col-lg-6">
                                                         <label for="">Payment Account</label>
@@ -231,6 +231,7 @@
                                             <td colspan="2"></td>
                                             <td class="p-2 text-end fw-bold" id="total_amount_show">0.00</td>
                                             <td class="fw-bold">TK</td>
+                                            <input type="hidden" name="total_amount" id="total_amount" value="0.00">
                                         </tr>
                                         <tr>
                                             <td class="text-end border-bottom fw-bold">Paid Amount <span class="text-muted">(-)</span></td>
@@ -256,7 +257,7 @@
                                         </div>
                                         <div class="col-lg-3">
                                             <label for="">Attachments</label>
-                                            <input type="file" class="form-control" name="files[]">
+                                            <input type="file" class="form-control" name="files[]" multiple>
                                         </div>
                                     </div>
                                 </div>
@@ -309,7 +310,7 @@
                                     </td>
                                     <td class="p-2">
                                         <div class="input-group">
-                                            <input class="form-control item-data-changed" type="number" style="width: 70px;" id="rate_${newItemId}" value="0" step="0.01" name="rates[]" placeholder="Rate Per Unit">
+                                            <input class="form-control item-data-changed" type="number" style="width: 70px;" id="rate_${newItemId}" value="0" step="0.01" name="rates[]" placeholder="Rate Per Unit" required>
                                             <select id="unit_${newItemId}" class="form-select item-data-changed" name="units[]">
                                                 <option value="base">Base</option>
                                                 <option value="ctn">Ctn</option>
@@ -406,6 +407,7 @@
             $("#main_vat_show").html(main_vat.toFixed(2));
             $("#main_shipping_show").html(parseFloat(main_shipping).toFixed(2));
             $("#total_amount_show").html(parseFloat(total_amount).toFixed(2));
+            $("#total_amount").val(parseFloat(total_amount).toFixed(2));
             $("#total_paid_show").html(parseFloat(paid_amount).toFixed(2));
             $("#due_amount_show").html(parseFloat(due_amount).toFixed(2));
         }
