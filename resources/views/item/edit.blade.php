@@ -105,7 +105,7 @@
                                     <div class="mb-3 row">
                                         <label for="example-tel-input" class="col-sm-4 col-form-label text-end">Carton Size</label>
                                         <div class="col-sm-8">
-                                            <input class="form-control" type="number" value="{{ $item->carton_size }}" placeholder="Enter Items Per Carton" name="carton_size">
+                                            <input class="form-control" type="number" value="{{ $item->carton_size }}" placeholder="Enter Items Per Carton" name="carton_size" min="1" step="0.001">
                                             <span class="text-danger">{{ $errors->first('carton_size') }}</span>
                                         </div>
                                     </div>

@@ -6,9 +6,12 @@ use App\Models\Branch;
 use App\Models\Contact;
 use App\Models\Item;
 use App\Models\Purchase;
+use App\Models\PurchaseEntry;
 use Carbon\Carbon;
+use Exception;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 
 class PurchaseController extends Controller
 {
@@ -33,41 +36,88 @@ class PurchaseController extends Controller
 
     public function store(Request $request)
     {
-        $purchase = new Purchase;
-        $purchase->vendor_id = $request->vendor;
-        $purchase->delivery_preson_id = $request->delivery;
-        $purchase->branch_id = $request->branch;
-        $purchase->total_amount = $request->total_amount ?? 0;
-        $purchase->paid_amount = $request->payment_amount ?? 0;
-        $purchase->paid_through_id = $request->payment_account;
-        $purchase->cheque_no = $request->cheque;
-        $purchase->cheque_date = $request->cheque_date;
-        $purchase->payment_comment = $request->payment_comment;
-        $purchase->discount = $request->main_discount ?? 0;
-        $purchase->discount_type = $request->main_discount_type;
-        $purchase->vat = $request->main_vat ?? 0;
-        $purchase->vat_type = $request->main_vat_type;
-        $purchase->shipping_charge = $request->main_shipping ?? 0;
-        $purchase->note = $request->note;
-        $purchase->created_by = Auth::user()->id;
-        $purchase->created_at = Carbon::now()->toDateTimeString();
-        $purchase->updated_by = Auth::user()->id;
-        $purchase->updated_at = Carbon::now()->toDateTimeString();
+        DB::beginTransaction();
+        try{
+            $purchase = new Purchase;
+            $purchase->vendor_id = $request->vendor;
+            $purchase->delivery_preson_id = $request->delivery;
+            $purchase->branch_id = $request->branch;
+            $purchase->total_amount = $request->total_amount ?? 0;
+            $purchase->paid_amount = $request->payment_amount ?? 0;
+            $purchase->paid_through_id = $request->payment_account;
+            $purchase->cheque_no = $request->cheque;
+            $purchase->cheque_date = $request->cheque_date;
+            $purchase->payment_comment = $request->payment_comment;
+            $purchase->discount = $request->main_discount ?? 0;
+            $purchase->discount_type = $request->main_discount_type;
+            $purchase->vat = $request->main_vat ?? 0;
+            $purchase->vat_type = $request->main_vat_type;
+            $purchase->shipping_charge = $request->main_shipping ?? 0;
+            $purchase->note = $request->note;
+            $purchase->created_by = Auth::user()->id;
+            $purchase->created_at = Carbon::now()->toDateTimeString();
+            $purchase->updated_by = Auth::user()->id;
+            $purchase->updated_at = Carbon::now()->toDateTimeString();
 
-        $purchase->save();
-        $purchase->code = str_pad($purchase->id, 6, '0', STR_PAD_LEFT);
+            $purchase->save();
+            $purchase->code = str_pad($purchase->id, 6, '0', STR_PAD_LEFT);
 
-        if ($request->hasFile('files')) {
-            foreach($request->file('files') as $key => $file)
-            {
-                $fileName = rand(100,999).'_'.$purchase->code.'_'.$file->getClientOriginalName();
-                $file->move(public_path('assets/files/purchases'), $fileName);
-                $files[] = 'purchases/' . $fileName;
+            if ($request->hasFile('files')) {
+                foreach($request->file('files') as $key => $file)
+                {
+                    $fileName = rand(100,999).'_'.$purchase->code.'_'.$file->getClientOriginalName();
+                    $file->move(public_path('assets/files/purchases'), $fileName);
+                    $files[] = 'purchases/' . $fileName;
+                }
+                $purchase->files = json_encode($files);
             }
-            $purchase->files = json_encode($files);
+            $purchase->save();
+
+            if(!empty($request->items))
+            {
+                foreach($request->items as $key => $item)
+                {
+                    $purchase_entry = new PurchaseEntry;
+                    $purchase_entry->purchase_id = $purchase->id;
+                    $purchase_entry->item_id = $request->items[$key];
+                    $purchase_entry->expiry_date = $request->expiry_date[$key];
+                    $purchase_entry->base_qty = $request->base_qty[$key];
+                    $purchase_entry->carton_qty = $request->carton_qty[$key];
+                    $purchase_entry->price = $request->rates[$key];
+                    $purchase_entry->price_unit = $request->units[$key];
+                    $purchase_entry->discount = $request->discounts[$key];
+                    $purchase_entry->discount_type = $request->discount_types[$key];
+                    $purchase_entry->created_by = Auth::user()->id;
+                    $purchase_entry->updated_by = Auth::user()->id;
+                    $purchase_entry->created_at = Carbon::now()->toDateTimeString();
+                    $purchase_entry->updated_at = Carbon::now()->toDateTimeString();
+                    $purchase_entry->save();
+                }
+            }
+            else
+            {
+                DB::rollBack();
+                return redirect()
+                ->route('purchase')
+                ->with('alert.status', 'danger')
+                ->with('alert.message', 'Error!!! Purchase At Least One Item.');
+            }
+
+            // HANDLE HISTORY, LOT, THEN JOURNAL ENTRY
+            DB::commit();
+            return redirect()
+            ->route('purchase')
+            ->with('alert.status', 'success')
+            ->with('alert.message', 'Item(s) Has Been Purchased!');
         }
-        $purchase->save();
-        dd($request->all());
+        catch(Exception $e)
+        {
+            DB::rollBack();
+            return redirect()
+            ->route('purchase')
+            ->with('alert.status', 'danger')
+            ->with('alert.message', 'Error in Item Creation!!!'.$e);
+        }
 
     }
 

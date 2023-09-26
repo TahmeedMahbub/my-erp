@@ -12,7 +12,7 @@
         const customSelects = document.querySelectorAll('.custom_select');
 
         customSelects.forEach(function(element) {
-        new Selectr(element);
+            new Selectr(element);
         });
     });
 

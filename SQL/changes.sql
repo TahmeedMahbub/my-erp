@@ -200,11 +200,12 @@ ALTER TABLE `contact_categories` ADD FOREIGN KEY (`parent_category_id`) REFERENC
 
 ALTER TABLE `histories` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-
-
 ------------------------------------------
 ---------------Home Updated---------------
 ------------------------------------------
+
+CREATE TABLE `my_erp`.`purchase_entries` (`id` INT NOT NULL AUTO_INCREMENT , `purchase_id` INT NOT NULL , `item_id` INT NOT NULL , `expiry_date` DATE NULL DEFAULT NULL , `base_qty` DOUBLE NULL DEFAULT NULL , `carton_qty` DOUBLE NULL DEFAULT NULL , `price` DOUBLE NOT NULL , `price_unit` VARCHAR(10) NOT NULL DEFAULT 'base' , `discount` DOUBLE(10,2) NULL DEFAULT NULL , `discount_type` VARCHAR(5) NOT NULL DEFAULT 'tk' , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_by` INT NOT NULL , `updated_by` INT NOT NULL , `deleted_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
 
 
 

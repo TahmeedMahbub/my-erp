@@ -335,6 +335,7 @@
                                     </td>
                                 </tr>`;
                 $(".item_rows:last").after(newItemRow);
+                new Selectr("#item_"+newItemId);
             });
         });
 
