@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Organization\Branch;
 use App\Models\Contact\Contact;
 use App\Models\Inventory\Item;
+use App\Models\Inventory\ItemLot;
 use App\Models\MoneyOut\Purchase;
 use App\Models\MoneyOut\PurchaseEntry;
 use Carbon\Carbon;
@@ -37,6 +38,7 @@ class PurchaseController extends Controller
 
     public function store(Request $request)
     {
+        dd($request->all());
         DB::beginTransaction();
         try{
             $purchase = new Purchase;
@@ -93,6 +95,23 @@ class PurchaseController extends Controller
                     $purchase_entry->created_at = Carbon::now()->toDateTimeString();
                     $purchase_entry->updated_at = Carbon::now()->toDateTimeString();
                     $purchase_entry->save();
+
+                    $lot = ItemLot::where('item_id', $request->items[$key])->max('lot_no');
+                    $lot_no = !empty($lot) ? $lot+1 : 1;
+
+                    $item_lot = new ItemLot;
+                    $item_lot->item_id = $request->items[$key];
+                    $item_lot->lot_no = $lot_no;
+                    $item_lot->branch_id = $request->branch;
+                    $item_lot->expiry_date = $request->expiry_date[$key] ?? null;
+                    $item_lot->total_stock = $request->base_qty[$key];
+                    $item_lot->purchased_stock = $request->base_qty[$key];
+                    $item_lot->sold_stock = 0;
+                    $item_lot->transferred_in_stock = 0;
+                    $item_lot->transferred_out_stock = 0;
+                    $item_lot->created_at = Carbon::now();
+                    $item_lot->updated_at = Carbon::now();
+                    $item_lot->save();
                 }
             }
             else
