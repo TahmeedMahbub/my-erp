@@ -206,6 +206,11 @@ ALTER TABLE `histories` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON 
 
 CREATE TABLE `my_erp`.`purchase_entries` (`id` INT NOT NULL AUTO_INCREMENT , `purchase_id` INT NOT NULL , `item_id` INT NOT NULL , `expiry_date` DATE NULL DEFAULT NULL , `base_qty` DOUBLE NULL DEFAULT NULL , `carton_qty` DOUBLE NULL DEFAULT NULL , `price` DOUBLE NOT NULL , `price_unit` VARCHAR(10) NOT NULL DEFAULT 'base' , `discount` DOUBLE(10,2) NULL DEFAULT NULL , `discount_type` VARCHAR(5) NOT NULL DEFAULT 'tk' , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_by` INT NOT NULL , `updated_by` INT NOT NULL , `deleted_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
+ALTER TABLE `purchase_entries` ADD FOREIGN KEY (`created_by`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION; ALTER TABLE `purchase_entries` ADD FOREIGN KEY (`item_id`) REFERENCES `items`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT; ALTER TABLE `purchase_entries` ADD FOREIGN KEY (`purchase_id`) REFERENCES `purchases`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `purchase_entries` ADD FOREIGN KEY (`updated_by`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
+
+CREATE TABLE `my_erp`.`item_lots` (`id` INT NOT NULL , `item_id` INT NOT NULL , `lot_no` VARCHAR(30) NOT NULL , `branch_id` INT NOT NULL , `expiry_date` DATE NULL DEFAULT NULL , `total_stock` INT NOT NULL DEFAULT '0' , `purchased_stock` INT NOT NULL DEFAULT '0' , `sold_stock` INT NOT NULL DEFAULT '0' , `transferred_in_stock` INT NOT NULL DEFAULT '0' , `transferred_out_stock` INT NOT NULL DEFAULT '0' , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP ) ENGINE = InnoDB;
+
+
 
 
 
