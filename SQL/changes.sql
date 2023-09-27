@@ -212,6 +212,11 @@ CREATE TABLE `my_erp`.`item_lots` (`id` INT NOT NULL AUTO_INCREMENT, `item_id` I
 
 CREATE TABLE `my_erp`.`journal_entries` (`id` INT NOT NULL AUTO_INCREMENT , `journal_type` VARCHAR(255) NULL DEFAULT NULL , `transaction_type` VARCHAR(3) NOT NULL , `amount` DOUBLE NOT NULL , `account_id` INT NOT NULL , `date` DATE NOT NULL , `contact_id` INT NOT NULL , `journal_id` INT NULL DEFAULT NULL , `model_name` VARCHAR(255) NULL DEFAULT NULL , `model_id` INT NULL DEFAULT NULL , `note` TEXT NULL DEFAULT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_by` INT NOT NULL , `updated_by` INT NOT NULL , `deleted_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
+INSERT INTO `accounts` (`id`, `account_name`, `account_code`, `description`, `account_type_id`, `parent_account_type`, `created_by`, `updated_by`, `created_at`, `updated_at`, `editable`, `deleted_by`, `deleted_at`) VALUES ('30', 'Liable Shipping Charge', 'Liable Shipping Charge', 'Shipping Charge, ERP Organization Should Pay', '8', 'liability', '1', '1', '2023-09-27 20:08:32.000000', '2023-09-27 20:08:32.000000', '1', NULL, NULL);
+
+ALTER TABLE `purchases` ADD `je_discount` DOUBLE NULL DEFAULT '0' AFTER `files`, ADD `je_vat` DOUBLE NULL DEFAULT '0' AFTER `je_discount`, ADD `je_shipping` DOUBLE NULL DEFAULT '0' AFTER `je_vat`;
+
+ALTER TABLE `purchases` CHANGE `je_shipping` `je_subtotal` DOUBLE NULL DEFAULT '0';
 
 
 

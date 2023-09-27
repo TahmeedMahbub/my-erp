@@ -155,9 +155,10 @@
                                                     <div class="col-lg-6">
                                                         <label for="">Payment Account</label>
                                                         <select id="payment_account" class="form-select custom_select" name="payment_account">
-                                                            <option value="">Select Payment Account</option>
-                                                            <option value="">Mr ABC (01685412365), CN-4325</option>
-                                                            <option value="">Mr XYZ (01756845214), CN-6542</option>
+                                                            {{-- <option value="">Select Payment Account</option> --}}
+                                                            @foreach ($payment_accounts as $payment_account)
+                                                                <option value="{{ $payment_account->id }}">{{ $payment_account->account_name }}</option>
+                                                            @endforeach
                                                         </select>
                                                     </div>
                                                 </div>
@@ -184,6 +185,7 @@
                                             <td colspan="2"></td>
                                             <td class="p-2 text-end" id="subtotal_show">0.00</td>
                                             <td>TK</td>
+                                            <input type="hidden" name="subtotal" id="subtotal" value="0">
                                         </tr>
                                         <tr>
                                             <td class="text-end">Discount <span class="text-muted">(-)</span></td>
@@ -198,6 +200,7 @@
                                             </td>
                                             <td class="p-2 text-end" id="main_discount_show">0.00</td>
                                             <td>TK</td>
+                                            <input type="hidden" name="discount" id="discount" value="0">
                                         </tr>
                                         <tr>
                                             <td class="text-end">Vat / Tax <span class="text-muted">(+)</span></td>
@@ -212,6 +215,7 @@
                                             </td>
                                             <td class="p-2 text-end" id="main_vat_show">0.00</td>
                                             <td>TK</td>
+                                            <input type="hidden" name="vat" id="vat" value="0">
                                         </tr>
                                         <tr>
                                             <td class="text-end border-bottom">Shipping Charge <span class="text-muted">(+)</span></td>
@@ -225,6 +229,7 @@
                                             </td>
                                             <td class="p-2 text-end border-bottom" id="main_shipping_show">0.00</td>
                                             <td class="border-bottom">TK</td>
+                                            <input type="hidden" name="shipping" id="shipping" value="0">
                                         </tr>
                                         <tr>
                                             <td class="text-end fw-bold">Total Amount <span class="text-muted">(+)</span></td>
@@ -404,9 +409,13 @@
             var due_amount = total_amount - paid_amount;
 
             $("#subtotal_show").html(subtotal_amount.toFixed(2));
+            $("#subtotal").val(subtotal_amount.toFixed(2));
             $("#main_discount_show").html(main_discount.toFixed(2));
+            $("#discount").val(main_discount.toFixed(2));
             $("#main_vat_show").html(main_vat.toFixed(2));
+            $("#vat").val(main_vat.toFixed(2));
             $("#main_shipping_show").html(parseFloat(main_shipping).toFixed(2));
+            $("#shipping").val(parseFloat(main_shipping).toFixed(2));
             $("#total_amount_show").html(parseFloat(total_amount).toFixed(2));
             $("#total_amount").val(parseFloat(total_amount).toFixed(2));
             $("#total_paid_show").html(parseFloat(paid_amount).toFixed(2));
