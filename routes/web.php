@@ -2,17 +2,17 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
-use App\Http\Controllers\BranchController;
-use App\Http\Controllers\BrandController;
+use App\Http\Controllers\Organization\BranchController;
+use App\Http\Controllers\Inventory\BrandController;
 use App\Http\Controllers\CommonController;
-use App\Http\Controllers\ContactController;
+use App\Http\Controllers\Contact\ContactController;
 use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ItemController;
-use App\Http\Controllers\OrganizationController;
-use App\Http\Controllers\PurchaseController;
-use App\Http\Controllers\RoleController;
-use App\Http\Controllers\UnitController;
-use App\Http\Controllers\UserController;
+use App\Http\Controllers\Inventory\ItemController;
+use App\Http\Controllers\Organization\OrganizationController;
+use App\Http\Controllers\MoneyOut\PurchaseController;
+use App\Http\Controllers\Contact\RoleController;
+use App\Http\Controllers\Inventory\UnitController;
+use App\Http\Controllers\Contact\UserController;
 
 /*
 |--------------------------------------------------------------------------
