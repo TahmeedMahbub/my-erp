@@ -2,10 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\History;
-use App\Models\Item;
-use App\Models\Unit;
-use App\Models\User;
+use App\Models\Organization\History;
+use App\Models\Inventory\Item;
+use App\Models\Inventory\Unit;
+use App\Models\Contact\User;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

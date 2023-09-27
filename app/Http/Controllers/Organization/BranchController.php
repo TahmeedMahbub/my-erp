@@ -3,8 +3,8 @@
 namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
-use App\Models\Branch;
-use App\Models\History;
+use App\Models\Organization\Branch;
+use App\Models\Organization\History;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

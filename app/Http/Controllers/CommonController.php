@@ -2,9 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Module;
-use App\Models\Role;
-use App\Models\User;
+use App\Models\Contact\User;
 use Illuminate\Http\Request;
 
 class CommonController extends Controller
@@ -21,5 +19,6 @@ class CommonController extends Controller
         {
             return response()->json(['status' => 'occupied', 'message' => $username.' is occupied by '.$user->name]);
         }
+
     }
 }

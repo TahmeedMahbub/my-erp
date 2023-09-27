@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Contact;
 
 // use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -52,20 +52,20 @@ class User extends Authenticatable
 
     public function role()
     {
-        return $this->belongsTo('App\Models\Role');
+        return $this->belongsTo('App\Models\Contact\Role');
     }
 
     public function managerRole()
     {
-        return $this->belongsTo('App\Models\Role');
+        return $this->belongsTo('App\Models\Contact\Role');
     }
     public function manager()
     {
-        return $this->belongsTo('App\Models\User');
+        return $this->belongsTo('App\Models\Contact\User');
     }
 
     public function branch()
     {
-        return $this->belongsTo('App\Models\Branch');
+        return $this->belongsTo('App\Models\Organization\Branch');
     }
 }

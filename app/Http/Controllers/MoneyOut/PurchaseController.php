@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\MoneyOut;
 
 use App\Http\Controllers\Controller;
-use App\Models\Branch;
-use App\Models\Contact;
-use App\Models\Item;
-use App\Models\Purchase;
-use App\Models\PurchaseEntry;
+use App\Models\Organization\Branch;
+use App\Models\Contact\Contact;
+use App\Models\Inventory\Item;
+use App\Models\MoneyOut\Purchase;
+use App\Models\MoneyOut\PurchaseEntry;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;

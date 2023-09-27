@@ -2,12 +2,10 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Brand;
-use App\Models\History;
-use App\Models\Item;
-use App\Models\ItemCategory;
-use App\Models\Unit;
-use App\Models\User;
+use App\Models\Inventory\Brand;
+use App\Models\Inventory\Item;
+use App\Models\Inventory\ItemCategory;
+use App\Models\Organization\History;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -53,7 +51,7 @@ class BrandController extends Controller
         }
 
 
-        $history = new History;
+        $history = new History();
         $history->module = "Brand";
         $history->module_id = $brand->id;
         $history->operation = "Create";

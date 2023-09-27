@@ -3,12 +3,10 @@
 namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
-use App\Models\Brand;
-use App\Models\History;
-use App\Models\Item;
-use App\Models\ItemCategory;
-use App\Models\Unit;
-use App\Models\User;
+use App\Models\Inventory\Brand;
+use App\Models\Organization\History;
+use App\Models\Inventory\Item;
+use App\Models\Inventory\ItemCategory;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

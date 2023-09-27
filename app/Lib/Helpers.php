@@ -2,9 +2,9 @@
 
 namespace App\Lib;
 
-use App\Models\AccessLevel;
-use App\Models\History;
-use App\Models\User;
+use App\Models\Organization\AccessLevel;
+use App\Models\Organization\History;
+use App\Models\Contact\User;
 use Illuminate\Support\Facades\Auth;
 
 class Helpers

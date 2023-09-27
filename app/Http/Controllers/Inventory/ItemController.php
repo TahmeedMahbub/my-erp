@@ -4,12 +4,12 @@ namespace App\Http\Controllers\Inventory;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\Brand;
-use App\Models\ContactCategory;
-use App\Models\History;
-use App\Models\Item;
-use App\Models\ItemCategory;
-use App\Models\Unit;
+use App\Models\Inventory\Brand;
+use App\Models\Contact\ContactCategory;
+use App\Models\Organization\History;
+use App\Models\Inventory\Item;
+use App\Models\Inventory\ItemCategory;
+use App\Models\Inventory\Unit;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Support\Facades\DB;

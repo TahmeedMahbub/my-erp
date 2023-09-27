@@ -2,12 +2,12 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Branch;
-use App\Models\Contact;
-use App\Models\ContactCategory;
-use App\Models\History;
-use App\Models\Role;
-use App\Models\User;
+use App\Models\Organization\Branch;
+use App\Models\Contact\Contact;
+use App\Models\Contact\ContactCategory;
+use App\Models\Organization\History;
+use App\Models\Contact\Role;
+use App\Models\Contact\User;
 use Carbon\Carbon;
 use Exception;
 use Illuminate\Http\Request;

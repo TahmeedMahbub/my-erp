@@ -3,11 +3,11 @@
 namespace App\Http\Controllers\Organization;
 
 use App\Http\Controllers\Controller;
-use App\Models\AccessLevel;
-use App\Models\History;
-use App\Models\Module;
-use App\Models\Role;
-use App\Models\User;
+use App\Models\Organization\AccessLevel;
+use App\Models\Organization\History;
+use App\Models\Organization\Module;
+use App\Models\Contact\Role;
+use App\Models\Contact\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Session;

@@ -3,9 +3,9 @@
 namespace App\Http\Controllers\Contact;
 
 use App\Http\Controllers\Controller;
-use App\Models\History;
-use App\Models\Role;
-use App\Models\User;
+use App\Models\Contact\Role;
+use App\Models\Contact\User;
+use App\Models\Organization\History;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

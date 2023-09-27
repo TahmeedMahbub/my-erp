@@ -1,13 +1,13 @@
 <?php
 
-namespace App\Models;
+namespace App\Models\Contact;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\SoftDeletingScope;
 
-class Item extends Model
+class Contact extends Model
 {
     use HasFactory, SoftDeletes;
 
@@ -18,16 +18,11 @@ class Item extends Model
 
     public function category()
     {
-        return $this->belongsTo('App\Models\ItemCategory');
+        return $this->belongsTo('App\Models\Contact\ContactCategory');
     }
 
-    public function unit()
+    public function branch()
     {
-        return $this->belongsTo('App\Models\Unit');
-    }
-
-    public function brand()
-    {
-        return $this->belongsTo('App\Models\Brand');
+        return $this->belongsTo('App\Models\Organization\Branch');
     }
 }
