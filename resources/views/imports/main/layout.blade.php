@@ -14,7 +14,10 @@
             <div class="page-content-tab">
                 <div class="container-fluid">
                     @include('imports.main.alert')
+
+                <div id="content">
                     @yield('content')
+                </div>
                 </div>
 
                 @include('imports.main.footer')

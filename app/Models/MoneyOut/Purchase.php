@@ -21,4 +21,19 @@ class Purchase extends Model
         return $this->hasMany(PurchaseEntry::class);
     }
 
+    public function vendor()
+    {
+        return $this->belongsTo('App\Models\Contact\Contact', 'vendor_id');
+    }
+
+    public function delivery_preson()
+    {
+        return $this->belongsTo('App\Models\Contact\Contact', 'delivery_preson_id');
+    }
+
+    public function branch()
+    {
+        return $this->belongsTo('App\Models\Organization\Branch', 'branch_id');
+    }
+
 }
