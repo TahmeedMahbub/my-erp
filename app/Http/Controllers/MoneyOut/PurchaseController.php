@@ -62,6 +62,7 @@ class PurchaseController extends Controller
             $purchase->vat                  = $request->main_vat ?? 0;
             $purchase->vat_type             = $request->main_vat_type;
             $purchase->shipping_charge      = $request->main_shipping ?? 0;
+            $purchase->date                 = $request->purchase_date ?? date('Y-m-d');
             $purchase->note                 = $request->note;
             $purchase->je_discount          = $request->discount;
             $purchase->je_vat               = $request->vat;
@@ -122,7 +123,7 @@ class PurchaseController extends Controller
                     $item_lot->transferred_in_stock     = 0;
                     $item_lot->transferred_out_stock    = 0;
                     $item_lot->created_at               = Carbon::now();
-                    $item_lot->updated_at               = Carbon::now();
+                    $item_lot->updated_at               = Carbon::now().Carbon::now()->toDateTimeString();
                     $item_lot->save();
                 }
             }
@@ -164,14 +165,21 @@ class PurchaseController extends Controller
             ->back()
             ->withInput()
             ->with('alert.status', 'danger')
-            ->with('alert.message', 'Error in Purchase Creation!!!'.$e);
+            ->with('alert.message', 'Error in Purchase Creation!!!');
         }
 
     }
 
-    public function edit()
+    public function edit($id)
     {
-        //
+        // HANDLE OLD VALUES
+        $purchase           = Purchase::find($id);
+        $branches           = Branch::all();
+        $delivery_persons   = Contact::whereIn('category_id', [3, 4])->get();
+        $vendors            = Contact::where('category_id', 2)->get();
+        $items              = Item::all();
+        $payment_accounts   = Account::whereIn('account_type_id', [4, 5])->get();
+        return view('purchase.create', compact('branches', 'delivery_persons', 'vendors', 'items', 'payment_accounts', 'purchase'));
     }
 
     public function update(Request $request)

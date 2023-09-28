@@ -50,7 +50,7 @@
                                         <td> {{ $loop->iteration }} </td>
                                         <td title="{{ $due_amount == 0 ? "Paid" : ($due_amount == $purchase->total_amount ? "Unpaid" : "Partially Paid") }}">
                                             <span class="badge bg-{{ $due_amount == 0 ? "success" : ($due_amount == $purchase->total_amount ? "danger" : "warning") }}" style="line-height: 13px;padding-right: 2px;padding-left: 2px;">&nbsp;</span> PUR-{{ $purchase->code }} <br>
-                                            <small>{{ date("h:i A, d-M-Y", strtotime($purchase->updated_at)) }}</small>
+                                            <small>{{ $purchase->date ? date("d-M-Y", strtotime($purchase->date)) : "" }}</small>
                                         </td>
                                         <td>{{ $purchase->vendor->name }} <br> <small>Mobile: 0{{ $purchase->vendor->phone }}</small> </td>
                                         <td>@if($purchase->delivery_preson) {{ $purchase->delivery_preson->name }} <br> <small>Mobile: 0{{ $purchase->vendor->phone }}</small> @endif</td>
