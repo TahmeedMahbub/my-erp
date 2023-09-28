@@ -31,7 +31,7 @@ class Helpers
 
             // HANDLE CREATE AND DELETE
             foreach ($afterData as $key => $afterValue) {
-                if (!in_array($key, ['created_at', 'updated_at', 'created_by', 'updated_by', 'id', 'deletable', 'files'])) {
+                if (!in_array($key, ['created_at', 'updated_at', 'created_by', 'updated_by', 'id', 'deletable', 'files', 'entries'])) {
                     $changes = 1;
                     $formattedKey = ucwords(str_replace('_', ' ', $key));
 
@@ -48,6 +48,17 @@ class Helpers
                     $formattedKey = ucwords($key);
 
                     $afterValue = count(json_decode($afterValue)). " File(s)";
+
+                    $after_changes[] = "<b>{$formattedKey}</b> ⇒ <small>{$afterValue}</small> <br>";
+                }
+
+                if(in_array($key, ['entries']))
+                {
+
+                    $changes = 1;
+                    $formattedKey = ucwords($key);
+
+                    $afterValue = count($afterValue). " Item(s)";
 
                     $after_changes[] = "<b>{$formattedKey}</b> ⇒ <small>{$afterValue}</small> <br>";
                 }

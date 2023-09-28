@@ -16,4 +16,9 @@ class Purchase extends Model
         static::addGlobalScope(new SoftDeletingScope);
     }
 
+    public function entries()
+    {
+        return $this->hasMany(PurchaseEntry::class);
+    }
+
 }

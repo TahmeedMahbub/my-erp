@@ -218,6 +218,8 @@ ALTER TABLE `purchases` ADD `je_discount` DOUBLE NULL DEFAULT '0' AFTER `files`,
 
 ALTER TABLE `purchases` CHANGE `je_shipping` `je_subtotal` DOUBLE NULL DEFAULT '0';
 
+ALTER TABLE `purchases` ADD `je_paid_amount` DOUBLE NULL DEFAULT '0' AFTER `je_vat`;
+
 
 
 
