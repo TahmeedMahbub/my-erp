@@ -498,7 +498,6 @@
             var rate = $("#rate_"+selectId).val() ?? 0;
             var unit = $("#unit_"+selectId).val();
             var discount = $("#discount_"+selectId).val();
-            console.log(discount);
             var discount_type = $("#discount_type_"+selectId).val();
             var amount = 0;
 

@@ -49,7 +49,7 @@ class PurchaseController extends Controller
         try{
             $purchase                       = new Purchase;
             $purchase->vendor_id            = $request->vendor;
-            $purchase->delivery_preson_id   = $request->delivery;
+            $purchase->delivery_person_id   = $request->delivery;
             $purchase->branch_id            = $request->branch;
             $purchase->total_amount         = $request->total_amount ?? 0;
             $purchase->paid_amount          = $request->payment_amount ?? 0;
@@ -123,7 +123,7 @@ class PurchaseController extends Controller
                     $item_lot->transferred_in_stock     = 0;
                     $item_lot->transferred_out_stock    = 0;
                     $item_lot->created_at               = Carbon::now();
-                    $item_lot->updated_at               = Carbon::now().Carbon::now()->toDateTimeString();
+                    $item_lot->updated_at               = Carbon::now();
                     $item_lot->save();
                 }
             }
@@ -174,12 +174,13 @@ class PurchaseController extends Controller
     {
         // HANDLE OLD VALUES
         $purchase           = Purchase::find($id);
+        $purchase_entries   = PurchaseEntry::where('purchase_id', $purchase->id)->get();
         $branches           = Branch::all();
         $delivery_persons   = Contact::whereIn('category_id', [3, 4])->get();
         $vendors            = Contact::where('category_id', 2)->get();
         $items              = Item::all();
         $payment_accounts   = Account::whereIn('account_type_id', [4, 5])->get();
-        return view('purchase.create', compact('branches', 'delivery_persons', 'vendors', 'items', 'payment_accounts', 'purchase'));
+        return view('purchase.edit', compact('branches', 'delivery_persons', 'vendors', 'items', 'payment_accounts', 'purchase', 'purchase_entries'));
     }
 
     public function update(Request $request)
@@ -264,7 +265,7 @@ class PurchaseController extends Controller
             $journal_entry->amount = $purchase->shipping_charge;
             $journal_entry->account_id = 30;
             $journal_entry->date = Carbon::now()->format('Y-m-d');
-            $journal_entry->contact_id = $purchase->delivery_preson_id ?? $purchase->vendor_id;
+            $journal_entry->contact_id = $purchase->delivery_person_id ?? $purchase->vendor_id;
             // $journal_entry->journal_id = $request->abc; // HANDLE THIS
             $journal_entry->model_name = "purchase";
             $journal_entry->model_id = $purchase->id;

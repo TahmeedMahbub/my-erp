@@ -602,7 +602,7 @@ CREATE TABLE `purchases` (
   `id` int NOT NULL,
   `code` varchar(10) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci DEFAULT NULL,
   `vendor_id` int NOT NULL,
-  `delivery_preson_id` int DEFAULT NULL,
+  `delivery_person_id` int DEFAULT NULL,
   `branch_id` int NOT NULL,
   `total_amount` double(10,2) NOT NULL DEFAULT '0.00',
   `paid_amount` double(10,2) DEFAULT '0.00',
@@ -628,7 +628,7 @@ CREATE TABLE `purchases` (
 -- Dumping data for table `purchases`
 --
 
-INSERT INTO `purchases` (`id`, `code`, `vendor_id`, `delivery_preson_id`, `branch_id`, `total_amount`, `paid_amount`, `paid_through_id`, `cheque_no`, `cheque_date`, `payment_comment`, `discount`, `discount_type`, `vat`, `vat_type`, `shipping_charge`, `note`, `files`, `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`) VALUES
+INSERT INTO `purchases` (`id`, `code`, `vendor_id`, `delivery_person_id`, `branch_id`, `total_amount`, `paid_amount`, `paid_through_id`, `cheque_no`, `cheque_date`, `payment_comment`, `discount`, `discount_type`, `vat`, `vat_type`, `shipping_charge`, `note`, `files`, `created_at`, `created_by`, `updated_at`, `updated_by`, `deleted_at`) VALUES
 (1, '000001', 2, NULL, 1, 400.00, 0.00, NULL, NULL, NULL, 'comment', 0.00, 'tk', 100.00, 'tk', 20.52, 'note', NULL, '2023-09-24 17:10:23', 1, '2023-09-24 17:10:23', 1, NULL),
 (2, '000002', 2, NULL, 1, 400.00, 0.00, NULL, NULL, NULL, 'comment', 0.00, 'tk', 100.00, 'tk', 20.52, 'note', '[\"purchases\\/120_000002_Business Mail.docx\",\"purchases\\/516_000002_Cover Letter.docx\"]', '2023-09-24 17:17:23', 1, '2023-09-24 17:17:23', 1, NULL),
 (3, '000003', 2, NULL, 1, 0.00, 0.00, NULL, NULL, NULL, NULL, 0.00, 'tk', 0.00, '%', 0.00, NULL, NULL, '2023-09-24 17:30:06', 1, '2023-09-24 17:30:06', 1, NULL),
@@ -854,7 +854,7 @@ ALTER TABLE `purchases`
   ADD KEY `created_by` (`created_by`),
   ADD KEY `updated_by` (`updated_by`),
   ADD KEY `branch_id` (`branch_id`),
-  ADD KEY `delivery_preson_id` (`delivery_preson_id`),
+  ADD KEY `delivery_person_id` (`delivery_person_id`),
   ADD KEY `paid_through_id` (`paid_through_id`),
   ADD KEY `vendor_id` (`vendor_id`);
 
@@ -1080,7 +1080,7 @@ ALTER TABLE `purchases`
   ADD CONSTRAINT `purchases_ibfk_1` FOREIGN KEY (`created_by`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `purchases_ibfk_2` FOREIGN KEY (`updated_by`) REFERENCES `users` (`id`),
   ADD CONSTRAINT `purchases_ibfk_3` FOREIGN KEY (`branch_id`) REFERENCES `branches` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
-  ADD CONSTRAINT `purchases_ibfk_4` FOREIGN KEY (`delivery_preson_id`) REFERENCES `contacts` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
+  ADD CONSTRAINT `purchases_ibfk_4` FOREIGN KEY (`delivery_person_id`) REFERENCES `contacts` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `purchases_ibfk_5` FOREIGN KEY (`paid_through_id`) REFERENCES `accounts` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT,
   ADD CONSTRAINT `purchases_ibfk_6` FOREIGN KEY (`vendor_id`) REFERENCES `contacts` (`id`) ON DELETE RESTRICT ON UPDATE RESTRICT;
 

@@ -40,7 +40,7 @@ class PurchaseController extends Controller
         try{
             $purchase = new Purchase;
             $purchase->vendor_id = $request->vendor;
-            $purchase->delivery_preson_id = $request->delivery;
+            $purchase->delivery_person_id = $request->delivery;
             $purchase->branch_id = $request->branch;
             $purchase->total_amount = $request->total_amount ?? 0;
             $purchase->paid_amount = $request->payment_amount ?? 0;

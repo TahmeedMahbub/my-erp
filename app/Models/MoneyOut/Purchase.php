@@ -28,7 +28,7 @@ class Purchase extends Model
 
     public function delivery_preson()
     {
-        return $this->belongsTo('App\Models\Contact\Contact', 'delivery_preson_id');
+        return $this->belongsTo('App\Models\Contact\Contact', 'delivery_person_id');
     }
 
     public function branch()
