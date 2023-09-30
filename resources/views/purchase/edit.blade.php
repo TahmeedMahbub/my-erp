@@ -144,9 +144,9 @@
                                                 <h4 class="page-title">Attachments</h4>
                                                 @foreach (json_decode($purchase->files) as $file)
                                                     @if(@getimagesize(public_path('assets/files/' . $file)))
-                                                        <img src="{{ asset('assets/files/' . $file) }}" class="img-thumbnail" alt="" style="height:150px; margin:5px;">
+                                                        <img src="{{ asset('assets/files/' . $file) }}" title="{{ basename($file) }}" class="img-thumbnail" alt="" style="height:150px; margin:5px;">
                                                     @else
-                                                    <a href="{{ asset('assets/files/' . $file) }}" title="{{ $file }}"><img src="{{ asset('assets/files/file.jpg') }}" class="img-thumbnail" alt="" style="height:150px; margin:5px;"></a>
+                                                        <a href="{{ asset('assets/files/' . $file) }}" title="{{ basename($file) }}"><img src="{{ asset('assets/files/file.jpg') }}" class="img-thumbnail" alt="" style="height:150px; margin:5px;"></a>
                                                     @endif
                                                 @endforeach
                                             @endif
