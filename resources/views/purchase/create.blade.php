@@ -190,7 +190,7 @@
                                         </tr>
                                     @endif
                                     <tr id="amount_row">
-                                        <td colspan="5" rowspan="7" class="align-top bg-light">
+                                        <td colspan="5" rowspan="10" class="align-top bg-light">
                                             <h4 class="page-title">Payment Section</h4>
 
                                             <div class="row p-2">
@@ -291,9 +291,15 @@
                                         <td class="border-bottom fw-bold">TK</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-end fw-bold">Due Amount <span class="text-muted">(+)</span></td>
+                                        <td class="text-end fw-bold">Due Amount <span class="text-muted"></span></td>
                                         <td colspan="2"></td>
                                         <td class="p-2 text-end fw-bold" id="due_amount_show">0.00</td>
+                                        <td class="fw-bold">TK</td>
+                                    </tr>
+                                    <tr id="excess_amount">
+                                        <td class="text-end fw-bold">Vendor Credit <span class="text-muted"></span></td>
+                                        <td colspan="2"></td>
+                                        <td class="p-2 text-end fw-bold" id="excess_amount_show">0.00</td>
                                         <td class="fw-bold">TK</td>
                                     </tr>
                                 </tbody>
@@ -451,6 +457,15 @@
             var paid_amount =  $("#main_payment").val() != "" ? parseFloat($("#main_payment").val()) : 0;
             var total_amount = subtotal_amount - main_discount + main_vat + main_shipping;
             var due_amount = total_amount - paid_amount;
+            if(due_amount < 0)
+            {
+                excess_amount = -1 * due_amount;
+                due_amount = 0;
+            }
+            else
+            {
+                excess_amount = 0;
+            }
 
             $("#subtotal_show").html(subtotal_amount.toFixed(2));
             $("#subtotal").val(subtotal_amount.toFixed(2));
@@ -464,6 +479,7 @@
             $("#total_amount").val(parseFloat(total_amount).toFixed(2));
             $("#total_paid_show").html(parseFloat(paid_amount).toFixed(2));
             $("#due_amount_show").html(parseFloat(due_amount).toFixed(2));
+            $("#excess_amount_show").html(parseFloat(excess_amount).toFixed(2));
         }
 
         function itemChanged(selectElement) {

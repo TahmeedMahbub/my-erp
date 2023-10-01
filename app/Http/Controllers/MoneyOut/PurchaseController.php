@@ -9,6 +9,8 @@ use App\Models\Organization\Branch;
 use App\Models\Contact\Contact;
 use App\Models\Inventory\Item;
 use App\Models\Inventory\ItemLot;
+use App\Models\MoneyOut\PaymentMade;
+use App\Models\MoneyOut\PaymentMadeEntry;
 use App\Models\MoneyOut\Purchase;
 use App\Models\MoneyOut\PurchaseEntry;
 use App\Models\Organization\History;
@@ -34,7 +36,7 @@ class PurchaseController extends Controller
 
     public function create()
     {
-        // HANDLE OLD VALUES
+        // HANDLE EXCESS PAYMENT
         $branches           = Branch::all();
         $delivery_persons   = Contact::whereIn('category_id', [3, 4])->get();
         $vendors            = Contact::where('category_id', 2)->get();
@@ -66,7 +68,6 @@ class PurchaseController extends Controller
             $purchase->note                 = $request->note;
             $purchase->je_discount          = $request->discount;
             $purchase->je_vat               = $request->vat;
-            $purchase->je_paid_amount       = $request->paid_amount;
             $purchase->je_subtotal          = $request->subtotal;
             $purchase->created_by           = Auth::user()->id;
             $purchase->created_at           = Carbon::now()->toDateTimeString();
@@ -137,7 +138,10 @@ class PurchaseController extends Controller
                 ->with('alert.message', 'Error!!! Purchase At Least One Item.');
             }
 
-            $this->billCreateJE($purchase->id);
+            $this->purchaseCreateJE($purchase->id);
+
+            if(!empty($purchase->paid_amount) && $purchase->paid_amount != 0)
+            {   $this->purchaseCreatePayment($purchase->id);  }
 
             $purchase->entries  = $entries;
 
@@ -151,7 +155,6 @@ class PurchaseController extends Controller
             $history->ip_address= Session::get('user_ip');
             $history->save();
 
-            // HANDLE JOURNAL
             DB::commit();
             return redirect()
             ->route('purchase')
@@ -165,14 +168,13 @@ class PurchaseController extends Controller
             ->back()
             ->withInput()
             ->with('alert.status', 'danger')
-            ->with('alert.message', 'Error in Purchase Creation!!!');
+            ->with('alert.message', 'Error in Purchase Creation!!! '.$e);
         }
 
     }
 
     public function edit($id)
     {
-        // HANDLE OLD VALUES
         $purchase           = Purchase::find($id);
         $purchase_entries   = PurchaseEntry::where('purchase_id', $purchase->id)->get();
         $branches           = Branch::all();
@@ -193,7 +195,73 @@ class PurchaseController extends Controller
         //
     }
 
-    public function billCreateJE($purchase_id)
+    public function purchaseCreatePayment($purchase_id)
+    {
+        $purchase = Purchase::find($purchase_id);
+
+        $payment_made = new PaymentMade;
+        $payment_made->amount = $purchase->paid_amount;
+        $payment_made->excess_amount = $purchase->paid_amount - $purchase->total_amount;
+        $payment_made->vendor_id = $purchase->vendor_id;
+        $payment_made->date = $purchase->date;
+        $payment_made->paid_through_id = $purchase->paid_through_id;
+        $payment_made->cheque_no = $purchase->cheque_no;
+        $payment_made->cheque_date = $purchase->cheque_date;
+        $payment_made->purchase_id = $purchase->id;
+        $payment_made->files = $purchase->files;
+        $payment_made->comment = $purchase->payment_comment;
+        $payment_made->created_by = Auth::user()->id;
+        $payment_made->updated_by = Auth::user()->id;
+        $payment_made->created_at = Carbon::now()->toDateTimeString();
+        $payment_made->updated_at = Carbon::now()->toDateTimeString();
+        $payment_made->save();
+        $payment_made->code = str_pad($payment_made->id, 6, '0', STR_PAD_LEFT);
+        $payment_made->save();
+
+        $payment_made_entry = new PaymentMadeEntry;
+        $payment_made_entry->payment_made_id = $payment_made->id;
+        $payment_made_entry->purchase_id = $purchase->id;
+        $payment_made_entry->amount = $purchase->paid_amount;
+        $payment_made_entry->created_by = Auth::user()->id;
+        $payment_made_entry->updated_by = Auth::user()->id;
+        $payment_made_entry->created_at = Carbon::now()->toDateTimeString();
+        $payment_made_entry->updated_at = Carbon::now()->toDateTimeString();
+        $payment_made_entry->save();
+
+        $journal_entry = new JournalEntry;
+        $journal_entry->journal_type = "payment_made";
+        $journal_entry->transaction_type = "cr";
+        $journal_entry->amount = $purchase->paid_amount;
+        $journal_entry->account_id = $purchase->paid_through_id;
+        $journal_entry->date = Carbon::now()->format('Y-m-d');
+        $journal_entry->contact_id = $purchase->vendor_id;
+        $journal_entry->model_name = "payment";
+        $journal_entry->model_id = $payment_made->id;
+        $journal_entry->note = $purchase->note ?? null;
+        $journal_entry->created_at = Carbon::now();
+        $journal_entry->updated_at = Carbon::now();
+        $journal_entry->created_by = Auth::user()->id;
+        $journal_entry->updated_by = Auth::user()->id;
+        $journal_entry->save();
+
+        $journal_entry = new JournalEntry;
+        $journal_entry->journal_type = "payment_made";
+        $journal_entry->transaction_type = "dr";
+        $journal_entry->amount = $purchase->paid_amount;
+        $journal_entry->account_id = 11;
+        $journal_entry->date = Carbon::now()->format('Y-m-d');
+        $journal_entry->contact_id = $purchase->vendor_id;
+        $journal_entry->model_name = "payment";
+        $journal_entry->model_id = $payment_made->id;
+        $journal_entry->note = $purchase->note ?? null;
+        $journal_entry->created_at = Carbon::now();
+        $journal_entry->updated_at = Carbon::now();
+        $journal_entry->created_by = Auth::user()->id;
+        $journal_entry->updated_by = Auth::user()->id;
+        $journal_entry->save();
+    }
+
+    public function purchaseCreateJE($purchase_id)
     {
         $purchase = Purchase::find($purchase_id);
 
@@ -206,7 +274,6 @@ class PurchaseController extends Controller
             $journal_entry->account_id = 26;
             $journal_entry->date = Carbon::now()->format('Y-m-d');
             $journal_entry->contact_id = $purchase->vendor_id;
-            // $journal_entry->journal_id = $request->abc; // HANDLE THIS
             $journal_entry->model_name = "purchase";
             $journal_entry->model_id = $purchase->id;
             $journal_entry->note = $purchase->note ?? null;
@@ -226,7 +293,6 @@ class PurchaseController extends Controller
             $journal_entry->account_id = 21;
             $journal_entry->date = Carbon::now()->format('Y-m-d');
             $journal_entry->contact_id = $purchase->vendor_id;
-            // $journal_entry->journal_id = $request->abc; // HANDLE THIS
             $journal_entry->model_name = "purchase";
             $journal_entry->model_id = $purchase->id;
             $journal_entry->note = $purchase->note ?? null;
@@ -246,7 +312,6 @@ class PurchaseController extends Controller
             $journal_entry->account_id = 9;
             $journal_entry->date = Carbon::now()->format('Y-m-d');
             $journal_entry->contact_id = $purchase->vendor_id;
-            // $journal_entry->journal_id = $request->abc; // HANDLE THIS
             $journal_entry->model_name = "purchase";
             $journal_entry->model_id = $purchase->id;
             $journal_entry->note = $purchase->note ?? null;
@@ -265,8 +330,7 @@ class PurchaseController extends Controller
             $journal_entry->amount = $purchase->shipping_charge;
             $journal_entry->account_id = 30;
             $journal_entry->date = Carbon::now()->format('Y-m-d');
-            $journal_entry->contact_id = $purchase->delivery_person_id ?? $purchase->vendor_id;
-            // $journal_entry->journal_id = $request->abc; // HANDLE THIS
+            $journal_entry->contact_id = $purchase->delivery_person_id ??
             $journal_entry->model_name = "purchase";
             $journal_entry->model_id = $purchase->id;
             $journal_entry->note = $purchase->note ?? null;
@@ -286,46 +350,8 @@ class PurchaseController extends Controller
             $journal_entry->account_id = 11;
             $journal_entry->date = Carbon::now()->format('Y-m-d');
             $journal_entry->contact_id = $purchase->vendor_id;
-            // $journal_entry->journal_id = $request->abc; // HANDLE THIS
             $journal_entry->model_name = "purchase";
             $journal_entry->model_id = $purchase->id;
-            $journal_entry->note = $purchase->note ?? null;
-            $journal_entry->created_at = Carbon::now();
-            $journal_entry->updated_at = Carbon::now();
-            $journal_entry->created_by = Auth::user()->id;
-            $journal_entry->updated_by = Auth::user()->id;
-            $journal_entry->save();
-        }
-
-        if(!empty($purchase->je_paid_amount) && $purchase->je_paid_amount > 0)
-        {
-            $journal_entry = new JournalEntry;
-            $journal_entry->journal_type = "payment_made";
-            $journal_entry->transaction_type = "cr";
-            $journal_entry->amount = $purchase->je_paid_amount;
-            $journal_entry->account_id = $purchase->paid_through_id;
-            $journal_entry->date = Carbon::now()->format('Y-m-d');
-            $journal_entry->contact_id = $purchase->vendor_id;
-            // $journal_entry->journal_id = $request->abc; // HANDLE THIS
-            $journal_entry->model_name = "payment";
-            $journal_entry->model_id = $purchase->id; // HANDLE THIS, FROM PAYMENT
-            $journal_entry->note = $purchase->note ?? null;
-            $journal_entry->created_at = Carbon::now();
-            $journal_entry->updated_at = Carbon::now();
-            $journal_entry->created_by = Auth::user()->id;
-            $journal_entry->updated_by = Auth::user()->id;
-            $journal_entry->save();
-
-            $journal_entry = new JournalEntry;
-            $journal_entry->journal_type = "payment_made";
-            $journal_entry->transaction_type = "dr";
-            $journal_entry->amount = $purchase->je_paid_amount;
-            $journal_entry->account_id = 11;
-            $journal_entry->date = Carbon::now()->format('Y-m-d');
-            $journal_entry->contact_id = $purchase->vendor_id;
-            // $journal_entry->journal_id = $request->abc; // HANDLE THIS
-            $journal_entry->model_name = "payment";
-            $journal_entry->model_id = $purchase->id; // HANDLE THIS, FROM PAYMENT
             $journal_entry->note = $purchase->note ?? null;
             $journal_entry->created_at = Carbon::now();
             $journal_entry->updated_at = Carbon::now();

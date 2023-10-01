@@ -200,10 +200,6 @@ ALTER TABLE `contact_categories` ADD FOREIGN KEY (`parent_category_id`) REFERENC
 
 ALTER TABLE `histories` ADD FOREIGN KEY (`user_id`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
 
-------------------------------------------
---------------Office Updated--------------
-------------------------------------------
-
 CREATE TABLE `my_erp`.`purchase_entries` (`id` INT NOT NULL AUTO_INCREMENT , `purchase_id` INT NOT NULL , `item_id` INT NOT NULL , `expiry_date` DATE NULL DEFAULT NULL , `base_qty` DOUBLE NULL DEFAULT NULL , `carton_qty` DOUBLE NULL DEFAULT NULL , `price` DOUBLE NOT NULL , `price_unit` VARCHAR(10) NOT NULL DEFAULT 'base' , `discount` DOUBLE(10,2) NULL DEFAULT NULL , `discount_type` VARCHAR(5) NOT NULL DEFAULT 'tk' , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_by` INT NOT NULL , `updated_by` INT NOT NULL , `deleted_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
 ALTER TABLE `purchase_entries` ADD FOREIGN KEY (`created_by`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION; ALTER TABLE `purchase_entries` ADD FOREIGN KEY (`item_id`) REFERENCES `items`(`id`) ON DELETE RESTRICT ON UPDATE RESTRICT; ALTER TABLE `purchase_entries` ADD FOREIGN KEY (`purchase_id`) REFERENCES `purchases`(`id`) ON DELETE CASCADE ON UPDATE CASCADE; ALTER TABLE `purchase_entries` ADD FOREIGN KEY (`updated_by`) REFERENCES `users`(`id`) ON DELETE NO ACTION ON UPDATE NO ACTION;
@@ -231,4 +227,33 @@ CREATE TABLE `my_erp`.`payment_mades` (`id` INT NOT NULL AUTO_INCREMENT , `amoun
 
 ------------------------------------------
 ---------------Home Updated---------------
+------------------------------------------
+
+ALTER TABLE `payment_mades` ADD `excess_amount` DOUBLE NULL DEFAULT '0' AFTER `amount`;
+
+ALTER TABLE `contacts` ADD `credit` DOUBLE NULL DEFAULT '0' AFTER `address`;
+
+CREATE TABLE `my_erp`.`payment_made_entries` (`id` INT NOT NULL , `purchase_id` INT NOT NULL , `amount` DOUBLE NOT NULL , `created_by` INT NOT NULL , `updated_by` INT NOT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `deleted_at` DATETIME NULL DEFAULT NULL, PRIMARY KEY (`id`)) ENGINE = InnoDB;
+
+ALTER TABLE `payment_mades` ADD `files` TEXT NULL DEFAULT NULL AFTER `cheque_date`;
+
+ALTER TABLE `purchases` DROP `je_paid_amount`;
+
+ALTER TABLE `payment_mades` CHANGE `code` `code` VARCHAR(15) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NULL DEFAULT NULL;
+
+ALTER TABLE `payment_mades` ADD `purchase_id` INT NULL DEFAULT NULL AFTER `cheque_date`;
+
+ALTER TABLE `payment_made_entries` CHANGE `purchase_id` `payment_made_id` INT NOT NULL;
+
+ALTER TABLE `payment_made_entries` ADD `purchase_id` INT NOT NULL AFTER `payment_made_id`;
+
+ALTER TABLE `purchases` ADD `excess_amount` DOUBLE NULL DEFAULT '0' AFTER `shipping_charge`;
+
+ALTER TABLE `payment_made_entries` CHANGE `id` `id` INT NOT NULL AUTO_INCREMENT;
+
+
+
+
+------------------------------------------
+--------------Office Updated--------------
 ------------------------------------------

@@ -48,8 +48,8 @@
                                     @php $due_amount = $purchase->total_amount - $purchase->paid_amount; @endphp
                                     <tr>
                                         <td> {{ $loop->iteration }} </td>
-                                        <td title="{{ $due_amount == 0 ? "Paid" : ($due_amount == $purchase->total_amount ? "Unpaid" : "Partially Paid") }}">
-                                            <span class="badge bg-{{ $due_amount == 0 ? "success" : ($due_amount == $purchase->total_amount ? "danger" : "warning") }}" style="line-height: 13px;padding-right: 2px;padding-left: 2px;">&nbsp;</span> PUR-{{ $purchase->code }} <br>
+                                        <td title="{{ $due_amount <= 0 ? "Paid" : ($due_amount == $purchase->total_amount ? "Unpaid" : "Partially Paid") }}">
+                                            <span class="badge bg-{{ $due_amount <= 0 ? "success" : ($due_amount == $purchase->total_amount ? "danger" : "warning") }}" style="line-height: 13px;padding-right: 2px;padding-left: 2px;">&nbsp;</span> PUR-{{ $purchase->code }} <br>
                                             <small>{{ $purchase->date ? date("d-M-Y", strtotime($purchase->date)) : "" }}</small>
                                         </td>
                                         <td>{{ $purchase->vendor->name }} <br> <small>Mobile: 0{{ $purchase->vendor->phone }}</small> </td>
@@ -57,7 +57,7 @@
                                         <td>{{ $purchase->branch->name }} </td>
                                         <td>{{ $purchase->total_amount }} </td>
                                         <td>{{ $purchase->paid_amount }} </td>
-                                        <td>{{ $due_amount }} </td>
+                                        <td>{{ $due_amount <= 0 ? 0 : $due_amount }} </td>
                                         <td class="text-end">
                                             <div class="d-flex justify-content-end">
                                                 <a href="{{ route('purchase_view', $purchase->id) }}" title="View" class="text-secondary-custom">

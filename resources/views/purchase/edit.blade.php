@@ -375,6 +375,15 @@
             var paid_amount =  parseFloat({!! $purchase->paid_amount !!});
             var total_amount = subtotal_amount - main_discount + main_vat + main_shipping;
             var due_amount = total_amount - paid_amount;
+            if(due_amount < 0)
+            {
+                excess_amount = -1 * due_amount;
+                due_amount = 0;
+            }
+            else
+            {
+                excess_amount = 0;
+            }
 
             $("#subtotal_show").html(subtotal_amount.toFixed(2));
             $("#subtotal").val(subtotal_amount.toFixed(2));
@@ -388,6 +397,7 @@
             $("#total_amount").val(parseFloat(total_amount).toFixed(2));
             $("#total_paid_show").html(parseFloat(paid_amount).toFixed(2));
             $("#due_amount_show").html(parseFloat(due_amount).toFixed(2));
+            $("#excess_amount_show").html(parseFloat(excess_amount).toFixed(2));
         }
 
         function itemChanged(selectElement) {
