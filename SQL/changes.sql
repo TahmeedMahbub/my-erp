@@ -220,15 +220,6 @@ ALTER TABLE `purchases` ADD `date` DATE NULL DEFAULT NULL AFTER `shipping_charge
 
 CREATE TABLE `my_erp`.`payment_mades` (`id` INT NOT NULL AUTO_INCREMENT , `amount` DOUBLE(10,2) NOT NULL , `code` VARCHAR(15) NOT NULL , `vendor_id` INT NOT NULL , `date` DATE NOT NULL , `paid_through_id` INT NOT NULL , `cheque_no` VARCHAR(100) NULL DEFAULT NULL , `cheque_date` DATE NULL DEFAULT NULL , `comment` TEXT NULL DEFAULT NULL , `created_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `updated_at` DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP , `created_by` INT NOT NULL , `updated_by` INT NOT NULL , `deleted_at` DATETIME NULL DEFAULT NULL , PRIMARY KEY (`id`)) ENGINE = InnoDB;
 
-
-
-
-
-
-------------------------------------------
----------------Home Updated---------------
-------------------------------------------
-
 ALTER TABLE `payment_mades` ADD `excess_amount` DOUBLE NULL DEFAULT '0' AFTER `amount`;
 
 ALTER TABLE `contacts` ADD `credit` DOUBLE NULL DEFAULT '0' AFTER `address`;
@@ -256,4 +247,10 @@ ALTER TABLE `payment_made_entries` CHANGE `id` `id` INT NOT NULL AUTO_INCREMENT;
 
 ------------------------------------------
 --------------Office Updated--------------
+------------------------------------------
+
+
+
+------------------------------------------
+---------------Home Updated---------------
 ------------------------------------------

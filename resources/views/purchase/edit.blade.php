@@ -35,10 +35,11 @@
                             <div class="col-lg-3">
                                 <label for="">Vendor Name</label>
                                 <select id="vendor" class="form-select custom_select" name="vendor" required>
-                                    <option value="">Select Vendor</option>
+                                    <option value="{{ $purchase->vendor_id }}">{{ $purchase->vendor->name }} (0{{ $purchase->vendor->phone }}), {{ $purchase->vendor->code }}</option>
+                                    {{-- <option value="">Select Vendor</option>
                                     @foreach ($vendors as $vendor)
                                         <option value="{{ $vendor->id }}" {{ $purchase->vendor_id == $vendor->id ? "selected" : "" }}>{{ $vendor->name }} (0{{ $vendor->phone }}), {{ $vendor->code }}</option>
-                                    @endforeach
+                                    @endforeach --}}
                                 </select>
                             </div>
                             <div class="col-lg-3">
@@ -139,7 +140,7 @@
                                         @endforeach
                                     @endif
                                     <tr id="amount_row">
-                                        <td colspan="5" rowspan="7" class="align-top {{ !empty($purchase->files) ? 'bg-light' : '' }}">
+                                        <td colspan="5" rowspan="10" class="align-top {{ !empty($purchase->files) ? 'bg-light' : '' }}">
                                             @if (!empty($purchase->files))
                                                 <h4 class="page-title">Attachments</h4>
                                                 @foreach (json_decode($purchase->files) as $file)
@@ -215,9 +216,15 @@
                                         <td class="border-bottom fw-bold">TK</td>
                                     </tr>
                                     <tr>
-                                        <td class="text-end fw-bold">Due Amount <span class="text-muted">(+)</span></td>
+                                        <td class="text-end fw-bold">Due Amount</td>
                                         <td colspan="2"></td>
                                         <td class="p-2 text-end fw-bold" id="due_amount_show">0.00</td>
+                                        <td class="fw-bold">TK</td>
+                                    </tr>
+                                    <tr id="excess_amount">
+                                        <td class="text-end fw-bold">Vendor Credit <span class="text-muted"></span></td>
+                                        <td colspan="2"></td>
+                                        <td class="p-2 text-end fw-bold" id="excess_amount_show">0.00</td>
                                         <td class="fw-bold">TK</td>
                                     </tr>
                                 </tbody>
@@ -241,6 +248,7 @@
 
                         <div class="row justify-content-center mt-4">
                             <div class="col-lg-3">
+                                <input type="hidden" name="id" value="{{ $purchase->id }}">
                                 <input class="form-control btn btn-purple" type="Submit" value="Purchase Items">
                             </div>
                         </div>
