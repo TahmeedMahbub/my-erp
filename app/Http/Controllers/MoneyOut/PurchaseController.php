@@ -255,6 +255,8 @@ class PurchaseController extends Controller
                     else // NEW ITEM ROW APPENDED
                     {
                         $purchase_entry             = new PurchaseEntry;
+                        $purchase_entry->created_by = Auth::user()->id;
+                        $purchase_entry->created_at = Carbon::now()->toDateTimeString();
                         $item_lot                   = new ItemLot;
                         $item_status                = "new";
                         $lot                        = ItemLot::where('item_id', $request->items[$key])->max('lot_no');
@@ -263,6 +265,7 @@ class PurchaseController extends Controller
                     }
 
                     $purchase_entry->item_id        = $request->items[$key];
+                    $purchase_entry->purchase_id    = $purchase->id;
                     $purchase_entry->expiry_date    = $request->expiry_date[$key];
                     $purchase_entry->base_qty       = $request->base_qty[$key];
                     $purchase_entry->carton_qty     = $request->carton_qty[$key];
@@ -355,6 +358,16 @@ class PurchaseController extends Controller
         }
         $purchase->delete();
         JournalEntry::where("model_name", "purchase")->where("model_id", $purchase->id)->delete();
+
+        $history            = new History;
+        $history->module    = "Purchase";
+        $history->module_id = $purchase->id;
+        $history->operation = "Delete";
+        $history->previous  = History::where('module', 'Purchase')->where('module_id', $purchase->id)->latest()->first()->after;
+        $history->after     = null;
+        $history->user_id   = Auth::user()->id;
+        $history->ip_address= Session::get('user_ip');
+        $history->save();
 
         DB::commit();
         return redirect()

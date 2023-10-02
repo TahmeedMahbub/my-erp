@@ -58,7 +58,7 @@ class Helpers
                     $changes = 1;
                     $formattedKey = ucwords($key);
 
-                    $afterValue = count($afterValue). " Item(s)";
+                    $afterValue = count($afterValue). " Entry(s)";
 
                     $after_changes[] = "<b>{$formattedKey}</b> ⇒ <small>{$afterValue}</small> <br>";
                 }
@@ -87,7 +87,7 @@ class Helpers
 
             // HANDLE CREATE AND DELETE
             foreach ($previousData as $key => $prevValue) {
-                if (!in_array($key, ['created_at', 'updated_at', 'created_by', 'updated_by', 'id', 'deletable', 'files'])) {
+                if (!in_array($key, ['created_at', 'updated_at', 'created_by', 'updated_by', 'id', 'deletable', 'files', 'entries'])) {
                     $afterValue = $afterData[$key];
                     if ($prevValue !== $afterValue) {
                         $changes = 1;
@@ -116,6 +116,31 @@ class Helpers
                         $after_changes[] = "<b>{$formattedKey}</b> ⇒ <small>".count(json_decode($afterValue)). " File(s) </small> <br>";
                     }
                 }
+
+                if(in_array($key, ['entries']))
+                {
+
+                    $changes = 1;
+                    $formattedKey = ucwords($key);
+                    $afterValue = $afterData[$key];
+                    // if(!empty($afterValue))
+                    // {
+                    //     dd($afterValue);
+                    // }
+
+
+                    if ($prevValue !== $afterValue) {
+                        $previous_changes[] = "<b>{$formattedKey}</b> ⇒ <small>".count($prevValue). " Entry(s) </small> <br>";
+                        $after_changes[] = "<b>{$formattedKey}</b> ⇒ <small>".count($afterValue). " Entry(s) </small> <br>";
+                    }
+
+                    // $afterValue = count(json_decode($afterValue)). " Entry(s)";
+
+                    // if ($prevValue !== $afterValue) {
+                    //     $previous_changes[] = "<b>{$formattedKey}</b> ⇒ <small>".count(json_decode($prevValue)). " File(s) </small> <br>";
+                    //     $after_changes[] = "<b>{$formattedKey}</b> ⇒ <small>".count(json_decode($afterValue)). " File(s) </small> <br>";
+                    // }
+                }
             }
 
             if($changes == 0)
@@ -141,7 +166,7 @@ class Helpers
 
             // HANDLE CREATE AND DELETE
             foreach ($previousData as $key => $prevValue) {
-                if (!in_array($key, ['created_at', 'updated_at', 'created_by', 'updated_by', 'id', 'deletable', 'files'])) {
+                if (!in_array($key, ['created_at', 'updated_at', 'created_by', 'updated_by', 'id', 'deletable', 'files', 'entries'])) {
                     $changes = 1;
                     $formattedKey = ucwords(str_replace('_', ' ', $key));
                     if (strpos($formattedKey, "At") !== false) {
@@ -155,7 +180,22 @@ class Helpers
                     $changes = 1;
                     $formattedKey = ucwords($key);
 
+                    $prevValue = $prevValue ?? "[]" ;
+                    $prevValue = gettype($prevValue) != "string" ? json_encode($prevValue) : $prevValue;
                     $prevValue = count(json_decode($prevValue)). " File(s)";
+
+                    $previous_changes[] = "<b>{$formattedKey}</b> ⇒ <small>{$prevValue}</small> <br>";
+                }
+
+                if(in_array($key, ['entries']))
+                {
+
+                    $changes = 1;
+                    $formattedKey = ucwords($key);
+
+                    $prevValue = $prevValue ?? "[]" ;
+                    $prevValue = gettype($prevValue) != "string" ? json_encode($prevValue) : $prevValue;
+                    $prevValue = count(json_decode($prevValue)). " Entry(s)";
 
                     $previous_changes[] = "<b>{$formattedKey}</b> ⇒ <small>{$prevValue}</small> <br>";
                 }
