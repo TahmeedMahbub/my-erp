@@ -118,6 +118,7 @@ class PurchaseController extends Controller
                     $item_lot->lot_no                   = $lot_no;
                     $item_lot->branch_id                = $request->branch;
                     $item_lot->expiry_date              = $request->expiry_date[$key] ?? null;
+                    $item_lot->purchase_entry_id        = $purchase_entry->id;
                     $item_lot->total_stock              = $request->base_qty[$key];
                     $item_lot->purchased_stock          = $request->base_qty[$key];
                     $item_lot->sold_stock               = 0;
@@ -187,24 +188,22 @@ class PurchaseController extends Controller
 
     public function update(Request $request)
     {
-        dd($request->all());
         DB::beginTransaction();
         try{
-            $purchase                       = new Purchase;
-            $purchase->vendor_id            = $request->vendor;
+            $purchase                       = Purchase::find($request->id);
+
+            $vendor                         = Contact::find($purchase->vendor_id);
+            $vendor->credit                 = $vendor->credit + $purchase->total_amount - $request->total_amount; // $vendor->credit - ($purchase->paid_amount - $purchase->total_amount) + $purchase->paid_amount - $request->total_amount;
+            $vendor->save();
+
             $purchase->delivery_person_id   = $request->delivery;
             $purchase->branch_id            = $request->branch;
-            $purchase->total_amount         = $request->total_amount ?? 0;
-            $purchase->paid_amount          = $request->payment_amount ?? 0;
-            $purchase->paid_through_id      = $purchase->paid_amount != 0 ? $request->payment_account : null;
-            $purchase->cheque_no            = $request->cheque;
-            $purchase->cheque_date          = $request->cheque_date;
-            $purchase->payment_comment      = $request->payment_comment;
-            $purchase->discount             = $request->main_discount ?? 0;
+            $purchase->total_amount         = $request->total_amount;
+            $purchase->discount             = $request->main_discount;
             $purchase->discount_type        = $request->main_discount_type;
-            $purchase->vat                  = $request->main_vat ?? 0;
+            $purchase->vat                  = $request->main_vat;
             $purchase->vat_type             = $request->main_vat_type;
-            $purchase->shipping_charge      = $request->main_shipping ?? 0;
+            $purchase->shipping_charge      = $request->main_shipping;
             $purchase->date                 = $request->purchase_date ?? date('Y-m-d');
             $purchase->note                 = $request->note;
             $purchase->je_discount          = $request->discount;
@@ -215,10 +214,7 @@ class PurchaseController extends Controller
             $purchase->updated_by           = Auth::user()->id;
             $purchase->updated_at           = Carbon::now()->toDateTimeString();
 
-            $purchase->save();
-            $purchase->code                 = str_pad($purchase->id, 6, '0', STR_PAD_LEFT);
-
-            if ($request->hasFile('files')) {
+            if ($request->hasFile('files')) { //HANDLE PREVIOUS FILES
                 foreach($request->file('files') as $key => $file)
                 {
                     $fileName               = rand(100,999).'_'.$purchase->code.'_'.$file->getClientOriginalName();
@@ -227,15 +223,45 @@ class PurchaseController extends Controller
                 }
                 $purchase->files            = json_encode($files);
             }
+
             $purchase->save();
+
 
             if(!empty($request->items))
             {
+                $existing_purchase_entries = PurchaseEntry::where('purchase_id', $purchase->id)->get()->pluck('id')->toArray();
+
                 $entries = [];
                 foreach($request->items as $key => $item)
                 {
-                    $purchase_entry                 = new PurchaseEntry;
-                    $purchase_entry->purchase_id    = $purchase->id;
+                    if(!empty($request->purchase_entry_ids[$key])) // EXISTING ROWS
+                    {
+                        $purchase_entry             = PurchaseEntry::find($request->purchase_entry_ids[$key]);
+                        $item_lot                   = ItemLot::where('purchase_entry_id', $request->purchase_entry_ids[$key])->first();
+                        $existing_purchase_entries = array_diff( $existing_purchase_entries, [$request->purchase_entry_ids[$key]] );
+
+                        if($purchase_entry->item_id == $request->items[$key]) // ITEM REMAIN SAME IN EXTING ROWS
+                        {
+                            $item_status            = "same";
+                            $lot_no                 = $item_lot->lot_no;
+                        }
+                        else // ITEM CHANGED IN EXTING ROWS
+                        {
+                            $item_status            = "changed";
+                            $lot                    = ItemLot::where('item_id', $request->items[$key])->max('lot_no');
+                            $lot_no                 = !empty($lot) ? $lot+1 : 1;
+                        }
+                    }
+                    else // NEW ITEM ROW APPENDED
+                    {
+                        $purchase_entry             = new PurchaseEntry;
+                        $item_lot                   = new ItemLot;
+                        $item_status                = "new";
+                        $lot                        = ItemLot::where('item_id', $request->items[$key])->max('lot_no');
+                        $lot_no                     = !empty($lot) ? $lot+1 : 1;
+                        $item_lot->purchased_stock  = 0;
+                    }
+
                     $purchase_entry->item_id        = $request->items[$key];
                     $purchase_entry->expiry_date    = $request->expiry_date[$key];
                     $purchase_entry->base_qty       = $request->base_qty[$key];
@@ -244,29 +270,28 @@ class PurchaseController extends Controller
                     $purchase_entry->price_unit     = $request->units[$key];
                     $purchase_entry->discount       = $request->discounts[$key];
                     $purchase_entry->discount_type  = $request->discount_types[$key];
-                    $purchase_entry->created_by     = Auth::user()->id;
                     $purchase_entry->updated_by     = Auth::user()->id;
-                    $purchase_entry->created_at     = Carbon::now()->toDateTimeString();
                     $purchase_entry->updated_at     = Carbon::now()->toDateTimeString();
                     $purchase_entry->save();
                     $entries[]                      = $purchase_entry;
 
-                    $lot = ItemLot::where('item_id', $request->items[$key])->max('lot_no');
-                    $lot_no = !empty($lot) ? $lot+1 : 1;
-
-                    $item_lot                           = new ItemLot;
                     $item_lot->item_id                  = $request->items[$key];
                     $item_lot->lot_no                   = $lot_no;
                     $item_lot->branch_id                = $request->branch;
                     $item_lot->expiry_date              = $request->expiry_date[$key] ?? null;
-                    $item_lot->total_stock              = $request->base_qty[$key];
+                    $item_lot->purchase_entry_id        = $purchase_entry->id;
+                    $item_lot->total_stock             += $request->base_qty[$key] - $item_lot->purchased_stock;
                     $item_lot->purchased_stock          = $request->base_qty[$key];
-                    $item_lot->sold_stock               = 0;
-                    $item_lot->transferred_in_stock     = 0;
-                    $item_lot->transferred_out_stock    = 0;
-                    $item_lot->created_at               = Carbon::now();
                     $item_lot->updated_at               = Carbon::now();
                     $item_lot->save();
+                }
+
+                if(!empty($existing_purchase_entries))
+                {
+                    foreach($existing_purchase_entries as $unused_purchase_entry)
+                    {
+                        PurchaseEntry::find($unused_purchase_entry)->delete();
+                    }
                 }
             }
             else
@@ -279,18 +304,17 @@ class PurchaseController extends Controller
                 ->with('alert.message', 'Error!!! Purchase At Least One Item.');
             }
 
-            $this->purchaseCreateJE($purchase->id);
+            JournalEntry::where("model_name", "purchase")->where("model_id", $purchase->id)->delete();
 
-            if(!empty($purchase->paid_amount) && $purchase->paid_amount != 0)
-            {   $this->purchaseCreatePayment($purchase->id);  }
+            $this->purchaseCreateJE($purchase->id);
 
             $purchase->entries  = $entries;
 
             $history            = new History;
             $history->module    = "Purchase";
             $history->module_id = $purchase->id;
-            $history->operation = "Create";
-            $history->previous  = null;
+            $history->operation = "Edit";
+            $history->previous  = History::where('module', 'Purchase')->where('module_id', $purchase->id)->latest()->first()->after;
             $history->after     = json_encode($purchase);
             $history->user_id   = Auth::user()->id;
             $history->ip_address= Session::get('user_ip');
@@ -300,7 +324,7 @@ class PurchaseController extends Controller
             return redirect()
             ->route('purchase')
             ->with('alert.status', 'success')
-            ->with('alert.message', 'Item(s) Have Been Purchased!');
+            ->with('alert.message', 'Purchase has been Edited!');
         }
         catch(Exception $e)
         {
@@ -309,14 +333,34 @@ class PurchaseController extends Controller
             ->back()
             ->withInput()
             ->with('alert.status', 'danger')
-            ->with('alert.message', 'Error in Purchase Creation!!! '.$e);
+            ->with('alert.message', 'Error in Editing Purchase!!! '.$e);
         }
 
     }
 
-    public function delete()
+    public function delete($id)
     {
-        //
+        DB::beginTransaction();
+        $purchase         = Purchase::find($id);
+
+        $vendor           = Contact::find($purchase->vendor_id);
+        $vendor->credit   = $vendor->credit + $purchase->total_amount; // $vendor->credit - ($purchase->paid_amount - $purchase->total_amount) + $purchase->paid_amount - $request->total_amount;
+        $vendor->save();
+
+        $purchase_entries = PurchaseEntry::where('purchase_id', $purchase->id)->get();
+        foreach($purchase_entries as $purchase_entry)
+        {
+            ItemLot::where('purchase_entry_id', $purchase_entry->id)->delete();
+            $purchase_entry->delete();
+        }
+        $purchase->delete();
+        JournalEntry::where("model_name", "purchase")->where("model_id", $purchase->id)->delete();
+
+        DB::commit();
+        return redirect()
+        ->route('purchase')
+        ->with('alert.status', 'success')
+        ->with('alert.message', 'Purchase has been Deleted!');
     }
 
     public function purchaseCreatePayment($purchase_id)
@@ -458,7 +502,7 @@ class PurchaseController extends Controller
             $journal_entry->amount = $purchase->shipping_charge;
             $journal_entry->account_id = 30;
             $journal_entry->date = Carbon::now()->format('Y-m-d');
-            $journal_entry->contact_id = $purchase->delivery_person_id ??
+            $journal_entry->contact_id = $purchase->delivery_person_id ?? $purchase->vendor_id;
             $journal_entry->model_name = "purchase";
             $journal_entry->model_id = $purchase->id;
             $journal_entry->note = $purchase->note ?? null;

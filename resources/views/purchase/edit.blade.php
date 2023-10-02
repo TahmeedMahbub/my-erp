@@ -25,7 +25,7 @@
     </div>
     <!-- end page title end breadcrumb -->
 
-    <form action="{{ route('purchase_store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('purchase_update') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="row">
             <div class="col-lg-12">
@@ -93,7 +93,7 @@
                                     @if($purchase_entries)
                                         @foreach ($purchase_entries as $key => $purchase_entry)
                                             <tr class="border-bottom item_rows" id="item_row_{{ $key }}">
-                                                <th scope="row">{{ $key+1 }}</th>
+                                                <th scope="row">{{ $key+1 }} <input type="hidden" name="purchase_entry_ids[]" value="{{ $purchase_entry->id }}"></th>
                                                 <td class="p-2 text-center" id="item_img_{{ $key }}"><img src="{{ asset('assets/images/items/item.jpg') }}" alt="item" style="height: 40px;"></td>
                                                 <td class="p-2">
                                                     <select id="item_{{ $key }}" class="form-select custom_select" onchange="oldItemChanged(this);" name="items[]" required>
@@ -267,7 +267,7 @@
                 var newItemId = lastItemId + 1;
 
                 var newItemRow = `<tr class="border-bottom item_rows" id="item_row_${newItemId}">
-                                    <th scope="row">${newItemId + 1}</th>
+                                    <th scope="row">${newItemId + 1}  <input type="hidden" name="purchase_entry_ids[]" value=""></th>
                                     <td class="p-2 text-center" id="item_img_${newItemId}"><img src="{{ asset('assets/\images/\items/\item.jpg') }}" alt="item" style="height: 40px;"></td>
                                     <td class="p-2">
                                         <select id="item_${newItemId}" class="form-select custom_select" onchange="itemChanged(this);" name="items[]" required>

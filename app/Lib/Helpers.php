@@ -191,9 +191,9 @@ class Helpers
         return $has_access;
     }
 
-    public function codeGenerator($model, $id)
+    public function codeGenerator($model, $prefix, $id)
     {
-        $modelClassName = "\\App\\Models\\{$model}";
+        $modelClassName = "\\App\\Models\\{$prefix}\\{$model}";
         $record = $modelClassName::find($id);
 
         $words = explode(' ', $record->name);

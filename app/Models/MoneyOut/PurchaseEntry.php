@@ -15,4 +15,14 @@ class PurchaseEntry extends Model
     {
         static::addGlobalScope(new SoftDeletingScope);
     }
+
+    public function purchase()
+    {
+        return $this->belongsTo('App\Models\MoneyOut\Purchase');
+    }
+
+    public function itemLot()
+    {
+        return $this->hasOne('App\Models\Inventory\ItemLot', 'purchase_entry_id');
+    }
 }

@@ -67,7 +67,7 @@ class ItemController extends Controller
             $item->save();
 
             $helpers = new \App\Lib\Helpers;
-            $code = $helpers->codeGenerator("Item", $item->id);
+            $code = $helpers->codeGenerator("Item", "Inventory", $item->id);
             $item->code = $code;
             $item->save();
 

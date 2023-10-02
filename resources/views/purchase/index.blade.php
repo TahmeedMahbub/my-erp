@@ -19,10 +19,10 @@
                     <a href="{{route('purchase_create')}}" class="btn btn-purple btn-sm"><i class="mdi mdi-plus"></i> Create Purchase</a>
                 </div>
                 <h4 class="page-title">Purchase</h4>
-            </div><!--end page-title-box-->
-        </div><!--end col-->
+            </div>
+        </div>
     </div>
-    <!-- end page title end breadcrumb -->
+
 
     <div class="row">
         <div class="col-md-12 col-lg-12">
@@ -66,19 +66,54 @@
                                                 <a href="{{ route('purchase_edit', $purchase->id) }}" title="Edit" class="text-secondary-custom">
                                                     <i class="mdi mdi-lead-pencil pe-2 fs-4"></i>
                                                 </a>
-                                                <a href="{{ route('purchase_delete', $purchase->id) }}" title="Delete" class="text-secondary-custom">
+                                                <a href="" title="Delete" class="text-secondary-custom" data-bs-toggle="modal" data-bs-target="#purchase_delete_{{$purchase->id}}">
                                                     <i class="mdi mdi-delete pe-2 fs-4"></i>
                                                 </a>
+
+                                                <div class="modal fade" id="purchase_delete_{{$purchase->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalDefaultLabel" aria-hidden="true">
+                                                    <div class="modal-dialog" role="document">
+                                                        <div class="modal-content">
+                                                            <div class="modal-header">
+                                                                <h6 class="modal-title m-0" id="exampleModalDefaultLabel">Delete Confirmation</h6>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+                                                                <div class="row">
+                                                                    <div class="col-lg-3 text-center align-self-center">
+                                                                        <img src="{{asset('assets/images/delete.gif')}}" alt="" class="img-fluid">
+                                                                    </div>
+                                                                    <div class="col-lg-9 text-start">
+                                                                        <h5 class="text-center">Want to Delete Purchase?</h5>
+                                                                        <center>
+                                                                            <span class="badge bg-soft-{{ $due_amount <= 0 ? "success" : ($due_amount == $purchase->total_amount ? "danger" : "warning") }}">{{ $due_amount <= 0 ? "Paid" : ($due_amount == $purchase->total_amount ? "Unpaid" : "Partially Paid") }}</span>
+                                                                            <small class="text-muted ml-2">{{ $purchase->date ? date("d-M-Y", strtotime($purchase->date)) : "" }}</small>
+                                                                        </center>
+                                                                        <ul class="mt-3 mb-0 text-left">
+                                                                            <b>Puchase Code:</b> PUR-{{ $purchase->code }} <br>
+                                                                            <b>Vendor:</b> {{ $purchase->vendor->name }} (0{{ $purchase->vendor->phone }}) <br>
+                                                                            <b>Total Amount:</b> {{ $purchase->total_amount }} BDT
+                                                                        </ul>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-de-secondary btn-sm" data-bs-dismiss="modal">Close</button>
+                                                                <a href="{{ route('purchase_delete', $purchase->id) }}" type="button" class="btn btn-danger btn-sm">Confirm Delete</a>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+
                                             </div>
                                         </td>
                                     </tr>
 
                                 @endforeach
                             </tbody>
-                        </table><!--end /table-->
-                    </div><!--end /tableresponsive-->
-                </div><!--end card-body-->
-            </div><!--end card-->
-        </div> <!--end col-->
-    </div><!--end row-->
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 @endsection
