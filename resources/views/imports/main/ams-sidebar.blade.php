@@ -169,10 +169,10 @@
     <div class="collapse " id="sidebarMoneyOut">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="{{ route('purchase') }}">Purchase (!!!)</a>
+                <a class="nav-link" href="{{ route('purchase') }}">Purchase</a>
             </li>
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Payment (!!!)</a>
+                <a class="nav-link" href="{{ route('payment') }}">Payment (!!!)</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">Expense (!!!)</a>

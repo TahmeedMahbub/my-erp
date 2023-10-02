@@ -256,6 +256,10 @@ ALTER TABLE `journal_entries` DROP `deleted_at`;
 
 ALTER TABLE `journal_entries` CHANGE `model_name` `model_name` VARCHAR(255) CHARACTER SET utf8mb4 COLLATE utf8mb4_0900_ai_ci NOT NULL, CHANGE `model_id` `model_id` INT NOT NULL;
 
+INSERT INTO `modules` (`id`, `module_name`, `module_prefix`, `deletable`, `created_at`, `updated_at`) VALUES ('11', 'Payment Made', 'payment-made', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+
 
 
 ------------------------------------------

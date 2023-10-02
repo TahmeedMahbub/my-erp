@@ -13,6 +13,7 @@ use App\Http\Controllers\MoneyOut\PurchaseController;
 use App\Http\Controllers\Contact\RoleController;
 use App\Http\Controllers\Inventory\UnitController;
 use App\Http\Controllers\Contact\UserController;
+use App\Http\Controllers\MoneyOut\PaymentMadeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -143,4 +144,14 @@ Route::group(['prefix' => 'purchase', 'middleware' => 'auth'], function () {
     Route::get('/edit/{id}', [PurchaseController::class, 'edit'])->name('purchase_edit')->middleware('updateAccess');
     Route::post('/update', [PurchaseController::class, 'update'])->name('purchase_update')->middleware('updateAccess');
     Route::get('/delete/{id}', [PurchaseController::class, 'delete'])->name('purchase_delete')->middleware('deleteAccess');
+});
+
+Route::group(['prefix' => 'payment-made', 'middleware' => 'auth'], function () {
+    Route::get('/', [PaymentMadeController::class, 'index'])->name('payment')->middleware('readAccess');
+    Route::get('/view/{id}', [PaymentMadeController::class, 'view'])->name('payment_view')->middleware('readAccess');
+    Route::get('/create', [PaymentMadeController::class, 'create'])->name('payment_create')->middleware('createAccess');
+    Route::post('/store', [PaymentMadeController::class, 'store'])->name('payment_store')->middleware('createAccess');
+    Route::get('/edit/{id}', [PaymentMadeController::class, 'edit'])->name('payment_edit')->middleware('updateAccess');
+    Route::post('/update', [PaymentMadeController::class, 'update'])->name('payment_update')->middleware('updateAccess');
+    Route::get('/delete/{id}', [PaymentMadeController::class, 'delete'])->name('payment_delete')->middleware('deleteAccess');
 });
