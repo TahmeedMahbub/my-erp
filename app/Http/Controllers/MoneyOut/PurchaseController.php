@@ -36,7 +36,6 @@ class PurchaseController extends Controller
 
     public function create()
     {
-        // HANDLE EXCESS PAYMENT
         $branches           = Branch::all();
         $delivery_persons   = Contact::whereIn('category_id', [3, 4])->get();
         $vendors            = Contact::where('category_id', 2)->get();
@@ -143,6 +142,11 @@ class PurchaseController extends Controller
 
             if(!empty($purchase->paid_amount) && $purchase->paid_amount != 0)
             {   $this->purchaseCreatePayment($purchase->id);  }
+
+            $vendor   = Contact::find($purchase->vendor_id);
+            $vendor->credit = $vendor->excess_payment + $purchase->paid_amount - $purchase->total_amount;
+            $vendor->save();
+
 
             $purchase->entries  = $entries;
 
@@ -379,10 +383,6 @@ class PurchaseController extends Controller
     public function purchaseCreatePayment($purchase_id)
     {
         $purchase = Purchase::find($purchase_id);
-
-        $vendor   = Contact::find($purchase->vendor_id);
-        $vendor->credit = $vendor->excess_payment + $purchase->paid_amount - $purchase->total_amount;
-        $vendor->save();
 
         $payment_made = new PaymentMade;
         $payment_made->amount = $purchase->paid_amount;

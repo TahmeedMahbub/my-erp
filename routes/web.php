@@ -154,4 +154,6 @@ Route::group(['prefix' => 'payment-made', 'middleware' => 'auth'], function () {
     Route::get('/edit/{id}', [PaymentMadeController::class, 'edit'])->name('payment_edit')->middleware('updateAccess');
     Route::post('/update', [PaymentMadeController::class, 'update'])->name('payment_update')->middleware('updateAccess');
     Route::get('/delete/{id}', [PaymentMadeController::class, 'delete'])->name('payment_delete')->middleware('deleteAccess');
+
+    Route::get('/remaining-payments/{vendor_id}', [PaymentMadeController::class, 'remainingPayments'])->name('remaining_payments')->middleware('readAccess');
 });
