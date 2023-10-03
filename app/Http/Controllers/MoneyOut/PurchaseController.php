@@ -389,6 +389,7 @@ class PurchaseController extends Controller
         $payment_made->excess_amount = $purchase->paid_amount - $purchase->total_amount;
         $payment_made->vendor_id = $purchase->vendor_id;
         $payment_made->date = $purchase->date;
+        $payment_made->branch_id = $purchase->branch_id;
         $payment_made->paid_through_id = $purchase->paid_through_id;
         $payment_made->cheque_no = $purchase->cheque_no;
         $payment_made->cheque_date = $purchase->cheque_date;

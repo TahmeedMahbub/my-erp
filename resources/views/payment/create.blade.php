@@ -1,6 +1,6 @@
 @extends('imports.main.layout')
 
-@section('title', 'Purchase Create')
+@section('title', 'Payment Create')
 
 @section('head')
     <style>
@@ -17,15 +17,15 @@
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('purchase')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All Purchases</a>
+                    <a href="{{route('payment')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All Payments</a>
                 </div>
-                <h4 class="page-title">Purchase Create</h4>
+                <h4 class="page-title">Payment Create</h4>
             </div>
         </div>
     </div>
 
 
-    <form action="{{ route('purchase_store') }}" method="POST" enctype="multipart/form-data">
+    <form action="{{ route('payment_store') }}" method="POST" enctype="multipart/form-data">
         @csrf
 
         <div class="row">
@@ -56,7 +56,7 @@
                             </div>
                             <div class="col-lg-3 p-2">
                                 <label for="">Date</label>
-                                <input type="date" class="form-control" id="" value="2023-05-22" name="cheque_date" placeholder="">
+                                <input type="date" class="form-control" id="" value="2023-05-22" name="date" placeholder="">
                             </div>
                             <div class="col-lg-3 p-2">
                                 <label for="">Branch Name</label>
@@ -78,11 +78,6 @@
                             <div class="col-lg-3 p-2">
                                 <label for="">Attachments</label>
                                 <input type="file" class="form-control" name="files[]" multiple>
-                            </div>
-
-                            <div class="col-lg-12 p-2">
-                                <label for="">Note</label>
-                                <input type="text" class="form-control" name="note" value="" placeholder="Enter Any Optional Note">
                             </div>
                         </div>
                     </div>
@@ -108,26 +103,44 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td rowspan="10" colspan="4"></td>
-                                        <td class="p-2 text-end">Used Amount</td>
-                                        <td class="p-2 text-end"><span id="used_amount_show">0.00</span> &ensp; TK</td>
+                                        <td rowspan="10" colspan="3"></td>
+                                        <td class="p-2 text-end" id="total_amount"></td>
+                                        <td class="p-2 text-end" id="total_due"></td>
+                                        <td class="p-2 text-end">
+                                            <div class="text-start" style="position: absolute;">&emsp;&emsp;&emsp;&emsp;  Used Amount</div>
+                                            <span class="p-2 text-end" id="used_amount_show">0.00</span> &ensp; TK
+                                        </td>
                                     </tr>
                                     <tr class="border-bottom">
-                                        <td class="p-2 text-end">Excess Amount</td>
-                                        <td class="p-2 text-end"><span id="excess_amount_show">0.00</span> &ensp; TK</td>
+                                        <td class="p-2 text-end"></td>
+                                        <td class="p-2 text-end"></td>
+                                        <td class="p-2 text-end">
+                                            <div class="text-start" style="position: absolute;">&emsp;&emsp;&emsp;&emsp;  Excess Amount</div>
+                                            <span class="p-2 text-end" id="excess_amount_show">0.00</span> &ensp; TK
+                                            <input type="hidden" name="excess_amount" id="hidden_excess_amount" value="0">
+                                        </td>
                                     </tr>
                                     <tr>
-                                        <td class="p-2 text-end">Paid Amount</td>
-                                        <td class="p-2 text-end"><span id="paid_amount_show">0.00</span> &ensp; TK</td>
+                                        <td class="p-2 text-end"></td>
+                                        <td class="p-2 text-end"></td>
+                                        <td class="p-2 text-end">
+                                            <div class="text-start" style="position: absolute;">&emsp;&emsp;&emsp;&emsp;  Paid Amount</div>
+                                            <span class="p-2 text-end" id="paid_amount_show">0.00</span> &ensp; TK
+                                        </td>
                                     </tr>
                                 </tbody>
                             </table>
                         </div>
 
+                        <div class="col-lg-12 p-2">
+                            <label for="">Note</label>
+                            <input type="text" class="form-control" name="note" value="" placeholder="Enter Any Optional Note">
+                        </div>
+
 
                         <div class="row justify-content-center mt-4">
                             <div class="col-lg-3">
-                                <input class="form-control btn btn-purple" type="Submit" value="Create Invoice">
+                                <input class="form-control btn btn-purple" type="Submit" value="Pay Purchases   ">
                             </div>
                         </div>
                     </div>
@@ -151,6 +164,8 @@
             }
             else
             {
+                var total_amount = 0;
+                var total_due = 0;
                 var url = "{{ route('remaining_payments', ':vendor_id') }}";
                 url = url.replace(':vendor_id', vendor);
 
@@ -164,29 +179,33 @@
                             purchase_url = purchase_url.replace(':purchase_id', value.id);
 
 
-                            payments += `<tr class="border-bottom payment_rows">
+                            payments += `<tr class="border-bottom payment_rows" id="payment_row_${index}">
                                                 <td scope="row">${index + 1}</td>
                                                 <td class="p-2">${value.date}</td>
                                                 <td class="p-2"><a href="${purchase_url}">PUR-${value.code}</a></td>
                                                 <td class="p-2 text-end">${(value.total_amount).toFixed(2)}</td>
-                                                <td class="p-2 text-end">${(value.total_amount - value.paid_amount).toFixed(2)}</td>
-                                                <td class="p-2">
-                                                    <input class="form-control text-end paid_amounts" type="number" id="paid_amount_${index}" value="0.00" min="0" step="0.01" name="paid_amounts[]" max="${value.total_amount - value.paid_amount}" placeholder="Paid Amount">
-                                                    <input type="hidden" id="hidden_paid_amount_${index}" name="hidden_paid_amounts[]" value="0">
+                                                <td class="p-2 text-end" id="due_amount_${index}">${(value.total_amount - value.paid_amount).toFixed(2)}</td>
+                                                <td class="p-2" align="right">
+                                                    <input class="form-control text-end paid_amounts" type="number" id="paid_amount_${index}" value="0.00" min="0" step="0.01" name="paid_amounts[]" max="${value.total_amount - value.paid_amount}" placeholder="Paid Amount" style="width: 88%;">
+                                                    <input type="hidden" id="purchase_id_${index}" name="purchase_ids[]" value="${value.id}">
                                                 </td>
                                             </tr>`;
+
+                            total_amount += value.total_amount;
+                            total_due += value.total_amount - value.paid_amount;
                         });
                         $('.payment_rows').remove();
                         $("#payment_title").after(payments);
-                        $('#amount').val((0).toFixed(2));
                         $('#used_amount_show').html((0).toFixed(2));
                         $('#excess_amount_show').html((0).toFixed(2));
+                        $('#hidden_excess_amount').val((0).toFixed(2));
                         $('#paid_amount_show').html((0).toFixed(2));
+                        $('#total_amount').html("BDT "+(total_amount).toFixed(2));
+                        $('#total_due').html("BDT "+(total_due).toFixed(2));
                     }
                 });
             }
         });
-
 
         $(document).on("input", "#amount", function() {
             var vendor = $("#vendor").val();
@@ -195,15 +214,60 @@
                 $('#amount').val('');
                 $('#used_amount_show').html((0).toFixed(2));
                 $('#excess_amount_show').html((0).toFixed(2));
+                $('#hidden_excess_amount').val((0).toFixed(2));
                 $('#paid_amount_show').html((0).toFixed(2));
             }
             else
             {
-                var amount = (parseFloat($('#amount').val())).toFixed(2);
-                $('#used_amount_show').html((0).toFixed(2));
-                $('#excess_amount_show').html(amount);
-                $('#paid_amount_show').html(amount);
+                var amount = parseFloat($('#amount').val()) || 0;
+                var usedAmount = 0;
+
+                $(".paid_amounts").each(function() {
+                    var paid_amount = parseFloat($(this).val()) || 0;
+                    usedAmount += paid_amount;
+                });
+
+                $('#used_amount_show').html((usedAmount).toFixed(2));
+                $('#excess_amount_show').html((amount - usedAmount).toFixed(2));
+                $('#hidden_excess_amount').val((amount - usedAmount).toFixed(2));
+                $('#paid_amount_show').html(amount.toFixed(2));
             }
+        });
+
+
+        $(document).on("input", ".paid_amounts", function() {
+            var id          = parseInt($(this).attr('id').match(/\d+/));
+            var paidAmount  = parseFloat($("#paid_amount_"+id).val());
+            var dueAmount   = parseFloat($("#due_amount_"+id).html());
+            var amount      = parseFloat($('#amount').val()) || 0;
+
+            var usedAmount = 0;
+
+            if(dueAmount < paidAmount)
+            {
+                $("#paid_amount_"+id).val((dueAmount).toFixed(2));
+            }
+
+            $(".paid_amounts").each(function() {
+                var paid_amount = parseFloat($(this).val()) || 0;
+                usedAmount += paid_amount;
+            });
+
+            var excessAmount = amount - usedAmount;
+
+            if(excessAmount < 0)
+            {
+                $("#paid_amount_"+id).val((paidAmount + excessAmount).toFixed(2));
+                usedAmount = amount;
+                excessAmount = 0;
+            }
+
+
+            $('#used_amount_show').html((usedAmount).toFixed(2));
+            $('#excess_amount_show').html(excessAmount.toFixed(2));
+            $('#hidden_excess_amount').val((excessAmount).toFixed(2));
+            $('#paid_amount_show').html(amount.toFixed(2));
+
         });
     </script>
 @endsection

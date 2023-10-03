@@ -242,12 +242,6 @@ ALTER TABLE `purchases` ADD `excess_amount` DOUBLE NULL DEFAULT '0' AFTER `shipp
 
 ALTER TABLE `payment_made_entries` CHANGE `id` `id` INT NOT NULL AUTO_INCREMENT;
 
-
-
-------------------------------------------
----------------Home Updated---------------
-------------------------------------------
-
 ALTER TABLE `item_lots` ADD `purchase_entry_id` INT NOT NULL AFTER `expiry_date`;
 
 ALTER TABLE `item_lots` ADD `deleted_at` DATETIME NULL DEFAULT NULL AFTER `updated_at`;
@@ -258,10 +252,16 @@ ALTER TABLE `journal_entries` CHANGE `model_name` `model_name` VARCHAR(255) CHAR
 
 INSERT INTO `modules` (`id`, `module_name`, `module_prefix`, `deletable`, `created_at`, `updated_at`) VALUES ('11', 'Payment Made', 'payment-made', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
 
+------------------------------------------
+--------------Office Updated--------------
+------------------------------------------
+
+ALTER TABLE `payment_mades` ADD `branch_id` INT NOT NULL AFTER `vendor_id`;
+
 
 
 
 
 ------------------------------------------
---------------Office Updated--------------
+---------------Home Updated---------------
 ------------------------------------------
