@@ -34,7 +34,7 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-3 p-2">
-                                <label for="">Vendor</label>
+                                <label for="">Vendor <span class="text-danger font-weight-bold">*</span></label>
                                 <select id="vendor" class="form-select custom_select" name="vendor" required>
                                     <option value="">Select Vendor</option>
                                     @foreach ($vendors as $vendor)
@@ -43,11 +43,11 @@
                                 </select>
                             </div>
                             <div class="col-lg-3 p-2">
-                                <label for="">Payment Amount</label>
-                                <input class="form-control" type="number" id="amount" min="0" step="0.01" name="amount" placeholder="Amount">
+                                <label for="">Payment Amount <span class="text-danger font-weight-bold">*</span></label>
+                                <input class="form-control" type="number" id="amount" min="0" step="0.01" name="amount" placeholder="Amount" value="0.00">
                             </div>
                             <div class="col-lg-3 p-2">
-                                <label for="">Paid Through</label>
+                                <label for="">Paid Through <span class="text-danger font-weight-bold">*</span></label>
                                 <select id="payment_account" class="form-select custom_select" name="payment_account">
                                     @foreach ($payment_accounts as $payment_account)
                                         <option value="{{ $payment_account->id }}" {{ old('payment_account') == $payment_account->id ? "selected" : "" }}>{{ $payment_account->account_name }}</option>
@@ -55,11 +55,11 @@
                                 </select>
                             </div>
                             <div class="col-lg-3 p-2">
-                                <label for="">Date</label>
+                                <label for="">Date <span class="text-danger font-weight-bold">*</span></label>
                                 <input type="date" class="form-control" id="" value="2023-05-22" name="date" placeholder="">
                             </div>
                             <div class="col-lg-3 p-2">
-                                <label for="">Branch Name</label>
+                                <label for="">Branch Name <span class="text-danger font-weight-bold">*</span></label>
                                 <select id="branch" class="form-select custom_select" name="branch">
                                     @foreach ($branches as $branch)
                                         <option value="{{ $branch->id }}" {{ old('branch') ? (old('branch') == $branch->id ? "selected" : "") : (Auth::user()->branch_id == $branch->id ? 'selected' : '') }}>{{ $branch->name }}</option>
@@ -160,7 +160,7 @@
                 payments += `<tr class="border-bottom payment_rows"> <td scope="row" colspan="6" class="p-2 text-center">Select A Vendor First!</td> </tr>`;
                 $('.payment_rows').remove();
                 $("#payment_title").after(payments);
-                $('#amount').val('');
+                $('#amount').val((0).toFixed(2));
             }
             else
             {
@@ -200,6 +200,7 @@
                         $('#excess_amount_show').html((0).toFixed(2));
                         $('#hidden_excess_amount').val((0).toFixed(2));
                         $('#paid_amount_show').html((0).toFixed(2));
+                        $('#amount').val((0).toFixed(2));
                         $('#total_amount').html("BDT "+(total_amount).toFixed(2));
                         $('#total_due').html("BDT "+(total_due).toFixed(2));
                     }
