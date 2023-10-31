@@ -4,6 +4,19 @@
             <nav class="navbar-custom" id="navbar-custom">
                 <ul class="list-unstyled topbar-nav float-end mb-0">
                     <li class="dropdown">
+                        <a class="nav-link nav-icon" href="#" title="POS Module">
+
+                            <i class="mdi mdi-24px mdi-deskphone"></i>
+                        </a>
+                    </li><!--end topbar-language-->
+
+                    <li class="dropdown">
+                        <a class="nav-link nav-icon" href="calculator:" title="Calculator">
+                            <i class="mdi mdi-24px mdi-calculator"></i>
+                        </a>
+                    </li><!--end topbar-language-->
+
+                    <li class="dropdown">
                         <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
                         aria-haspopup="false" aria-expanded="false">
                         <img src="{{ asset('assets/images/flags/us_flag.jpg') }}" alt="" class="thumb-xxs rounded">
@@ -234,3 +247,19 @@
             </nav>
             <!-- end navbar-->
         </div>
+
+        <script>
+            function openCalculator() {
+                // Replace 'calc' with the appropriate command to open the calculator on your operating system.
+                // Below are examples for different operating systems:
+
+                // For Windows:
+                window.open('calc.exe', '_blank');
+
+                // For macOS:
+                // window.open('Calculator.app', '_blank');
+
+                // For Linux (GNOME Calculator):
+                // window.open('gnome-calculator', '_blank');
+            }
+        </script>
