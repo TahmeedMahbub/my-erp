@@ -1,6 +1,6 @@
 @extends('imports.main.layout')
 
-@section('title', 'Purchase Edit')
+@section('title', 'Payment Edit')
 
 @section('head')
     <style>
@@ -12,56 +12,69 @@
 @endsection
 
 @section('content')
-    <!-- Page-Title -->
+
     <div class="row">
         <div class="col-sm-12">
             <div class="page-title-box">
                 <div class="float-end">
-                    <a href="{{route('purchase')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All Purchases</a>
+                    <a href="{{route('payment')}}" class="btn btn-de-primary btn-sm"><i class="mdi mdi-view-list"></i> All Payments</a>
                 </div>
-                <h4 class="page-title">Purchase Edit</h4>
-            </div><!--end page-title-box-->
-        </div><!--end col-->
+                <h4 class="page-title">Payment Edit</h4>
+            </div>
+        </div>
     </div>
-    <!-- end page title end breadcrumb -->
 
-    <form action="{{ route('purchase_update') }}" method="POST" enctype="multipart/form-data">
+
+    <form action="{{ route('payment_update') }}" method="POST" enctype="multipart/form-data">
         @csrf
+{{-- {{ dd($payment) }} --}}
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-lg-3">
-                                <label for="">Vendor Name</label>
+                            <div class="col-lg-3 p-2">
+                                <label for="">Vendor <span class="text-danger font-weight-bold">*</span></label>
                                 <select id="vendor" class="form-select custom_select" name="vendor" required>
-                                    <option value="{{ $purchase->vendor_id }}">{{ $purchase->vendor->name }} (0{{ $purchase->vendor->phone }}), {{ $purchase->vendor->code }}</option>
-                                    {{-- <option value="">Select Vendor</option>
-                                    @foreach ($vendors as $vendor)
-                                        <option value="{{ $vendor->id }}" {{ $purchase->vendor_id == $vendor->id ? "selected" : "" }}>{{ $vendor->name }} (0{{ $vendor->phone }}), {{ $vendor->code }}</option>
-                                    @endforeach --}}
+                                    <option value="{{ $payment->vendor_id }}">{{ $payment->vendor->name }} (0{{ $payment->vendor->phone }}), {{ $payment->vendor->code }}</option>
                                 </select>
                             </div>
-                            <div class="col-lg-3">
-                                <label for="">Delivery Person</label>
-                                <select id="delivery" class="form-select custom_select" name="delivery">
-                                    <option value="">Select Delivery</option>
-                                    @foreach ($delivery_persons as $delivery_person)
-                                        <option value="{{ $delivery_person->id }}" {{ $purchase->delivery_person_id == $delivery_person->id ? "selected" : "" }}>{{ $delivery_person->name }} (0{{ $delivery_person->phone }}), {{ $delivery_person->code }}</option>
+                            <div class="col-lg-3 p-2">
+                                <label for="">Payment Amount <span class="text-danger font-weight-bold">*</span></label>
+                                <input class="form-control" type="number" id="amount" min="0" step="0.01" name="amount" placeholder="Amount" value="{{ $payment->amount }}">
+                            </div>
+                            <div class="col-lg-3 p-2">
+                                <label for="">Paid Through <span class="text-danger font-weight-bold">*</span></label>
+                                <select id="payment_account" class="form-select custom_select" name="payment_account">
+                                    @foreach ($payment_accounts as $payment_account)
+                                        <option value="{{ $payment_account->id }}" {{ $payment->paid_through_id == $payment_account->id ? "selected" : "" }}>{{ $payment_account->account_name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-lg-3">
-                                <label for="">Branch Name</label>
+                            <div class="col-lg-3 p-2">
+                                <label for="">Date <span class="text-danger font-weight-bold">*</span></label>
+                                <input type="date" class="form-control" id="" value="{{ $payment->date }}" name="date" placeholder="">
+                            </div>
+                            <div class="col-lg-3 p-2">
+                                <label for="">Branch Name <span class="text-danger font-weight-bold">*</span></label>
                                 <select id="branch" class="form-select custom_select" name="branch">
                                     @foreach ($branches as $branch)
-                                        <option value="{{ $branch->id }}" {{ $purchase->branch_id ? ($purchase->branch_id == $branch->id ? "selected" : "") : (Auth::user()->branch_id == $branch->id ? 'selected' : '') }}>{{ $branch->name }}</option>
+                                        <option value="{{ $branch->id }}" {{ !empty($payment->branch_id) ? ($payment->branch_id == $branch->id ? "selected" : "") : (Auth::user()->branch_id == $branch->id ? 'selected' : '') }}>{{ $branch->name }}</option>
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="col-lg-3">
-                                <label for="">Date</label>
-                                <input type="date" name="purchase_date" class="form-control" id="" value="{{ $purchase->date ?? date("Y-m-d") }}" placeholder="">
+
+                            <div class="col-lg-3 p-2">
+                                <label for="">Cheque Number</label>
+                                <input class="form-control" type="text" id="cheque_no" min="0" step="0.01" name="cheque_no" placeholder="Cheque Number" value="{{ $payment->cheque_no }}">
+                            </div>
+                            <div class="col-lg-3 p-2">
+                                <label for="">Cheque Date</label>
+                                <input type="date" class="form-control" id="" value="" name="cheque_date" placeholder="Cheque Date" value="{{ $payment->cheque_date }}">
+                            </div>
+                            <div class="col-lg-3 p-2">
+                                <label for="">Attachments</label>
+                                <input type="file" class="form-control" name="files[]" multiple>
                             </div>
                         </div>
                     </div>
@@ -74,182 +87,84 @@
                 <div class="card">
                     <div class="card-body">
                         <div class="table-responsive">
-                            <table class="table-sm mb-0">
+                            <table class="table mb-0">
                                 <thead class="thead-light">
-                                    <tr class="border-bottom item_rows">
-                                        <th class="p-2" style="width: 2%;">#</th>
-                                        <th class="p-2" style="width: 5%;">Image</th>
-                                        <th class="p-2" style="width: 23%;">Item / Service</th>
-                                        <th class="p-2" style="width: 7%;">Expiry Date</th>
-                                        <th class="p-2" style="width: 8%;">Carton Quantity </th>
-                                        <th class="p-2" style="width: 10%;">Base Quantity </th>
-                                        <th class="p-2" style="width: 13%;">Rate Per Unit</th>
-                                        <th class="p-2" style="width: 12%;">Discount</th>
-                                        <th class="p-2" style="width: 5%;">Amount</th>
-                                        <th class="p-2 text-center" style="width: 2%;"><a title="Add Item" class="text-secondary-custom" id="add_item"><i class="mdi mdi-plus-box pe-2 fs-2"></i></a></th>
+                                    <tr class="border-bottom" id="payment_title">
+                                        <th class="p-2" style="width: 5%;">#</th>
+                                        <th class="p-2" style="width: 15%;">Purchase Date</th>
+                                        <th class="p-2" style="width: 10%;">Purchase No</th>
+                                        <th class="p-2 text-end" style="width: 10%;">Total Amount</th>
+                                        <th class="p-2 text-end" style="width: 10%;">Due Amount</th>
+                                        <th class="p-2 text-end" style="width: 20%;">Paid Amount</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    @if($purchase_entries)
-                                        @foreach ($purchase_entries as $key => $purchase_entry)
-                                            <tr class="border-bottom item_rows" id="item_row_{{ $key }}">
-                                                <th scope="row">{{ $key+1 }} <input type="hidden" name="purchase_entry_ids[]" value="{{ $purchase_entry->id }}"></th>
-                                                <td class="p-2 text-center" id="item_img_{{ $key }}"><img src="{{ asset('assets/images/items/item.jpg') }}" alt="item" style="height: 40px;"></td>
-                                                <td class="p-2">
-                                                    <select id="item_{{ $key }}" class="form-select custom_select" onchange="oldItemChanged(this);" name="items[]" required>
-                                                    <option value="" data-item-image="{{ asset('assets/images/items/item.jpg') }}" data-carton-size="0" data-purchase-price="0">Select Item</option>
-                                                        @foreach ($items as $item)
-                                                            <option value="{{ $item->id }}" {{ $purchase_entry->item_id == $item->id ? "selected" : "" }} data-item-image="{{ asset('assets\images\\' . $item->image) }}" data-carton-size="{{ $item->carton_size }}" data-purchase-price="{{ $item->purchase_price }}">{{ $item->name }}, {{ $item->code }}</option>
-                                                        @endforeach
-                                                    </select>
-                                                </td>
-                                                <td class="p-2">
-                                                    <input class="form-control" type="date" id="expiry_date_{{ $key }}" value="{{ $purchase_entry->expiry_date ?? null }}" name="expiry_date[]">
-                                                </td>
-                                                <td class="p-2">
-                                                    <input class="form-control item-data-changed" type="number" id="carton_{{ $key }}" value="{{ $purchase_entry->carton_qty ?? 0 }}" step="0.001" name="carton_qty[]" placeholder="Carton QTY">
-                                                </td>
-                                                <td class="p-2">
-                                                    <input class="form-control item-data-changed" type="number" id="base_{{ $key }}" value="{{ $purchase_entry->base_qty ?? 0 }}" step="0.001" name="base_qty[]" placeholder="Base QTY">
-                                                </td>
-                                                <td class="p-2">
-                                                    <div class="input-group">
-                                                        <input class="form-control item-data-changed" type="number" style="width: 70px;" id="rate_{{ $key }}" value="{{ $purchase_entry->price ?? 0 }}" step="0.01" name="rates[]" placeholder="Rate Per Unit" required>
-                                                        <select id="unit_{{ $key }}" class="form-select item-data-changed" name="units[]">
-                                                            <option value="base" {{ $purchase_entry->price_unit == "base" ? "selected" : "" }}>Base</option>
-                                                            <option value="ctn" {{ $purchase_entry->price_unit == "ctn" ? "selected" : "" }}>Ctn</option>
-                                                        </select>
-                                                    </div>
-                                                </td>
-                                                <td class="p-2">
-                                                    <div class="input-group">
-                                                        <input class="form-control item-data-changed" type="number" style="width: 70px;" id="discount_{{ $key }}" value="{{ $purchase_entry->discount ?? 0 }}" step="0.001" name="discounts[]" placeholder="Discount">
-                                                        <select id="discount_type_{{ $key }}" class="form-select item-data-changed" name="discount_types[]">
-                                                            <option value="tk" {{ $purchase_entry->discount_type == "tk" ? "selected" : "" }}>TK</option>
-                                                            <option value="%" {{ $purchase_entry->discount_type == "%" ? "selected" : "" }}>%</option>
-                                                        </select>
-                                                    </div>
-                                                </td>
-                                                <td class="p-2">
-                                                    <div id="amount_show_{{ $key }}" class="text-end item_amounts">0.00</div>
-                                                </td>
-                                                <td class="p-2">
-                                                    <div class="text-center"><a title="Remove Item" id="remove_{{ $key }}" class="text-secondary-custom remove_items"><i class="mdi mdi-delete pe-2 fs-2"></i></a></div>
-                                                </td>
-                                            </tr>
-                                        @endforeach
-                                    @endif
-                                    <tr id="amount_row">
-                                        <td colspan="5" rowspan="10" class="align-top {{ !empty($purchase->files) ? 'bg-light' : '' }}">
-                                            @if (!empty($purchase->files))
-                                                <h4 class="page-title">Attachments</h4>
-                                                @foreach (json_decode($purchase->files) as $file)
-                                                    @if(@getimagesize(public_path('assets/files/' . $file)))
-                                                        <img src="{{ asset('assets/files/' . $file) }}" title="{{ basename($file) }}" class="img-thumbnail" alt="" style="height:150px; margin:5px;">
-                                                    @else
-                                                        <a href="{{ asset('assets/files/' . $file) }}" title="{{ basename($file) }}"><img src="{{ asset('assets/files/file.jpg') }}" class="img-thumbnail" alt="" style="height:150px; margin:5px;"></a>
-                                                    @endif
-                                                @endforeach
-                                            @endif
+                                    @foreach ($payment_entries as $payment_entry)
+                                        <tr class="border-bottom payment_rows" id="payment_row_{{ $loop->index }}">
+                                            <td scope="row">{{ $loop->iteration }}</td>
+                                            <td class="p-2">{{ date('d-M-Y', strtotime($payment_entry->purchase->date)) }}</td>
+                                            <td class="p-2"><a href="{{ route('purchase_view', $payment_entry->purchase->id) }}">PUR-{{ $payment_entry->purchase->code }}</a></td>
+                                            <td class="p-2 text-end">{{ $payment_entry->purchase->total_amount }}</td>
+                                            <td class="p-2 text-end" id="due_amount_{{ $loop->index }}">{{ $payment_entry->purchase->total_amount - $payment_entry->purchase->paid_amount + $payment_entry->amount }}</td>
+                                            <td class="p-2" align="right">
+                                                <input class="form-control text-end paid_amounts" type="number" id="paid_amount_{{ $loop->index }}" min="0" step="0.01" name="paid_amounts[]" max="{{ $payment_entry->purchase->total_amount - $payment_entry->purchase->paid_amount + $payment_entry->amount }}" value="{{ $payment_entry->amount }}" placeholder="Paid Amount" style="width: 88%;">
+                                                <input type="hidden" id="purchase_id_{{ $loop->index }}" name="purchase_ids[]" value="{{ $payment_entry->purchase->id }}">
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    @foreach ($remaining_payments as $remaining_payment)
+                                        <tr class="border-bottom payment_rows" id="payment_row_{{ $loop->index }}">
+                                            <td scope="row">{{ $loop->iteration }}</td>
+                                            <td class="p-2">{{ date('d-M-Y', strtotime($remaining_payment->date)) }}</td>
+                                            <td class="p-2"><a href="{{ route('purchase_view', $remaining_payment->id) }}">PUR-{{ $remaining_payment->code }}</a></td>
+                                            <td class="p-2 text-end">{{ $remaining_payment->total_amount }}</td>
+                                            <td class="p-2 text-end" id="due_amount_{{ $loop->index }}">{{ $remaining_payment->total_amount - $remaining_payment->paid_amount }}</td>
+                                            <td class="p-2" align="right">
+                                                <input class="form-control text-end paid_amounts" type="number" id="paid_amount_{{ $loop->index }}" min="0" step="0.01" name="paid_amounts[]" max="{{ $remaining_payment->total_amount - $remaining_payment->paid_amount }}" value="0" placeholder="Paid Amount" style="width: 88%;">
+                                                <input type="hidden" id="purchase_id_{{ $loop->index }}" name="purchase_ids[]" value="{{ $payment_entry->purchase->id }}">
+                                            </td>
+                                        </tr>
+                                    @endforeach
+                                    <tr>
+                                        <td rowspan="10" colspan="3"></td>
+                                        <td class="p-2 text-end" id="total_amount"></td>
+                                        <td class="p-2 text-end" id="total_due"></td>
+                                        <td class="p-2 text-end">
+                                            <div class="text-start" style="position: absolute;">&emsp;&emsp;&emsp;&emsp;  Used Amount</div>
+                                            <span class="p-2 text-end" id="used_amount_show">0.00</span> &ensp; TK
                                         </td>
-                                        <td class="text-end">Sub Total <span class="text-muted">(+)</span></td>
-                                        <td colspan="2"></td>
-                                        <td class="p-2 text-end" id="subtotal_show">0.00</td>
-                                        <td>TK</td>
-                                        <input type="hidden" name="subtotal" id="subtotal" value="0">
                                     </tr>
-                                    <tr>
-                                        <td class="text-end">Discount <span class="text-muted">(-)</span></td>
-                                        <td colspan="2" class="text-center">
-                                            <div class="input-group" style="width: 290px;">&emsp;&emsp;
-                                                <input class="form-control data-changed" type="number" id="main_discount" value="{{ $purchase->discount ?? 0.00 }}" step="0.01" name="main_discount" placeholder="Discount">
-                                                <select id="main_discount_type" class="form-select data-changed" name="main_discount_type" style="width: 30px;">
-                                                    <option value="tk" {{ $purchase->discount_type == "tk" ? "selected" : "" }}>TK</option>
-                                                    <option value="%" {{ $purchase->discount_type == "%" ? "selected" : "" }}>%</option>
-                                                </select>
-                                            </div>
+                                    <tr class="border-bottom">
+                                        <td class="p-2 text-end"></td>
+                                        <td class="p-2 text-end"></td>
+                                        <td class="p-2 text-end">
+                                            <div class="text-start" style="position: absolute;">&emsp;&emsp;&emsp;&emsp;  Excess Amount</div>
+                                            <span class="p-2 text-end" id="excess_amount_show">0.00</span> &ensp; TK
+                                            <input type="hidden" name="excess_amount" id="hidden_excess_amount" value="0">
                                         </td>
-                                        <td class="p-2 text-end" id="main_discount_show">0.00</td>
-                                        <td>TK</td>
-                                        <input type="hidden" name="discount" id="discount" value="{{ $purchase->discount ?? 0.00 }}">
                                     </tr>
                                     <tr>
-                                        <td class="text-end">Vat / Tax <span class="text-muted">(+)</span></td>
-                                        <td colspan="2" class="text-center">
-                                            <div class="input-group" style="width: 290px;">&emsp;&emsp;
-                                                <input class="form-control data-changed" type="number" id="main_vat" value="{{ $purchase->vat ?? 0.00 }}" step="0.01" name="main_vat" placeholder="VAT / Tax">
-                                                <select id="main_vat_type" class="form-select data-changed" name="main_vat_type" style="width: 30px;">
-                                                    <option value="%" {{ $purchase->vat_type == "%" ? "selected" : "" }}>%</option>
-                                                    <option value="tk" {{ $purchase->vat_type == "tk" ? "selected" : "" }}>TK</option>
-                                                </select>
-                                            </div>
+                                        <td class="p-2 text-end"></td>
+                                        <td class="p-2 text-end"></td>
+                                        <td class="p-2 text-end">
+                                            <div class="text-start" style="position: absolute;">&emsp;&emsp;&emsp;&emsp;  Paid Amount</div>
+                                            <span class="p-2 text-end" id="paid_amount_show">0.00</span> &ensp; TK
                                         </td>
-                                        <td class="p-2 text-end" id="main_vat_show">0.00</td>
-                                        <td>TK</td>
-                                        <input type="hidden" name="vat" id="vat" value="{{ $purchase->vat ?? 0.00 }}">
-                                    </tr>
-                                    <tr>
-                                        <td class="text-end border-bottom">Shipping Charge <span class="text-muted">(+)</span></td>
-                                        <td colspan="2" class="text-end border-bottom">
-                                            <div class="input-group" style="width: 290px;">&emsp;&emsp;
-                                                <input class="form-control data-changed" type="number" id="main_shipping" value="{{ $purchase->shipping_charge ?? 0.00 }}" step="0.01" name="main_shipping" placeholder="shipping">
-                                                <select id="main_shipping_type" class="form-select data-changed" name="main_shipping_type" style="width: 30px;">
-                                                    <option value="tk">TK</option>
-                                                </select>
-                                            </div>
-                                        </td>
-                                        <td class="p-2 text-end border-bottom" id="main_shipping_show">0.00</td>
-                                        <td class="border-bottom">TK</td>
-                                        <input type="hidden" name="shipping" id="shipping" value="{{ $purchase->shipping ?? 0.00 }}">
-                                    </tr>
-                                    <tr>
-                                        <td class="text-end fw-bold">Total Amount <span class="text-muted">(+)</span></td>
-                                        <td colspan="2"></td>
-                                        <td class="p-2 text-end fw-bold" id="total_amount_show">0.00</td>
-                                        <td class="fw-bold">TK</td>
-                                        <input type="hidden" name="total_amount" id="total_amount" value="0.00">
-                                    </tr>
-                                    <tr>
-                                        <td class="text-end border-bottom fw-bold">Paid Amount <span class="text-muted">(-)</span></td>
-                                        <td colspan="2" class="text-end border-bottom"></td>
-                                        <td class="p-2 text-end border-bottom fw-bold" id="total_paid_show">0.00</td>
-                                        <td class="border-bottom fw-bold">TK</td>
-                                    </tr>
-                                    <tr>
-                                        <td class="text-end fw-bold">Due Amount</td>
-                                        <td colspan="2"></td>
-                                        <td class="p-2 text-end fw-bold" id="due_amount_show">0.00</td>
-                                        <td class="fw-bold">TK</td>
-                                    </tr>
-                                    <tr id="excess_amount">
-                                        <td class="text-end fw-bold">Vendor Credit <span class="text-muted"></span></td>
-                                        <td colspan="2"></td>
-                                        <td class="p-2 text-end fw-bold" id="excess_amount_show">0.00</td>
-                                        <td class="fw-bold">TK</td>
                                     </tr>
                                 </tbody>
-                            </table><!--end /table-->
-                        </div><!--end /tableresponsive-->
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="row p-2">
-                                    <div class="col-lg-9">
-                                        <label for="">Note</label>
-                                        <input type="text" class="form-control" name="note" value="{{ $purchase->note ?? null }}" placeholder="Enter Any Optional Note">
-                                    </div>
-                                    <div class="col-lg-3">
-                                        <label for="">Attachments</label>
-                                        <input type="file" class="form-control" name="files[]" multiple>
-                                    </div>
-                                </div>
-                            </div>
+                            </table>
+                        </div>
+
+                        <div class="col-lg-12 p-2">
+                            <label for="">Note</label>
+                            <input type="text" class="form-control" name="note" value="" placeholder="Enter Any Optional Note">
                         </div>
 
 
                         <div class="row justify-content-center mt-4">
                             <div class="col-lg-3">
-                                <input type="hidden" name="id" value="{{ $purchase->id }}">
-                                <input class="form-control btn btn-purple" type="Submit" value="Purchase Items">
+                                <input type="hidden" name="id" value="{{ $payment->id }}">
+                                <input class="form-control btn btn-purple" type="Submit" value="Edit Purchase Payment">
                             </div>
                         </div>
                     </div>
@@ -260,200 +175,124 @@
 @endsection
 
 @section('script')
-    <script>
-        $(document).ready(function() {
-            $("#add_item").click(function() {
-                var lastItemId = parseInt($(".item_rows:last").attr("id").match(/\d+/));
-                var newItemId = lastItemId + 1;
-
-                var newItemRow = `<tr class="border-bottom item_rows" id="item_row_${newItemId}">
-                                    <th scope="row">${newItemId + 1}  <input type="hidden" name="purchase_entry_ids[]" value=""></th>
-                                    <td class="p-2 text-center" id="item_img_${newItemId}"><img src="{{ asset('assets/\images/\items/\item.jpg') }}" alt="item" style="height: 40px;"></td>
-                                    <td class="p-2">
-                                        <select id="item_${newItemId}" class="form-select custom_select" onchange="itemChanged(this);" name="items[]" required>
-                                            <option value="" data-item-image="{{ asset('assets/images/items/item.jpg') }}" data-carton-size="0" data-purchase-price="0">Select Item</option>
-                                            @foreach ($items as $item)
-                                                <option value="{{ $item->id }}" data-item-image="{{ asset('assets/\images/\\' . $item->image) }}" data-carton-size="{{ $item->carton_size }}" data-purchase-price="{{ $item->purchase_price }}">{{ $item->name }}, {{ $item->code }}</option>
-                                            @endforeach
-                                        </select>
-                                        <span class="text-danger">{{ $errors->first('item_${newItemId}') }}</span>
-                                    </td>
-                                    <td class="p-2">
-                                        <input class="form-control" type="date" id="expiry_date_${newItemId}" value="" name="expiry_date[]">
-                                        <span class="text-danger">{{ $errors->first('expiry_date_${newItemId}') }}</span>
-                                    </td>
-                                    <td class="p-2">
-                                        <input class="form-control item-data-changed" type="number" id="carton_${newItemId}" value="0" step="0.001" name="carton_qty[]" placeholder="Carton QTY">
-                                    </td>
-                                    <td class="p-2">
-                                        <input class="form-control item-data-changed" type="number" id="base_${newItemId}" value="0" step="0.001" name="base_qty[]" placeholder="Base QTY">
-                                        <span class="text-danger">{{ $errors->first('base_${newItemId}') }}</span>
-                                    </td>
-                                    <td class="p-2">
-                                        <div class="input-group">
-                                            <input class="form-control item-data-changed" type="number" style="width: 70px;" id="rate_${newItemId}" value="0" step="0.01" name="rates[]" placeholder="Rate Per Unit" required>
-                                            <select id="unit_${newItemId}" class="form-select item-data-changed" name="units[]">
-                                                <option value="base">Base</option>
-                                                <option value="ctn">Ctn</option>
-                                            </select>
-                                        </div>
-                                        <span class="text-danger">{{ $errors->first('rate_${newItemId}') }}</span>
-                                    </td>
-                                    <td class="p-2">
-                                        <div class="input-group">
-                                            <input class="form-control item-data-changed" type="number" style="width: 70px;" id="discount_${newItemId}" value="0" step="0.001" name="discounts[]" placeholder="Discount">
-                                            <select id="discount_type_${newItemId}" class="form-select item-data-changed" name="discount_types[]">
-                                                <option value="tk">TK</option>
-                                                <option value="%">%</option>
-                                            </select>
-                                        </div>
-                                    </td>
-                                    <td class="p-2">
-                                        <div id="amount_show_${newItemId}" class="text-end item_amounts">0.00</div>
-                                    </td>
-                                    <td class="p-2">
-                                        <div class="text-center"><a title="Remove Item" id="remove_${newItemId}" class="text-secondary-custom remove_items"><i class="mdi mdi-delete pe-2 fs-2"></i></a></div>
-                                    </td>
-                                </tr>`;
-                $(".item_rows:last").after(newItemRow);
-                new Selectr("#item_"+newItemId);
-            });
-        });
-
-        $(document).on("input", ".item-data-changed", function () {
-            var inputName = $(this).attr("id").replace(/\d+/g, '');
-            var inputId = parseInt($(this).attr('id').match(/\d+/));
-            var cartonSize = parseInt($("#item_"+inputId+" option:selected").data('carton-size'));
-
-            if(inputName == "carton_")
+    {{-- <script>
+        $(document).on("change", "#vendor1", function() {
+            var vendor = $("#vendor").val();
+            var payments = "";
+            if(vendor == "")
             {
-                $("#base_"+inputId).val(($("#carton_"+inputId).val() * cartonSize).toFixed(3));
-            }
-            else if(inputName == "base_")
-            {
-                $("#carton_"+inputId).val(($("#base_"+inputId).val() / cartonSize).toFixed(3));
-            }
-
-            var carton = $("#carton_"+inputId).val();
-            var base = $("#base_"+inputId).val();
-            var rate = $("#rate_"+inputId).val() ?? 0;
-            var unit = $("#unit_"+inputId).val();
-            var discount = $("#discount_"+inputId).val();
-            var discount_type = $("#discount_type_"+inputId).val();
-            var amount = 0;
-
-            if(unit == 'ctn')
-            {
-                amount = carton * rate - (discount_type == '%' ? carton * rate * discount / 100 : discount );
+                payments += `<tr class="border-bottom payment_rows"> <td scope="row" colspan="6" class="p-2 text-center">Select A Vendor First!</td> </tr>`;
+                $('.payment_rows').remove();
+                $("#payment_title").after(payments);
+                $('#amount').val((0).toFixed(2));
             }
             else
             {
-                amount = base * rate - (discount_type == '%' ? base * rate * discount / 100 : discount );
+                var total_amount = 0;
+                var total_due = 0;
+                var url = "{{ route('remaining_payments', ':vendor_id') }}";
+                url = url.replace(':vendor_id', vendor);
+
+                $.ajax({
+                    type: "GET",
+                    url: url,
+                    success: function (response) {
+                        $.each(response.remaining_payments, function (index, value) {
+
+                            var purchase_url = "{{ route('purchase_view', ':purchase_id') }}";
+                            purchase_url = purchase_url.replace(':purchase_id', value.id);
+
+
+                            payments += `<tr class="border-bottom payment_rows" id="payment_row_${index}">
+                                                <td scope="row">${index + 1}</td>
+                                                <td class="p-2">${value.date}</td>
+                                                <td class="p-2"><a href="${purchase_url}">PUR-${value.code}</a></td>
+                                                <td class="p-2 text-end">${(value.total_amount).toFixed(2)}</td>
+                                                <td class="p-2 text-end" id="due_amount_${index}">${(value.total_amount - value.paid_amount).toFixed(2)}</td>
+                                                <td class="p-2" align="right">
+                                                    <input class="form-control text-end paid_amounts" type="number" id="paid_amount_${index}" value="0.00" min="0" step="0.01" name="paid_amounts[]" max="${value.total_amount - value.paid_amount}" placeholder="Paid Amount" style="width: 88%;">
+                                                    <input type="hidden" id="purchase_id_${index}" name="purchase_ids[]" value="${value.id}">
+                                                </td>
+                                            </tr>`;
+
+                            total_amount += value.total_amount;
+                            total_due += value.total_amount - value.paid_amount;
+                        });
+                        $('.payment_rows').remove();
+                        $("#payment_title").after(payments);
+                        $('#used_amount_show').html((0).toFixed(2));
+                        $('#excess_amount_show').html((0).toFixed(2));
+                        $('#hidden_excess_amount').val((0).toFixed(2));
+                        $('#paid_amount_show').html((0).toFixed(2));
+                        $('#amount').val((0).toFixed(2));
+                        $('#total_amount').html("BDT "+(total_amount).toFixed(2));
+                        $('#total_due').html("BDT "+(total_due).toFixed(2));
+                    }
+                });
+            }
+        });
+
+        $(document).on("input", "#amount1", function() {
+            var vendor = $("#vendor").val();
+            if(vendor == "")
+            {
+                $('#amount').val('');
+                $('#used_amount_show').html((0).toFixed(2));
+                $('#excess_amount_show').html((0).toFixed(2));
+                $('#hidden_excess_amount').val((0).toFixed(2));
+                $('#paid_amount_show').html((0).toFixed(2));
+            }
+            else
+            {
+                var amount = parseFloat($('#amount').val()) || 0;
+                var usedAmount = 0;
+
+                $(".paid_amounts").each(function() {
+                    var paid_amount = parseFloat($(this).val()) || 0;
+                    usedAmount += paid_amount;
+                });
+
+                $('#used_amount_show').html((usedAmount).toFixed(2));
+                $('#excess_amount_show').html((amount - usedAmount).toFixed(2));
+                $('#hidden_excess_amount').val((amount - usedAmount).toFixed(2));
+                $('#paid_amount_show').html(amount.toFixed(2));
+            }
+        });
+
+
+        $(document).on("input", ".paid_amounts1", function() {
+            var id          = parseInt($(this).attr('id').match(/\d+/));
+            var paidAmount  = parseFloat($("#paid_amount_"+id).val());
+            var dueAmount   = parseFloat($("#due_amount_"+id).html());
+            var amount      = parseFloat($('#amount').val()) || 0;
+
+            var usedAmount = 0;
+
+            if(dueAmount < paidAmount)
+            {
+                $("#paid_amount_"+id).val((dueAmount).toFixed(2));
             }
 
-            $("#amount_show_"+inputId).html(amount.toFixed(2));
-            calculate_amounts();
-        });
-
-        $(document).on("input", ".data-changed", function () {
-            calculate_amounts();
-        });
-
-        $(document).on("click", ".remove_items", function () {
-            var inputId = parseInt($(this).attr('id').match(/\d+/));
-            $("#item_row_"+inputId).empty();
-            calculate_amounts();
-        });
-
-        function calculate_amounts()
-        {
-            var subtotal_amount = 0;
-            $(".item_amounts").each(function() {
-                var amount = parseFloat($(this).text());
-                if (!isNaN(amount)) {
-                    subtotal_amount += amount;
-                }
+            $(".paid_amounts").each(function() {
+                var paid_amount = parseFloat($(this).val()) || 0;
+                usedAmount += paid_amount;
             });
 
-            var main_discount = $("#main_discount").val() != "" ? parseFloat($("#main_discount").val()) : 0;
-                main_discount = $("#main_discount_type").val() == "%" ? subtotal_amount * main_discount / 100 : main_discount;
-            var main_vat = $("#main_vat").val() != "" ? parseFloat($("#main_vat").val()) : 0;
-                main_vat = $("#main_vat_type").val() == "%" ? (subtotal_amount - main_discount) * main_vat / 100 : main_vat;
-            var main_shipping = $("#main_shipping").val() != "" ? parseFloat($("#main_shipping").val()) : 0;
-            var paid_amount =  parseFloat({!! $purchase->paid_amount !!});
-            var total_amount = subtotal_amount - main_discount + main_vat + main_shipping;
-            var due_amount = total_amount - paid_amount;
-            if(due_amount < 0)
+            var excessAmount = amount - usedAmount;
+
+            if(excessAmount < 0)
             {
-                excess_amount = -1 * due_amount;
-                due_amount = 0;
-            }
-            else
-            {
-                excess_amount = 0;
+                $("#paid_amount_"+id).val((paidAmount + excessAmount).toFixed(2));
+                usedAmount = amount;
+                excessAmount = 0;
             }
 
-            $("#subtotal_show").html(subtotal_amount.toFixed(2));
-            $("#subtotal").val(subtotal_amount.toFixed(2));
-            $("#main_discount_show").html(main_discount.toFixed(2));
-            $("#discount").val(main_discount.toFixed(2));
-            $("#main_vat_show").html(main_vat.toFixed(2));
-            $("#vat").val(main_vat.toFixed(2));
-            $("#main_shipping_show").html(parseFloat(main_shipping).toFixed(2));
-            $("#shipping").val(parseFloat(main_shipping).toFixed(2));
-            $("#total_amount_show").html(parseFloat(total_amount).toFixed(2));
-            $("#total_amount").val(parseFloat(total_amount).toFixed(2));
-            $("#total_paid_show").html(parseFloat(paid_amount).toFixed(2));
-            $("#due_amount_show").html(parseFloat(due_amount).toFixed(2));
-            $("#excess_amount_show").html(parseFloat(excess_amount).toFixed(2));
-        }
 
-        function itemChanged(selectElement) {
-            var selectId = parseInt($(selectElement).attr('id').match(/\d+/));
-            var selectOption = $(selectElement).find('option:selected');
-            var itemImage = selectOption.data('item-image');
-            var cartonSize = selectOption.data('carton-size');
-            var purchasePrice = selectOption.data('purchase-price');
-            purchasePrice = typeof purchasePrice == "number" ? purchasePrice : 0;
+            $('#used_amount_show').html((usedAmount).toFixed(2));
+            $('#excess_amount_show').html(excessAmount.toFixed(2));
+            $('#hidden_excess_amount').val((excessAmount).toFixed(2));
+            $('#paid_amount_show').html(amount.toFixed(2));
 
-            $("#item_img_"+selectId).html(`<img src="${itemImage}" alt="item" style="height: 40px;">`);
-            $("#carton_"+selectId).val(0);
-            $("#base_"+selectId).val(0);
-            $("#rate_"+selectId).val(purchasePrice);
-            $("#unit_"+selectId).val("base");
-            $("#discount_"+selectId).val(0);
-            $("#discount_type_"+selectId).val("tk");
-            $("#amount_show_"+selectId).html("0.00");
-        }
-
-        function oldItemChanged(selectElement) {
-            var selectId = parseInt($(selectElement).attr('id').match(/\d+/));
-            var selectOption = $(selectElement).find('option:selected');
-            var itemImage = selectOption.data('item-image');
-            var cartonSize = selectOption.data('carton-size');
-            var purchasePrice = selectOption.data('purchase-price');
-            purchasePrice = typeof purchasePrice == "number" ? purchasePrice : 0;
-
-            $("#item_img_"+selectId).html(`<img src="${itemImage}" alt="item" style="height: 40px;">`);
-            var carton = $("#carton_"+selectId).val();
-            var base = $("#base_"+selectId).val();
-            var rate = $("#rate_"+selectId).val() ?? 0;
-            var unit = $("#unit_"+selectId).val();
-            var discount = $("#discount_"+selectId).val();
-            var discount_type = $("#discount_type_"+selectId).val();
-            var amount = 0;
-
-            if(unit == 'ctn')
-            {
-                amount = carton * rate - (discount_type == '%' ? carton * rate * discount / 100 : discount );
-            }
-            else
-            {
-                amount = base * rate - (discount_type == '%' ? base * rate * discount / 100 : discount );
-            }
-
-            $("#amount_show_"+selectId).html(amount.toFixed(2));
-            calculate_amounts();
-        }
-    </script>
+        });
+    </script> --}}
 @endsection

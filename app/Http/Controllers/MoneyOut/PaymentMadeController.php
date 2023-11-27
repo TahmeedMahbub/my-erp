@@ -11,6 +11,7 @@ use App\Models\MoneyOut\PaymentMadeEntry;
 use App\Models\MoneyOut\Purchase;
 use App\Models\Organization\Branch;
 use Carbon\Carbon;
+use Faker\Provider\ar_EG\Payment;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -19,6 +20,11 @@ class PaymentMadeController extends Controller
 {
     public function index()
     {
+        $payment_mades = PaymentMade::latest()->get();
+
+        // dd($payment_mades);
+        return view('payment.index', compact('payment_mades'));
+
         $branches           = Branch::all();
         $vendors            = Contact::where('category_id', 2)->get();
         $payment_accounts   = Account::whereIn('account_type_id', [4, 5])->get();
@@ -32,7 +38,10 @@ class PaymentMadeController extends Controller
 
     public function create()
     {
-        //
+        $branches           = Branch::all();
+        $vendors            = Contact::where('category_id', 2)->get();
+        $payment_accounts   = Account::whereIn('account_type_id', [4, 5])->get();
+        return view('payment.create', compact('branches', 'vendors', 'payment_accounts'));
     }
 
     public function store(Request $request)
@@ -87,7 +96,14 @@ class PaymentMadeController extends Controller
 
     public function edit($id)
     {
-        //
+        $payment            = PaymentMade::find($id);
+        $payment_entries    = $payment->entries;
+        $branches           = Branch::all();
+        $payment_accounts   = Account::whereIn('account_type_id', [4, 5])->get();
+        $remaining_payments = Purchase::where('vendor_id', $payment->vendor_id)->whereColumn('paid_amount', '<', 'total_amount')->whereNotIn('id', $payment_entries->pluck('purchase_id')->toArray())->get();
+        
+        return view('payment.edit', compact('payment', 'payment_entries', 'branches', 'payment_accounts', 'remaining_payments'));
+        dd($payment, $payment_entries);
     }
 
     public function update(Request $request)

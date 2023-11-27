@@ -56,7 +56,7 @@
                             </div>
                             <div class="col-lg-3 p-2">
                                 <label for="">Date <span class="text-danger font-weight-bold">*</span></label>
-                                <input type="date" class="form-control" id="" value="2023-05-22" name="date" placeholder="">
+                                <input type="date" class="form-control" id="" value="{{ date("Y-m-d") }}" name="date" placeholder="">
                             </div>
                             <div class="col-lg-3 p-2">
                                 <label for="">Branch Name <span class="text-danger font-weight-bold">*</span></label>
