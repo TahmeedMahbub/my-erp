@@ -21,14 +21,7 @@ class PaymentMadeController extends Controller
     public function index()
     {
         $payment_mades = PaymentMade::latest()->get();
-
-        // dd($payment_mades);
         return view('payment.index', compact('payment_mades'));
-
-        $branches           = Branch::all();
-        $vendors            = Contact::where('category_id', 2)->get();
-        $payment_accounts   = Account::whereIn('account_type_id', [4, 5])->get();
-        return view('payment.create', compact('branches', 'vendors', 'payment_accounts'));
     }
 
     public function view($id)
@@ -92,6 +85,11 @@ class PaymentMadeController extends Controller
             }
         }
         DB::commit();
+
+        return redirect()
+        ->route('Payment')
+        ->with('alert.status', 'success')
+        ->with('alert.message', 'Purchase Paid Successfully!');
     }
 
     public function edit($id)
@@ -101,14 +99,75 @@ class PaymentMadeController extends Controller
         $branches           = Branch::all();
         $payment_accounts   = Account::whereIn('account_type_id', [4, 5])->get();
         $remaining_payments = Purchase::where('vendor_id', $payment->vendor_id)->whereColumn('paid_amount', '<', 'total_amount')->whereNotIn('id', $payment_entries->pluck('purchase_id')->toArray())->get();
-        
+
         return view('payment.edit', compact('payment', 'payment_entries', 'branches', 'payment_accounts', 'remaining_payments'));
-        dd($payment, $payment_entries);
     }
 
     public function update(Request $request)
     {
-        //
+        dd($request->all(), $payment_made_entries->get());
+        DB::beginTransaction();
+
+        $payment_made = PaymentMade::find($request->id);
+
+        $vendor = Contact::find($request->vendor);
+        $vendor->credit = $vendor->credit + ($request->excess_amount - $payment_made->excess_amount);
+        $vendor->save();
+
+        $payment_made->amount = $request->amount;
+        $payment_made->excess_amount = $request->excess_amount;
+        $payment_made->date = $request->date;
+        $payment_made->branch_id = $request->branch;
+        $payment_made->paid_through_id = $request->payment_account;
+        $payment_made->cheque_no = $request->cheque_no;
+        $payment_made->cheque_date = $request->cheque_date;
+        $payment_made->purchase_id = null;
+        $payment_made->comment = $request->note;
+        $payment_made->updated_by = Auth::user()->id;
+        $payment_made->updated_at = Carbon::now()->toDateTimeString();
+        $payment_made->save();
+
+        $payment_made_entries = PaymentMadeEntry::where('payment_made_id', $request->id)->get();
+
+        JournalEntry::where('model_name', 'payment')->where('model_id', $request->id)->delete();
+
+        foreach($payment_made_entries as $payment_made_entry)
+        {
+            $purchase = Purchase::find($request->purchase_id);
+            $purchase->paid_amount -= $payment_made_entry->amount;
+            $purchase->save();
+
+            $payment_made_entry->delete();
+        }
+
+        foreach($request->purchase_ids as $key => $purchase_id)
+        {
+            if($request->paid_amounts[$key] > 0)
+            {
+                $payment_made_entry = new PaymentMadeEntry;
+                $payment_made_entry->payment_made_id = $payment_made->id;
+                $payment_made_entry->purchase_id = $request->purchase_ids[$key];
+                $payment_made_entry->amount = $request->paid_amounts[$key];
+                $payment_made_entry->created_by = Auth::user()->id;
+                $payment_made_entry->updated_by = Auth::user()->id;
+                $payment_made_entry->created_at = Carbon::now()->toDateTimeString();
+                $payment_made_entry->updated_at = Carbon::now()->toDateTimeString();
+                $payment_made_entry->save();
+
+                $purchase = Purchase::find($request->purchase_ids[$key]);
+                $purchase->paid_amount += $request->paid_amounts[$key];
+                $purchase->save();
+
+                // DELETE ALL RELATED JOURNAL ENTRIES
+                $this->createPaymentJE($payment_made_entry->id);
+            }
+        }
+        DB::commit();
+
+        return redirect()
+        ->route('Payment')
+        ->with('alert.status', 'success')
+        ->with('alert.message', 'Purchase Paid Successfully!');
     }
 
     public function delete($id)

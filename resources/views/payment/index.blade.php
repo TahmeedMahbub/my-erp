@@ -47,7 +47,7 @@
                                         <td> {{ $loop->iteration }} </td>
                                         <td>PM-{{ $payment_made->code }} <br> <small>{{ date("d-M-Y", strtotime($payment_made->date)) }}</small> </td>
                                         <td>{{ $payment_made->vendor->name }} <br> <small>Mobile: 0{{ $payment_made->vendor->phone }}</small> </td>
-                                        <td>{{ $payment_made->branch->name }} </td>
+                                        <td>{{ optional($payment_made->branch)->name }} </td>
                                         <td>
                                             @foreach ($payment_made->entries as $entry)
                                                 @if (!empty($entry->purchase)) <a href="{{ route('purchase_view', $entry->purchase->id) }}">PUR-{{ $entry->purchase->code }}</a> @endif

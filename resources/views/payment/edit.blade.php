@@ -24,10 +24,13 @@
         </div>
     </div>
 
+    @php
+        $used_amount = 0;
+    @endphp
+
 
     <form action="{{ route('payment_update') }}" method="POST" enctype="multipart/form-data">
         @csrf
-{{-- {{ dd($payment) }} --}}
         <div class="row">
             <div class="col-lg-12">
                 <div class="card">
@@ -100,28 +103,33 @@
                                 </thead>
                                 <tbody>
                                     @foreach ($payment_entries as $payment_entry)
-                                        <tr class="border-bottom payment_rows" id="payment_row_{{ $loop->index }}">
-                                            <td scope="row">{{ $loop->iteration }}</td>
+                                        @php
+                                            $first_loop_index = $loop->iteration;
+                                            $used_amount += $payment_entry->amount;
+                                        @endphp
+                                        <tr class="border-bottom payment_rows" id="payment_row_{{ $first_loop_index }}">
+                                            <td scope="row">{{ $first_loop_index }}</td>
                                             <td class="p-2">{{ date('d-M-Y', strtotime($payment_entry->purchase->date)) }}</td>
                                             <td class="p-2"><a href="{{ route('purchase_view', $payment_entry->purchase->id) }}">PUR-{{ $payment_entry->purchase->code }}</a></td>
                                             <td class="p-2 text-end">{{ $payment_entry->purchase->total_amount }}</td>
-                                            <td class="p-2 text-end" id="due_amount_{{ $loop->index }}">{{ $payment_entry->purchase->total_amount - $payment_entry->purchase->paid_amount + $payment_entry->amount }}</td>
+                                            <td class="p-2 text-end" id="due_amount_{{ $first_loop_index }}">{{ $payment_entry->purchase->total_amount - $payment_entry->purchase->paid_amount + $payment_entry->amount }}</td>
                                             <td class="p-2" align="right">
-                                                <input class="form-control text-end paid_amounts" type="number" id="paid_amount_{{ $loop->index }}" min="0" step="0.01" name="paid_amounts[]" max="{{ $payment_entry->purchase->total_amount - $payment_entry->purchase->paid_amount + $payment_entry->amount }}" value="{{ $payment_entry->amount }}" placeholder="Paid Amount" style="width: 88%;">
-                                                <input type="hidden" id="purchase_id_{{ $loop->index }}" name="purchase_ids[]" value="{{ $payment_entry->purchase->id }}">
+                                                <input class="form-control text-end paid_amounts" type="number" id="paid_amount_{{ $first_loop_index }}" min="0" step="0.01" name="paid_amounts[]" max="{{ $payment_entry->purchase->total_amount - $payment_entry->purchase->paid_amount + $payment_entry->amount }}" value="{{ $payment_entry->amount }}" placeholder="Paid Amount" style="width: 88%;">
+                                                <input type="hidden" id="purchase_id_{{ $first_loop_index }}" name="purchase_ids[]" value="{{ $payment_entry->purchase->id }}">
                                             </td>
                                         </tr>
                                     @endforeach
                                     @foreach ($remaining_payments as $remaining_payment)
-                                        <tr class="border-bottom payment_rows" id="payment_row_{{ $loop->index }}">
-                                            <td scope="row">{{ $loop->iteration }}</td>
+                                        @php $second_loop_index = $loop->iteration + $first_loop_index; @endphp
+                                        <tr class="border-bottom payment_rows" id="payment_row_{{ $second_loop_index }}">
+                                            <td scope="row">{{ $second_loop_index }}</td>
                                             <td class="p-2">{{ date('d-M-Y', strtotime($remaining_payment->date)) }}</td>
                                             <td class="p-2"><a href="{{ route('purchase_view', $remaining_payment->id) }}">PUR-{{ $remaining_payment->code }}</a></td>
                                             <td class="p-2 text-end">{{ $remaining_payment->total_amount }}</td>
-                                            <td class="p-2 text-end" id="due_amount_{{ $loop->index }}">{{ $remaining_payment->total_amount - $remaining_payment->paid_amount }}</td>
+                                            <td class="p-2 text-end" id="due_amount_{{ $second_loop_index }}">{{ $remaining_payment->total_amount - $remaining_payment->paid_amount }}</td>
                                             <td class="p-2" align="right">
-                                                <input class="form-control text-end paid_amounts" type="number" id="paid_amount_{{ $loop->index }}" min="0" step="0.01" name="paid_amounts[]" max="{{ $remaining_payment->total_amount - $remaining_payment->paid_amount }}" value="0" placeholder="Paid Amount" style="width: 88%;">
-                                                <input type="hidden" id="purchase_id_{{ $loop->index }}" name="purchase_ids[]" value="{{ $payment_entry->purchase->id }}">
+                                                <input class="form-control text-end paid_amounts" type="number" id="paid_amount_{{ $second_loop_index }}" min="0" step="0.01" name="paid_amounts[]" max="{{ $remaining_payment->total_amount - $remaining_payment->paid_amount }}" value="0" placeholder="Paid Amount" style="width: 88%;">
+                                                <input type="hidden" id="purchase_id_{{ $second_loop_index }}" name="purchase_ids[]" value="{{ $payment_entry->purchase->id }}">
                                             </td>
                                         </tr>
                                     @endforeach
@@ -131,7 +139,7 @@
                                         <td class="p-2 text-end" id="total_due"></td>
                                         <td class="p-2 text-end">
                                             <div class="text-start" style="position: absolute;">&emsp;&emsp;&emsp;&emsp;  Used Amount</div>
-                                            <span class="p-2 text-end" id="used_amount_show">0.00</span> &ensp; TK
+                                            <span class="p-2 text-end" id="used_amount_show">{{$used_amount}}</span> &ensp; TK
                                         </td>
                                     </tr>
                                     <tr class="border-bottom">
@@ -139,7 +147,7 @@
                                         <td class="p-2 text-end"></td>
                                         <td class="p-2 text-end">
                                             <div class="text-start" style="position: absolute;">&emsp;&emsp;&emsp;&emsp;  Excess Amount</div>
-                                            <span class="p-2 text-end" id="excess_amount_show">0.00</span> &ensp; TK
+                                            <span class="p-2 text-end" id="excess_amount_show">{{$payment->excess_amount}}</span> &ensp; TK
                                             <input type="hidden" name="excess_amount" id="hidden_excess_amount" value="0">
                                         </td>
                                     </tr>
@@ -148,7 +156,7 @@
                                         <td class="p-2 text-end"></td>
                                         <td class="p-2 text-end">
                                             <div class="text-start" style="position: absolute;">&emsp;&emsp;&emsp;&emsp;  Paid Amount</div>
-                                            <span class="p-2 text-end" id="paid_amount_show">0.00</span> &ensp; TK
+                                            <span class="p-2 text-end" id="paid_amount_show">{{$payment->amount}}</span> &ensp; TK
                                         </td>
                                     </tr>
                                 </tbody>
@@ -164,7 +172,7 @@
                         <div class="row justify-content-center mt-4">
                             <div class="col-lg-3">
                                 <input type="hidden" name="id" value="{{ $payment->id }}">
-                                <input class="form-control btn btn-purple" type="Submit" value="Edit Purchase Payment">
+                                <input class="form-control btn btn-secondary" type="Submit" value="Edit Purchase Payment">
                             </div>
                         </div>
                     </div>
@@ -175,7 +183,7 @@
 @endsection
 
 @section('script')
-    {{-- <script>
+    <script>
         $(document).on("change", "#vendor1", function() {
             var vendor = $("#vendor").val();
             var payments = "";
@@ -232,7 +240,7 @@
             }
         });
 
-        $(document).on("input", "#amount1", function() {
+        $(document).on("input", "#amount", function() {
             var vendor = $("#vendor").val();
             if(vendor == "")
             {
@@ -260,7 +268,7 @@
         });
 
 
-        $(document).on("input", ".paid_amounts1", function() {
+        $(document).on("input", ".paid_amounts", function() {
             var id          = parseInt($(this).attr('id').match(/\d+/));
             var paidAmount  = parseFloat($("#paid_amount_"+id).val());
             var dueAmount   = parseFloat($("#due_amount_"+id).html());
@@ -294,5 +302,5 @@
             $('#paid_amount_show').html(amount.toFixed(2));
 
         });
-    </script> --}}
+    </script>
 @endsection
