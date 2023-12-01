@@ -87,7 +87,7 @@ class PaymentMadeController extends Controller
         DB::commit();
 
         return redirect()
-        ->route('Payment')
+        ->route('payment')
         ->with('alert.status', 'success')
         ->with('alert.message', 'Purchase Paid Successfully!');
     }
@@ -105,7 +105,6 @@ class PaymentMadeController extends Controller
 
     public function update(Request $request)
     {
-        dd($request->all(), $payment_made_entries->get());
         DB::beginTransaction();
 
         $payment_made = PaymentMade::find($request->id);
@@ -133,7 +132,7 @@ class PaymentMadeController extends Controller
 
         foreach($payment_made_entries as $payment_made_entry)
         {
-            $purchase = Purchase::find($request->purchase_id);
+            $purchase = Purchase::find($payment_made_entry->purchase_id);
             $purchase->paid_amount -= $payment_made_entry->amount;
             $purchase->save();
 
@@ -158,21 +157,20 @@ class PaymentMadeController extends Controller
                 $purchase->paid_amount += $request->paid_amounts[$key];
                 $purchase->save();
 
-                // DELETE ALL RELATED JOURNAL ENTRIES
                 $this->createPaymentJE($payment_made_entry->id);
             }
         }
         DB::commit();
 
         return redirect()
-        ->route('Payment')
+        ->route('payment')
         ->with('alert.status', 'success')
         ->with('alert.message', 'Purchase Paid Successfully!');
     }
 
     public function delete($id)
     {
-        //
+        // CALCULATE VENDOR CREDIT, PAID AMOUNT OF PURCHASE. DELETE PAYMENT MADE, PURCHASE, JOURNAL ENTRY
     }
 
     public function remainingPayments($vendor_id)
@@ -187,6 +185,8 @@ class PaymentMadeController extends Controller
 
     public function createPaymentJE($payment_made_entry_id)
     {
+        // EXCESS PAYMENTS NOT HANDLED
+
         $payment_made_entry = PaymentMadeEntry::find($payment_made_entry_id);
 
         $journal_entry = new JournalEntry;
