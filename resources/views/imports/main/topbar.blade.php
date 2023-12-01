@@ -16,7 +16,7 @@
                         </a>
                     </li><!--end topbar-language-->
 
-                    <li class="dropdown">
+                    <li class="dropdown d-none">
                         <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
                         aria-haspopup="false" aria-expanded="false">
                         <img src="{{ asset('assets/images/flags/us_flag.jpg') }}" alt="" class="thumb-xxs rounded">
@@ -29,7 +29,7 @@
                         </div>
                     </li><!--end topbar-language-->
 
-                    <li class="dropdown notification-list">
+                    <li class="dropdown notification-list d-none">
                         <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
                             aria-haspopup="false" aria-expanded="false">
                             <i class="ti ti-mail"></i>
@@ -113,7 +113,7 @@
                         </div>
                     </li>
 
-                    <li class="dropdown notification-list">
+                    <li class="dropdown notification-list d-none">
                         <a class="nav-link dropdown-toggle arrow-none nav-icon" data-bs-toggle="dropdown" href="#" role="button"
                             aria-haspopup="false" aria-expanded="false">
                             <i class="ti ti-bell"></i>
@@ -218,7 +218,7 @@
                             <a class="dropdown-item" href="{{ route("logout") }}"><i class="ti ti-power font-16 me-1 align-text-bottom"></i> Logout</a>
                         </div>
                     </li><!--end topbar-profile-->
-                    <li class="notification-list">
+                    <li class="notification-list d-none">
                         <a class="nav-link arrow-none nav-icon offcanvas-btn" href="#" data-bs-toggle="offcanvas" data-bs-target="#Appearance" role="button" aria-controls="Rightbar">
                             <i class="ti ti-settings ti-spin"></i>
                         </a>
@@ -230,6 +230,17 @@
                         <button class="nav-link button-menu-mobile nav-icon" id="togglemenu">
                             <i class="ti ti-menu-2"></i>
                         </button>
+                    </li>
+                    <li class="input-group" style="width: 130px">
+                        <a class="nav-link nav-icon" href="" title="Previous Page" style="margin-right: 4px;">
+                            <i class="mdi mdi-24px mdi-arrow-left"></i>
+                        </a>
+                        <a class="nav-link nav-icon" href="" title="Reload Page" style="margin-right: 4px;">
+                            <i class="mdi mdi-24px mdi-refresh"></i>
+                        </a>
+                        <a class="nav-link nav-icon" href="" title="Next Page" style="margin-right: 4px;">
+                            <i class="mdi mdi-24px mdi-arrow-right"></i>
+                        </a>
                     </li>
                     <li>
                         <h3 class="font-14 m-0 fw-bold">&nbsp; {{ Auth::user()->branch->name }} Branch</h3>
@@ -250,16 +261,6 @@
 
         <script>
             function openCalculator() {
-                // Replace 'calc' with the appropriate command to open the calculator on your operating system.
-                // Below are examples for different operating systems:
-
-                // For Windows:
                 window.open('calc.exe', '_blank');
-
-                // For macOS:
-                // window.open('Calculator.app', '_blank');
-
-                // For Linux (GNOME Calculator):
-                // window.open('gnome-calculator', '_blank');
             }
         </script>
