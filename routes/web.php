@@ -10,6 +10,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Inventory\ItemController;
 use App\Http\Controllers\Organization\OrganizationController;
 use App\Http\Controllers\MoneyOut\PurchaseController;
+use App\Http\Controllers\MoneyIn\SaleController;
 use App\Http\Controllers\Contact\RoleController;
 use App\Http\Controllers\Inventory\UnitController;
 use App\Http\Controllers\Contact\UserController;
@@ -156,4 +157,26 @@ Route::group(['prefix' => 'payment-made', 'middleware' => 'auth'], function () {
     Route::get('/delete/{id}', [PaymentMadeController::class, 'delete'])->name('payment_delete')->middleware('deleteAccess');
 
     Route::get('/remaining-payments/{vendor_id}', [PaymentMadeController::class, 'remainingPayments'])->name('remaining_payments')->middleware('readAccess');
+});
+
+Route::group(['prefix' => 'sale', 'middleware' => 'auth'], function () {
+    Route::get('/', [SaleController::class, 'index'])->name('sale')->middleware('readAccess');
+    Route::get('/view/{id}', [SaleController::class, 'view'])->name('sale_view')->middleware('readAccess');
+    Route::get('/create', [SaleController::class, 'create'])->name('sale_create')->middleware('createAccess');
+    Route::post('/store', [SaleController::class, 'store'])->name('sale_store')->middleware('createAccess');
+    Route::get('/edit/{id}', [SaleController::class, 'edit'])->name('sale_edit')->middleware('updateAccess');
+    Route::post('/update', [SaleController::class, 'update'])->name('sale_update')->middleware('updateAccess');
+    Route::get('/delete/{id}', [SaleController::class, 'delete'])->name('sale_delete')->middleware('deleteAccess');
+});
+
+Route::group(['prefix' => 'payment-receive', 'middleware' => 'auth'], function () {
+    Route::get('/', [PaymentReceiveController::class, 'index'])->name('payment_receive')->middleware('readAccess');
+    Route::get('/view/{id}', [PaymentReceiveController::class, 'view'])->name('payment_receive_view')->middleware('readAccess');
+    Route::get('/create', [PaymentReceiveController::class, 'create'])->name('payment_receive_create')->middleware('createAccess');
+    Route::post('/store', [PaymentReceiveController::class, 'store'])->name('payment_receive_store')->middleware('createAccess');
+    Route::get('/edit/{id}', [PaymentReceiveController::class, 'edit'])->name('payment_receive_edit')->middleware('updateAccess');
+    Route::post('/update', [PaymentReceiveController::class, 'update'])->name('payment_receive_update')->middleware('updateAccess');
+    Route::get('/delete/{id}', [PaymentReceiveController::class, 'delete'])->name('payment_receive_delete')->middleware('deleteAccess');
+
+    Route::get('/remaining-payments/{vendor_id}', [PaymentReceiveController::class, 'remainingPayments'])->name('remaining_payments')->middleware('readAccess');
 });

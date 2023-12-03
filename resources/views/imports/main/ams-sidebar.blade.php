@@ -133,7 +133,7 @@
     <div class="collapse " id="sidebarMoneyIn">
         <ul class="nav flex-column">
             <li class="nav-item">
-                <a class="nav-link" href="index.html">Primary Sale (!!!)</a>
+                <a class="nav-link" href="{{ route('sale') }}">Sale (!!!)</a>
             </li>
             <li class="nav-item">
                 <a class="nav-link" href="index.html">Depo Sale (!!!)</a>

@@ -257,11 +257,12 @@ ALTER TABLE `payment_mades` ADD `branch_id` INT NOT NULL AFTER `vendor_id`;
 
 
 ------------------------------------------
---------------Office Updated--------------
-------------------------------------------
-
-
-
-------------------------------------------
 ---------------Home Updated---------------
+------------------------------------------
+
+INSERT INTO `modules` (`id`, `module_name`, `module_prefix`, `deletable`, `created_at`, `updated_at`) VALUES ('12', 'Sale', 'sale', '1', CURRENT_TIMESTAMP, CURRENT_TIMESTAMP);
+
+
+------------------------------------------
+--------------Office Updated--------------
 ------------------------------------------
