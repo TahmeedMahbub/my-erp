@@ -282,14 +282,14 @@ class PurchaseController extends Controller
                     $purchase_entry->save();
                     $entries[]                      = $purchase_entry;
 
-                    $item_lot->item_id                  = $request->items[$key];
-                    $item_lot->lot_no                   = $lot_no;
-                    $item_lot->branch_id                = $request->branch;
-                    $item_lot->expiry_date              = $request->expiry_date[$key] ?? null;
-                    $item_lot->purchase_entry_id        = $purchase_entry->id;
-                    $item_lot->total_stock             += $request->base_qty[$key] - $item_lot->purchased_stock;
-                    $item_lot->purchased_stock          = $request->base_qty[$key];
-                    $item_lot->updated_at               = Carbon::now();
+                    $item_lot->item_id              = $request->items[$key];
+                    $item_lot->lot_no               = $lot_no;
+                    $item_lot->branch_id            = $request->branch;
+                    $item_lot->expiry_date          = $request->expiry_date[$key] ?? null;
+                    $item_lot->purchase_entry_id    = $purchase_entry->id;
+                    $item_lot->total_stock         += $request->base_qty[$key] - $item_lot->purchased_stock;
+                    $item_lot->purchased_stock      = $request->base_qty[$key];
+                    $item_lot->updated_at           = Carbon::now();
                     $item_lot->save();
                 }
 
@@ -297,6 +297,18 @@ class PurchaseController extends Controller
                 {
                     foreach($existing_purchase_entries as $unused_purchase_entry)
                     {
+                        $item_lot = ItemLot::where('purchase_entry_id', $unused_purchase_entry)->first();
+                        if($item_lot->total_stock == $item_lot->purchased_stock)
+                        { $item_lot->delete(); }
+                        else
+                        {
+                            DB::rollBack();
+                            return redirect()
+                            ->back()
+                            ->withInput()
+                            ->with('alert.status', 'danger')
+                            ->with('alert.message', 'Sorry, '.$item_lot->item->name.' ('.$item_lot->item->code.') has been sold or transferred. No Changes saved.');
+                        }
                         PurchaseEntry::find($unused_purchase_entry)->delete();
                     }
                 }
